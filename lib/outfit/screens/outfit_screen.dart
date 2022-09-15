@@ -8,6 +8,7 @@ class OutfitScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kColorsWhite,
       appBar: AppBar(
         toolbarHeight: 60,
         centerTitle: true,
@@ -39,10 +40,15 @@ class OutfitScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(1),
                   child: Stack(
                     children: [
-                      Container(
-                        height: double.infinity,
-                        decoration: BoxDecoration(
-                          color: kColorsGrey2
+                      InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, '/outfit_info');
+                        },
+                        child: Container(
+                          height: double.infinity,
+                          decoration: BoxDecoration(
+                            color: kColorsGrey2
+                          ),
                         ),
                       ),
                       Positioned(

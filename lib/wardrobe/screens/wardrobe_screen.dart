@@ -9,6 +9,7 @@ class WardrobeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kColorsWhite,
       appBar: AppBar(
         toolbarHeight: 60,
         centerTitle: true,
@@ -38,33 +39,38 @@ class WardrobeScreen extends StatelessWidget {
         child: Material(
           child: GridView.builder(
             itemCount: 20,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 1
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.all(1),
-                  child: Stack(
-                    children: [
-                      Container(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 1
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.all(1),
+                child: Stack(
+                  children: [
+                    InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, '/wardrobe_info');
+                      },
+                      child: Container(
                         height: double.infinity,
                         decoration: BoxDecoration(
                           color: kColorsGrey2
                         ),
                       ),
-                      Positioned(
-                        top: -10,
-                        right: -10,
-                        child: IconButton(
-                          onPressed: (){},
-                          icon: SvgPicture.asset('assets/o2_heart_1.svg')
-                        ),
+                    ),
+                    Positioned(
+                      top: -10,
+                      right: -10,
+                      child: IconButton(
+                        onPressed: (){},
+                        icon: SvgPicture.asset('assets/o2_heart_1.svg')
                       ),
-                    ],
-                  ),
-                );
-              }
+                    ),
+                  ],
+                ),
+              );
+            }
           ),
         ),
       )

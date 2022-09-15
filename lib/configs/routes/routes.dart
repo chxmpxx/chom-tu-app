@@ -1,14 +1,18 @@
 import 'package:chom_tu/dashboard_screen.dart';
+import 'package:chom_tu/outfit/screens/outfit_info_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_screen.dart';
 import 'package:chom_tu/profile/screens/profile_screen.dart';
 import 'package:chom_tu/social/screens/social_screen.dart';
+import 'package:chom_tu/wardrobe/screens/wardrobe_info_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 const routeWardrobe = '/wardrobe';
+const routeWardrobeInfo = '/wardrobe_info';
 const routeOutfit = '/outfit';
+const routeOutfitInfo = '/outfit_info';
 const routeSocial = '/social';
 const routeProfile = '/profile';
 
@@ -20,11 +24,23 @@ class Routes {
           child: WardrobeScreen(), 
           type: PageTransitionType.rightToLeft
         );
+      case routeWardrobeInfo:
+        return PageTransition(
+          child: WardrobeInfoScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+        
       case routeOutfit:
         return PageTransition(
           child: OutfitScreen(), 
           type: PageTransitionType.rightToLeft
         );
+      case routeOutfitInfo:
+        return PageTransition(
+          child: OutfitInfoScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+
       case routeSocial:
         return PageTransition(
           child: SocialScreen(), 

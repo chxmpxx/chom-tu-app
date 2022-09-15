@@ -1,3 +1,4 @@
+import 'package:chom_tu/configs/themes/color.dart';
 import 'package:flutter/material.dart';
 
 class SocialScreen extends StatelessWidget {
@@ -6,6 +7,7 @@ class SocialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: kColorsWhite,
       body: Center(
         child: Text('Coming soon...'),
       ),
