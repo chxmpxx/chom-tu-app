@@ -1,4 +1,5 @@
 import 'package:chom_tu/dashboard_screen.dart';
+import 'package:chom_tu/outfit/screens/outfit_create_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_info_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_screen.dart';
 import 'package:chom_tu/profile/screens/profile_screen.dart';
@@ -13,6 +14,7 @@ const routeWardrobe = '/wardrobe';
 const routeWardrobeInfo = '/wardrobe_info';
 const routeOutfit = '/outfit';
 const routeOutfitInfo = '/outfit_info';
+const routeOutfitCreate = '/outfit_create';
 const routeSocial = '/social';
 const routeProfile = '/profile';
 
@@ -38,6 +40,11 @@ class Routes {
       case routeOutfitInfo:
         return PageTransition(
           child: OutfitInfoScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+      case routeOutfitCreate:
+        return PageTransition(
+          child: OutfitCreateScreen(), 
           type: PageTransitionType.rightToLeft
         );
 

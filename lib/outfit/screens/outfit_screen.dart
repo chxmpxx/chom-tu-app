@@ -17,7 +17,9 @@ class OutfitScreen extends StatelessWidget {
         backgroundColor: kColorsWhite,
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pushNamed(context, '/outfit_create');
+            },
             icon: SvgPicture.asset('assets/a1_add_1.svg', color: kColorsBlack)
           ),
           IconButton(
