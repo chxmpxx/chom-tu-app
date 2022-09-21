@@ -1,4 +1,4 @@
-import 'package:chom_tu/configs/themes/color.dart';
+import 'package:chom_tu/configs/themes/constants.dart';
 import 'package:chom_tu/outfit/screens/outfit_screen.dart';
 import 'package:chom_tu/profile/screens/profile_screen.dart';
 import 'package:chom_tu/social/screens/social_screen.dart';

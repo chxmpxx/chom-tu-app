@@ -1,5 +1,5 @@
 import 'package:chom_tu/configs/routes/routes.dart';
-import 'package:chom_tu/configs/themes/color.dart';
+import 'package:chom_tu/configs/themes/constants.dart';
 import 'package:chom_tu/configs/themes/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
