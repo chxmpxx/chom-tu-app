@@ -1,6 +1,6 @@
 import 'package:chom_tu/configs/themes/constants.dart';
 import 'package:chom_tu/wardrobe/providers/filter_tab_provider.dart';
-import 'package:chom_tu/widgets/filter_tab_widget.dart';
+import 'package:chom_tu/widgets/filter_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -236,29 +236,41 @@ class WardrobeScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
-              child: InkWell(
-                onTap: () {
-                  filterTab.filterTab(0);
-                },
-                child: FilterTabWidget(title: 'Sort')
-              ),
+            Consumer<FilterTabProvider>(
+              builder: (_, value, __) {
+                return Container(
+                  child: InkWell(
+                    onTap: () {
+                      filterTab.filterTab(0);
+                    },
+                    child: filterTab.indexTab == 0 && filterTab.tabStatus == true ? FilterBarWidget(title: 'Sort', status: true) : FilterBarWidget(title: 'Sort', status: false)
+                  ),
+                );
+              }
             ),
-            Container(
-              child: InkWell(
-                onTap: () {
-                  filterTab.filterTab(1);
-                },
-                child: FilterTabWidget(title: 'Type')
-              ),
+            Consumer<FilterTabProvider>(
+              builder: (_, value, __) {
+                return Container(
+                  child: InkWell(
+                    onTap: () {
+                      filterTab.filterTab(1);
+                    },
+                    child: filterTab.indexTab == 1 && filterTab.tabStatus == true ? FilterBarWidget(title: 'Type', status: true) : FilterBarWidget(title: 'Type', status: false)
+                  ),
+                );
+              }
             ),
-            Container(
-              child: InkWell(
-                onTap: () {
-                  filterTab.filterTab(2);
-                },
-                child: FilterTabWidget(title: 'Color')
-              ),
+            Consumer<FilterTabProvider>(
+              builder: (_, value, __) {
+                return Container(
+                  child: InkWell(
+                    onTap: () {
+                      filterTab.filterTab(2);
+                    },
+                    child: filterTab.indexTab == 2 && filterTab.tabStatus == true ? FilterBarWidget(title: 'Color', status: true) : FilterBarWidget(title: 'Color', status: false)
+                  ),
+                );
+              }
             ),
           ],
         ),

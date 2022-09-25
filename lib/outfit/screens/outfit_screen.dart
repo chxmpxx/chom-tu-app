@@ -1,5 +1,5 @@
 import 'package:chom_tu/configs/themes/constants.dart';
-import 'package:chom_tu/widgets/filter_tab_widget.dart';
+import 'package:chom_tu/widgets/filter_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -94,13 +94,13 @@ class OutfitScreen extends StatelessWidget {
             Container(
               child: InkWell(
                 onTap: () {},
-                child: FilterTabWidget(title: 'Sort')
+                // child: FilterTabWidget(title: 'Sort')
               ),
             ),
             Container(
               child: InkWell(
                 onTap: () {},
-                child: FilterTabWidget(title: 'Style')
+                // child: FilterTabWidget(title: 'Style')
               ),
             ),
           ],
