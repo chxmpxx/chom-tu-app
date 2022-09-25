@@ -1,8 +1,9 @@
 import 'package:chom_tu/configs/routes/routes.dart';
-import 'package:chom_tu/configs/themes/constants.dart';
 import 'package:chom_tu/configs/themes/style.dart';
+import 'package:chom_tu/wardrobe/providers/filter_tab_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -20,10 +21,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: appTheme(),
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: Routes.generateRoute,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => FilterTabProvider()),
+      ],
+      child: MaterialApp(
+        theme: appTheme(),
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: Routes.generateRoute,
+      )
     );
   }
 }

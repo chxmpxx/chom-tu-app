@@ -1,14 +1,25 @@
 import 'package:chom_tu/configs/themes/constants.dart';
+import 'package:chom_tu/wardrobe/providers/filter_tab_provider.dart';
 import 'package:chom_tu/widgets/filter_tab_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class WardrobeScreen extends StatelessWidget {
   const WardrobeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    // true: คือเรียกตลอด (เหมือน setState) false: เรียกเฉพาะตอนใช้
+    var filterTab = Provider.of<FilterTabProvider>(context, listen: false);
+    List<Widget> filterTabContent = [
+      sortFilterTab(),
+      typeFilterTab(),
+      colorFilterTab()
+    ];
+
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
@@ -30,7 +41,7 @@ class WardrobeScreen extends StatelessWidget {
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
-        bottom: filterTab(context),
+        bottom: filterBar(context, filterTab),
         actions: [
           IconButton(
             onPressed: (){},
@@ -43,45 +54,79 @@ class WardrobeScreen extends StatelessWidget {
         ],
       ),
       drawer: categoryDrawer(context),
-      body: Padding(
-        padding: const EdgeInsets.all(0),
-        child: Material(
-          child: GridView.builder(
-            itemCount: 20,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: 1
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
-                child: Stack(
-                  children: [
-                    InkWell(
-                      onTap: (){
-                        Navigator.pushNamed(context, '/wardrobe_info');
-                      },
-                      child: Container(
-                        height: double.infinity,
-                        decoration: BoxDecoration(
-                          color: kColorsGrey3
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: -10,
-                      right: -10,
-                      child: IconButton(
-                        onPressed: (){},
-                        icon: SvgPicture.asset('assets/o2_heart_1.svg')
-                      ),
-                    ),
-                  ],
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(0),
+            child: Material(
+              child: GridView.builder(
+                itemCount: 20,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 1
                 ),
-              );
-            }
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
+                    child: Stack(
+                      children: [
+                        InkWell(
+                          onTap: (){
+                            Navigator.pushNamed(context, '/wardrobe_info');
+                          },
+                          child: Container(
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                              color: kColorsGrey3
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: -10,
+                          right: -10,
+                          child: IconButton(
+                            onPressed: (){},
+                            icon: SvgPicture.asset('assets/o2_heart_1.svg')
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              ),
+            ),
           ),
-        ),
+
+          Consumer<FilterTabProvider>(
+            builder: (_, value, __) {
+              return filterTab.tabStatus ?
+                Container(
+                  height: double.infinity,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.width * 0.34,
+                        color: kColorsWhite,
+                        child: filterTabContent[filterTab.indexTab],
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: (){
+                            filterTab.filterTab(filterTab.indexTab);
+                          },
+                          child: Container(
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        )
+                      )
+                    ],
+                  ),
+                )
+              : Container();
+            }
+          )
+          
+        ],
       )
     );
   }
@@ -180,8 +225,8 @@ class WardrobeScreen extends StatelessWidget {
     );
   }
 
-  // Create Filter Tab
-  PreferredSize filterTab(context) {
+  // Create Filter Bar
+  PreferredSize filterBar(context, FilterTabProvider filterTab) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(60),
       child: Container(
@@ -193,19 +238,25 @@ class WardrobeScreen extends StatelessWidget {
           children: [
             Container(
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  filterTab.filterTab(0);
+                },
                 child: FilterTabWidget(title: 'Sort')
               ),
             ),
             Container(
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  filterTab.filterTab(1);
+                },
                 child: FilterTabWidget(title: 'Type')
               ),
             ),
             Container(
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  filterTab.filterTab(2);
+                },
                 child: FilterTabWidget(title: 'Color')
               ),
             ),
@@ -214,4 +265,17 @@ class WardrobeScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget sortFilterTab() {
+    return Center(child: Text('Sort'));
+  }
+
+  Widget typeFilterTab() {
+    return Center(child: Text('Type'));
+  }
+
+  Widget colorFilterTab() {
+    return Center(child: Text('Color'));
+  }
+
 }
