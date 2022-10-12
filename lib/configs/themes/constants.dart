@@ -8,4 +8,4 @@ const Color kColorsGrey1 = Color.fromARGB(255, 142, 142, 142);
 const Color kColorsGrey2 = Color.fromARGB(255, 239, 239, 239);
 const Color kColorsGrey3 = Color.fromARGB(255, 220, 220, 220);
 
-const double kAppbarBorderWidth = 2;
+const double kAppbarBorderWidth = 1;

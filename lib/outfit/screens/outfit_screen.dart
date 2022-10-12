@@ -94,13 +94,13 @@ class OutfitScreen extends StatelessWidget {
             Container(
               child: InkWell(
                 onTap: () {},
-                // child: FilterTabWidget(title: 'Sort')
+                child: FilterBarWidget(title: 'Sort', status: false)
               ),
             ),
             Container(
               child: InkWell(
                 onTap: () {},
-                // child: FilterTabWidget(title: 'Style')
+                child: FilterBarWidget(title: 'Style', status: false)
               ),
             ),
           ],

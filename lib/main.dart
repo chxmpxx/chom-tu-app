@@ -1,5 +1,6 @@
 import 'package:chom_tu/configs/routes/routes.dart';
 import 'package:chom_tu/configs/themes/style.dart';
+import 'package:chom_tu/outfit/providers/outfit_create_provider.dart';
 import 'package:chom_tu/wardrobe/providers/filter_tab_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => FilterTabProvider()),
+        ChangeNotifierProvider(create: (context) => OutfitCreateProvider()),
       ],
       child: MaterialApp(
         theme: appTheme(),
