@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:chom_tu/configs/themes/constants.dart';
 import 'package:chom_tu/outfit/providers/outfit_create_provider.dart';
 import 'package:chom_tu/outfit/widgets/color_bar_widget.dart';
@@ -17,6 +19,10 @@ class OutfitCreateScreen extends StatefulWidget {
 }
 
 class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
+
+  double top = 0;
+  double left = 0;
+
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -25,9 +31,9 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
     //   statusBarColor: Colors.transparent,
     // ));
 
-    var selectTab = Provider.of<OutfitCreateProvider>(context, listen: false);
+    var provider = Provider.of<OutfitCreateProvider>(context, listen: false);
     
-    return selectTab.tabStatus ? 
+    return provider.tabStatus ? 
       Material(
         child: SlidingUpPanel(
           borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
@@ -50,6 +56,43 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
                   height: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: kColorsGrey3
+                  ),
+                  child: Consumer<OutfitCreateProvider>(
+                    builder: (_, value, __) {
+                      return provider.top != null ? Stack(
+                        children: [
+                          Positioned(
+                            top: top,
+                            left: left,
+                            child: GestureDetector(
+                              onPanUpdate: (details) {
+                                setState(() {
+                                  top = max(top + details.delta.dy, top + details.delta.dy);
+                                  left = max(left + details.delta.dx, left + details.delta.dx);
+                                });
+                              },
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(12.0),
+                                    width: MediaQuery.of(context).size.width * 0.33,
+                                    height: MediaQuery.of(context).size.width * 0.33,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(provider.GetTop()),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      border: Border.all(color: kColorsWhite, width: 2.5)
+                                    ),
+                                  ),
+                                  SvgPicture.asset('assets/o1_false_circle_1.svg'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ) : Container();
+                    }
                   ),
                 ),
               ),
@@ -86,7 +129,7 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
           )
         ],
       ),
-      bottomNavigationBar: outfitNavigationBar(context, selectTab),
+      bottomNavigationBar: outfitNavigationBar(context, provider),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -99,7 +142,7 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
     );
   }
 
-  Widget outfitNavigationBar(context, OutfitCreateProvider selectTab) {
+  Widget outfitNavigationBar(context, OutfitCreateProvider provider) {
     return NavigationBarTheme(
       data: NavigationBarThemeData(
         indicatorColor: kColorsWhite,
@@ -117,7 +160,7 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
           backgroundColor: kColorsWhite,
           onDestinationSelected: (index) {
             setState(() {
-              selectTab.SelectTab();
+              provider.SelectTab();
             });
           },
           destinations: [
