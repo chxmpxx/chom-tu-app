@@ -1,7 +1,8 @@
-import 'dart:math';
-
 import 'package:chom_tu/configs/themes/constants.dart';
+import 'package:chom_tu/outfit/providers/delete_item_provider.dart';
+import 'package:chom_tu/outfit/providers/is_delete_btn_active_provider.dart';
 import 'package:chom_tu/outfit/providers/outfit_create_provider.dart';
+import 'package:chom_tu/outfit/providers/show_delete_btn_provider.dart';
 import 'package:chom_tu/outfit/widgets/color_bar_widget.dart';
 import 'package:chom_tu/outfit/widgets/panel_widget.dart';
 import 'package:chom_tu/outfit/widgets/type_bar_widget.dart';
@@ -19,10 +20,6 @@ class OutfitCreateScreen extends StatefulWidget {
 }
 
 class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
-
-  double top = 0;
-  double left = 0;
-
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -57,43 +54,45 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
                   decoration: BoxDecoration(
                     color: kColorsGrey3
                   ),
-                  child: Consumer<OutfitCreateProvider>(
+                  child: Consumer<DeleteItemProvider>(
                     builder: (_, value, __) {
-                      return provider.top != null ? Stack(
-                        children: [
-                          Positioned(
-                            top: top,
-                            left: left,
-                            child: GestureDetector(
-                              onPanUpdate: (details) {
-                                setState(() {
-                                  top = max(top + details.delta.dy, top + details.delta.dy);
-                                  left = max(left + details.delta.dx, left + details.delta.dx);
-                                });
-                              },
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.all(12.0),
-                                    width: MediaQuery.of(context).size.width * 0.33,
-                                    height: MediaQuery.of(context).size.width * 0.33,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(provider.GetTop()),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      border: Border.all(color: kColorsWhite, width: 2.5)
-                                    ),
-                                  ),
-                                  SvgPicture.asset('assets/o1_false_circle_1.svg'),
-                                ],
+                      return Consumer<OutfitCreateProvider>(
+                        builder: (_, value, __) {
+                          return !provider.items.isEmpty ? Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.width,
                               ),
-                            ),
-                          ),
-                        ],
-                      ) : Container();
+
+                              for(int i = 0; i < provider.items.length; i++) 
+                              provider.items[i],
+
+                              Consumer<ShowDeleteBtnProvider>(
+                                builder: (_, value, __) {
+                                  return provider.showDeleteBtn ?
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(30),
+                                      child: Consumer<IsDeleteBtnActiveProvider>(
+                                        builder: (_, value, __) {
+                                          return provider.isDeleteBtnActive ? SvgPicture.asset('assets/o5_bin_2.svg')
+                                          : SvgPicture.asset('assets/o5_bin_1.svg');
+                                        }
+                                      )
+                                    )
+                                  )
+                                  : Container();
+                                }
+                              )
+                            ]
+                          ) : Container();
+                        }
+                      );
                     }
-                  ),
+                  )
                 ),
               ),
             ),

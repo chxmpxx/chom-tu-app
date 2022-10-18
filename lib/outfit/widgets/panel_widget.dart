@@ -28,7 +28,7 @@ class PanelWidget extends StatelessWidget {
           padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
           child: InkWell(
             onTap: (){
-              provider.SelectTop(imageList[index]);
+              provider.SelectTop(imageList[index], context, index);
             },
             child: Container(
               height: double.infinity,
