@@ -29,115 +29,109 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
     // ));
 
     var provider = Provider.of<OutfitCreateProvider>(context, listen: false);
-    
-    return provider.tabStatus ? 
-      Material(
-        child: SlidingUpPanel(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-          maxHeight: MediaQuery.of(context).size.height * 0.55,
-          minHeight: MediaQuery.of(context).size.height * 0.25,
-          header: buildHeader(context),
-          panelBuilder: (controller) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 135),
-              child: PanelWidget(controller: controller),
-            );
-          },
-          body: SafeArea(
-            child: Scaffold(
-              backgroundColor: kColorsBlack,
-              body: Padding(
-                padding: const EdgeInsets.only(top: 60),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: kColorsGrey3
-                  ),
-                  child: Consumer<DeleteItemProvider>(
-                    builder: (_, value, __) {
-                      return Consumer<OutfitCreateProvider>(
-                        builder: (_, value, __) {
-                          return !provider.items.isEmpty ? Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.width,
-                              ),
 
-                              for(int i = 0; i < provider.items.length; i++) 
-                              provider.items[i],
-
-                              Consumer<ShowDeleteBtnProvider>(
-                                builder: (_, value, __) {
-                                  return provider.showDeleteBtn ?
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(30),
-                                      child: Consumer<IsDeleteBtnActiveProvider>(
-                                        builder: (_, value, __) {
-                                          return provider.isDeleteBtnActive ? SvgPicture.asset('assets/o5_bin_2.svg')
-                                          : SvgPicture.asset('assets/o5_bin_1.svg');
-                                        }
-                                      )
-                                    )
-                                  )
-                                  : Container();
-                                }
-                              )
-                            ]
-                          ) : Container();
-                        }
-                      );
-                    }
-                  )
+    return Material(
+      child: SlidingUpPanel(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+        maxHeight: provider.tabStatus ? MediaQuery.of(context).size.height * 0.55 : 0,
+        minHeight: provider.tabStatus ? MediaQuery.of(context).size.height * 0.25 : 0,
+        header: buildHeader(context),
+        panelBuilder: (controller) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 135),
+            child: PanelWidget(controller: controller),
+          );
+        },
+        body: SafeArea(
+          child: Scaffold(
+            backgroundColor: provider.tabStatus ? kColorsBlack : kColorsWhite,
+            appBar: provider.tabStatus ? null : AppBar(
+              shape: Border(
+                bottom: BorderSide(color: kColorsGrey2, width: kAppbarBorderWidth)
+              ),
+              elevation: 0,
+              toolbarHeight: 60,
+              centerTitle: true,
+              title: Text('Create', style: Theme.of(context).textTheme.headline1),
+              iconTheme: Theme.of(context).iconTheme,
+              backgroundColor: kColorsWhite,
+              leading: IconButton(
+                icon: SvgPicture.asset('assets/o3_back_1.svg', color: kColorsBlack),
+                onPressed: (){
+                  Navigator.pop(context);
+                },
+              ),
+              actions: [
+                IconButton(
+                  onPressed: (){},
+                  icon: SvgPicture.asset('assets/o1_save_1.svg', color: kColorsBlack)
                 ),
+                IconButton(
+                  onPressed: (){},
+                  icon: SvgPicture.asset('assets/o1_true_1.svg', color: kColorsBlack)
+                )
+              ],
+            ),
+            bottomNavigationBar: provider.tabStatus ? null : outfitNavigationBar(context, provider),
+            body: Padding(
+              padding: provider.tabStatus ? const EdgeInsets.only(top: 60) : const EdgeInsets.only(top: 0),
+              child: Align(
+                alignment: provider.tabStatus ? Alignment.topCenter : Alignment.center,
+                child: bodyOutfitCreate(provider)
               ),
             ),
-          ),
-        ),
-      )
-    : Scaffold(
-      backgroundColor: kColorsWhite,
-      appBar: AppBar(
-        shape: Border(
-          bottom: BorderSide(color: kColorsGrey2, width: kAppbarBorderWidth)
-        ),
-        elevation: 0,
-        toolbarHeight: 60,
-        centerTitle: true,
-        title: Text('Create', style: Theme.of(context).textTheme.headline1),
-        iconTheme: Theme.of(context).iconTheme,
-        backgroundColor: kColorsWhite,
-        leading: IconButton(
-          icon: SvgPicture.asset('assets/o3_back_1.svg', color: kColorsBlack),
-          onPressed: (){
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          IconButton(
-            onPressed: (){},
-            icon: SvgPicture.asset('assets/o1_save_1.svg', color: kColorsBlack)
-          ),
-          IconButton(
-            onPressed: (){},
-            icon: SvgPicture.asset('assets/o1_true_1.svg', color: kColorsBlack)
           )
-        ],
-      ),
-      bottomNavigationBar: outfitNavigationBar(context, provider),
-      body: Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: kColorsGrey3
-          ),
         ),
       ),
+    );
+  }
+
+  Widget bodyOutfitCreate(OutfitCreateProvider provider) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: kColorsGrey3
+      ),
+      child: Consumer<DeleteItemProvider>(
+        builder: (_, value, __) {
+          return Consumer<OutfitCreateProvider>(
+            builder: (_, value, __) {
+              return !provider.items.isEmpty ? Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width,
+                  ),
+
+                  for(int i = 0; i < provider.items.length; i++) 
+                  provider.items[i],
+
+                  Consumer<ShowDeleteBtnProvider>(
+                    builder: (_, value, __) {
+                      return provider.showDeleteBtn ?
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.all(30),
+                          child: Consumer<IsDeleteBtnActiveProvider>(
+                            builder: (_, value, __) {
+                              return provider.isDeleteBtnActive ? SvgPicture.asset('assets/o5_bin_2.svg')
+                              : SvgPicture.asset('assets/o5_bin_1.svg');
+                            }
+                          )
+                        )
+                      )
+                      : Container();
+                    }
+                  )
+                ]
+              ) : Container();
+            }
+          );
+        }
+      )
     );
   }
 
@@ -210,14 +204,25 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
   }
 
   Widget buildMenu(context) {
+    var provider = Provider.of<OutfitCreateProvider>(context, listen: false);
+
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SvgPicture.asset('assets/o1_false_1.svg', color: kColorsBlack),
+          InkWell(
+            child: SvgPicture.asset('assets/o1_false_1.svg', color: kColorsBlack)
+          ),
           Text('Top', style: Theme.of(context).textTheme.headline4),
-          SvgPicture.asset('assets/o1_true_1.svg', color: kColorsBlack),
+          InkWell(
+            onTap: () {
+              setState(() {
+                provider.SelectTab();
+              });
+            },
+            child: SvgPicture.asset('assets/o1_true_1.svg', color: kColorsBlack)
+          ),
         ],
       ),
     );
