@@ -4,6 +4,8 @@ import 'package:chom_tu/outfit/screens/outfit_info_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_screen.dart';
 import 'package:chom_tu/profile/screens/profile_screen.dart';
 import 'package:chom_tu/social/screens/social_screen.dart';
+// import 'package:chom_tu/wardrobe/screens/wardrobe_camera_edit_screen.dart';
+import 'package:chom_tu/wardrobe/screens/wardrobe_camera_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_info_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_screen.dart';
 
@@ -12,6 +14,8 @@ import 'package:page_transition/page_transition.dart';
 
 const routeWardrobe = '/wardrobe';
 const routeWardrobeInfo = '/wardrobe_info';
+const routeWardrobeCamera = '/wardrobe_camera';
+// const routeWardrobeCameraEdit = '/wardrobe_camera_edit';
 const routeOutfit = '/outfit';
 const routeOutfitInfo = '/outfit_info';
 const routeOutfitCreate = '/outfit_create';
@@ -31,6 +35,14 @@ class Routes {
           child: WardrobeInfoScreen(), 
           type: PageTransitionType.rightToLeft
         );
+      case routeWardrobeCamera:
+        return MaterialPageRoute(
+          builder: (_) => WardrobeCameraScreen()
+        );
+      // case routeWardrobeCameraEdit:
+        // return MaterialPageRoute(
+        //   builder: (_) => WardrobeCameraEditScreen()
+        // );
         
       case routeOutfit:
         return PageTransition(

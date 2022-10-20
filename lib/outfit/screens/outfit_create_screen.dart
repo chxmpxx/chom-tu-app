@@ -140,7 +140,7 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
       data: NavigationBarThemeData(
         indicatorColor: kColorsWhite,
         labelTextStyle: MaterialStateProperty.all(
-          TextStyle(fontSize: 14, fontWeight: FontWeight.w500)
+          TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kColorsBlack)
         )
       ),
 
@@ -212,6 +212,13 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InkWell(
+            onTap: () {
+              setState(() {
+                // TODO: create previous item
+                provider.items = [];
+                provider.SelectTab();
+              });
+            },
             child: SvgPicture.asset('assets/o1_false_1.svg', color: kColorsBlack)
           ),
           Text('Top', style: Theme.of(context).textTheme.headline4),

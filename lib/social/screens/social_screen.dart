@@ -9,7 +9,7 @@ class SocialScreen extends StatelessWidget {
     return const Scaffold(
       backgroundColor: kColorsWhite,
       body: Center(
-        child: Text('Coming soon...'),
+        child: Text('Coming soon...', style: TextStyle(color: kColorsBlack),),
       ),
     );
   }

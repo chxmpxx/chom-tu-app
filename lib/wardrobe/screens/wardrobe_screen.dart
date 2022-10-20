@@ -44,7 +44,9 @@ class WardrobeScreen extends StatelessWidget {
         bottom: filterBar(context, filterTab),
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pushNamed(context, '/wardrobe_camera');
+            },
             icon: SvgPicture.asset('assets/a1_camera_1.svg', color: kColorsBlack)
           ),
           IconButton(

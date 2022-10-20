@@ -13,6 +13,7 @@ ThemeData appTheme() {
       subtitle1: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: kColorsBlack),
       subtitle2: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: kColorsWhite),
       bodyText1: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: kColorsBlack),
+      bodyText2: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kColorsWhite),
     ),
 
     iconTheme: IconThemeData(color: kColorsBlack)

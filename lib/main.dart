@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:chom_tu/configs/routes/routes.dart';
 import 'package:chom_tu/configs/themes/style.dart';
 import 'package:chom_tu/outfit/providers/delete_item_provider.dart';
@@ -5,11 +6,15 @@ import 'package:chom_tu/outfit/providers/is_delete_btn_active_provider.dart';
 import 'package:chom_tu/outfit/providers/outfit_create_provider.dart';
 import 'package:chom_tu/outfit/providers/show_delete_btn_provider.dart';
 import 'package:chom_tu/wardrobe/providers/filter_tab_provider.dart';
+import 'package:chom_tu/wardrobe/screens/wardrobe_camera_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarBrightness: Brightness.light,
     statusBarIconBrightness: Brightness.dark,
