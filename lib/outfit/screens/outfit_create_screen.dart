@@ -1,4 +1,4 @@
-import 'package:chom_tu/configs/themes/constants.dart';
+import 'package:chom_tu/configs/themes/colors.dart';
 import 'package:chom_tu/outfit/providers/delete_item_provider.dart';
 import 'package:chom_tu/outfit/providers/is_delete_btn_active_provider.dart';
 import 'package:chom_tu/outfit/providers/outfit_create_provider.dart';

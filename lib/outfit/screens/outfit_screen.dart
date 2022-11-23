@@ -1,4 +1,4 @@
-import 'package:chom_tu/configs/themes/constants.dart';
+import 'package:chom_tu/configs/themes/colors.dart';
 import 'package:chom_tu/widgets/filter_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

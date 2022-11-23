@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:chom_tu/configs/themes/constants.dart';
+import 'package:chom_tu/configs/themes/colors.dart';
+import 'package:chom_tu/wardrobe/providers/edit_tab_provider.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_camera_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 List<CameraDescription>? cameras;
 
@@ -37,6 +39,9 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    var wardrobeProvider = Provider.of<EditTabProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: kColorsBlack,
       appBar: AppBar(
@@ -63,7 +68,7 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: cameraNavigationBar(context),
+      bottomNavigationBar: cameraNavigationBar(context, wardrobeProvider),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -85,7 +90,7 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
     );
   }
 
-  Widget cameraNavigationBar(context) {
+  Widget cameraNavigationBar(context, wardrobeProvider) {
     return Container(
       height: 75,
       width: MediaQuery.of(context).size.width,
@@ -95,7 +100,7 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
         children: [
           InkWell(
             onTap: (){
-              openGallery(context);
+              openGallery(context, wardrobeProvider);
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +113,7 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
           ),
           InkWell(
             onTap: (){
-              takePhoto(context);
+              takePhoto(context, wardrobeProvider);
             },
             child: SvgPicture.asset('assets/b2_shot_1.svg', color: kColorsWhite)
           ),
@@ -133,11 +138,13 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
     );
   }
 
-  openGallery(BuildContext context) async {
+  void openGallery(BuildContext context, wardrobeProvider) async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
       if(pickedFile != null) {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => WardrobeCameraEditScreen(path: pickedFile.path, isGallery: true)));
+        wardrobeProvider.setPath(pickedFile.path);
+        wardrobeProvider.isGallery = true;
+        Navigator.push(context, MaterialPageRoute(builder: (_) => WardrobeCameraEditScreen()));
       } else {
         print('No Image selected');
         Navigator.pushNamed(context, '/wardrobe_camera');
@@ -145,12 +152,14 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
     });
   }
 
-  void takePhoto(context) async {
+  void takePhoto(context, wardrobeProvider) async {
     final path = join((await getTemporaryDirectory()).path, "${DateTime.now()}.png");
     XFile picture = await _cameraController!.takePicture();
     picture.saveTo(path);
 
-    Navigator.push(context, MaterialPageRoute(builder: (_) => WardrobeCameraEditScreen(path: path, isGallery: false)));
+    wardrobeProvider.setPath(path);
+    wardrobeProvider.isGallery = false;
+    Navigator.push(context, MaterialPageRoute(builder: (_) => WardrobeCameraEditScreen()));
   }
 
 }

@@ -45,6 +45,8 @@ dependencies:
   matrix_gesture_detector:
     git: 
       url: https://github.com/chxmpxx/matrix_gesture_detector.git
+  image_cropper: ^3.0.1
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:

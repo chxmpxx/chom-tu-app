@@ -1,4 +1,4 @@
-import 'package:chom_tu/configs/themes/constants.dart';
+import 'package:chom_tu/configs/themes/colors.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
