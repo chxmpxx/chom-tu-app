@@ -30,9 +30,9 @@ class WardrobeEraserScreen extends StatelessWidget {
         elevation: 0,
         toolbarHeight: 60,
         iconTheme: Theme.of(context).iconTheme,
-        backgroundColor: kColorsWhite,
+        backgroundColor: kColorsBlack,
         leading: IconButton(
-          icon: SvgPicture.asset('assets/o1_false_1.svg', color: kColorsBlack),
+          icon: SvgPicture.asset('assets/o1_false_1.svg', color: kColorsWhite),
           onPressed: (){
             wardrobeProvider.setPath(wardrobeProvider.previousPath!);
             Navigator.pop(context);
@@ -43,7 +43,7 @@ class WardrobeEraserScreen extends StatelessWidget {
             onPressed: (){
               Navigator.pop(context);
             },
-            icon: SvgPicture.asset('assets/o1_true_1.svg', color: kColorsBlack)
+            icon: SvgPicture.asset('assets/o1_true_1.svg', color: kColorsWhite)
           )
         ],
       ),

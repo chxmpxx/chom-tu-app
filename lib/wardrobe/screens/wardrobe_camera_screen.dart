@@ -144,7 +144,8 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
       if(pickedFile != null) {
         wardrobeProvider.setPath(pickedFile.path);
         wardrobeProvider.isGallery = true;
-        Navigator.push(context, MaterialPageRoute(builder: (_) => WardrobeCameraEditScreen()));
+        Navigator.pushNamed(context, '/wardrobe_edit_info');
+        // Navigator.push(context, MaterialPageRoute(builder: (_) => WardrobeCameraEditScreen()));
       } else {
         print('No Image selected');
         Navigator.pushNamed(context, '/wardrobe_camera');
@@ -159,7 +160,8 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
 
     wardrobeProvider.setPath(path);
     wardrobeProvider.isGallery = false;
-    Navigator.push(context, MaterialPageRoute(builder: (_) => WardrobeCameraEditScreen()));
+    Navigator.pushNamed(context, '/wardrobe_edit_info');
+    // Navigator.push(context, MaterialPageRoute(builder: (_) => WardrobeCameraEditScreen()));
   }
 
 }

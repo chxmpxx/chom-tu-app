@@ -38,14 +38,10 @@ class WardrobeCameraEditScreen extends StatelessWidget {
           },
         ),
         actions: [
-          IconButton(
-            onPressed: (){},
-            icon: SvgPicture.asset('assets/o1_save_1.svg', color: kColorsBlack)
+          Padding(
+            padding: const EdgeInsets.only(right: 22, top: 22),
+            child: Text('Save', style: Theme.of(context).textTheme.headline5),
           ),
-          IconButton(
-            onPressed: (){},
-            icon: SvgPicture.asset('assets/o1_true_1.svg', color: kColorsBlack)
-          )
         ],
       ),
       bottomNavigationBar: cameraEditNavigationBar(context, wardrobeProvider),
@@ -81,6 +77,19 @@ class WardrobeCameraEditScreen extends StatelessWidget {
         children: [
           InkWell(
             onTap: () async {
+              Navigator.pushNamed(context, '/wardrobe_edit_info');
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset('assets/a3_info_1.svg'),
+                SizedBox(height: 5),
+                Text('  Info  ', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kColorsBlack),),
+              ],
+            ),
+          ),
+          InkWell(
+            onTap: () async {
               cropSquareImage(wardrobeProvider);
             },
             child: Column(
@@ -91,10 +100,6 @@ class WardrobeCameraEditScreen extends StatelessWidget {
                 Text('  Crop  ', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kColorsBlack),),
               ],
             ),
-          ),
-          InkWell(
-            onTap: (){},
-            child: SvgPicture.asset('assets/b3_shot_confirm_1.svg')
           ),
           InkWell(
             onTap: () async {
@@ -132,8 +137,8 @@ class WardrobeCameraEditScreen extends StatelessWidget {
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: ' ',
-          toolbarColor: kColorsWhite,
-          toolbarWidgetColor: kColorsBlack,
+          toolbarColor: kColorsBlack,
+          toolbarWidgetColor: kColorsWhite,
           initAspectRatio: CropAspectRatioPreset.original,
           activeControlsWidgetColor: kColorsRed,
           dimmedLayerColor: kColorsBlack,

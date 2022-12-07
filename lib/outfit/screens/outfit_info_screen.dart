@@ -69,7 +69,7 @@ class OutfitInfoScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text('Detail', style: Theme.of(context).textTheme.headline2),
-                    SizedBox(width: 54),
+                    SizedBox(width: 48),
                     Text('Cafe outfit 🍭🍭', style: Theme.of(context).textTheme.headline5),
                   ],
                 )

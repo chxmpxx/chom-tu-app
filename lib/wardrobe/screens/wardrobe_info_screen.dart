@@ -69,7 +69,7 @@ class WardrobeInfoScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text('Color', style: Theme.of(context).textTheme.headline2),
-                    SizedBox(width: 54),
+                    SizedBox(width: 51),
                     Container(
                       width: 16,
                       height: 16,

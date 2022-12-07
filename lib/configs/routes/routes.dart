@@ -5,8 +5,10 @@ import 'package:chom_tu/outfit/screens/outfit_info_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_screen.dart';
 import 'package:chom_tu/profile/screens/profile_screen.dart';
 import 'package:chom_tu/social/screens/social_screen.dart';
+import 'package:chom_tu/wardrobe/screens/wardrobe_camera_edit_screen.dart';
 // import 'package:chom_tu/wardrobe/screens/wardrobe_camera_edit_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_camera_screen.dart';
+import 'package:chom_tu/wardrobe/screens/wardrobe_edit_info_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_eraser_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_favorite_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_info_screen.dart';
@@ -18,9 +20,10 @@ import 'package:page_transition/page_transition.dart';
 const routeWardrobe = '/wardrobe';
 const routeWardrobeInfo = '/wardrobe_info';
 const routeWardrobeCamera = '/wardrobe_camera';
-// const routeWardrobeCameraEdit = '/wardrobe_camera_edit';
+const routeWardrobeCameraEdit = '/wardrobe_camera_edit';
 const routeWardrobeEraser = '/wardrobe_eraser';
 const routeWardrobeFavorite = '/wardrobe_favorite';
+const routeWardrobeEditInfo = '/wardrobe_edit_info';
 
 const routeOutfit = '/outfit';
 const routeOutfitInfo = '/outfit_info';
@@ -47,10 +50,10 @@ class Routes {
         return MaterialPageRoute(
           builder: (_) => WardrobeCameraScreen()
         );
-      // case routeWardrobeCameraEdit:
-        // return MaterialPageRoute(
-        //   builder: (_) => WardrobeCameraEditScreen()
-        // );
+      case routeWardrobeCameraEdit:
+        return MaterialPageRoute(
+          builder: (_) => WardrobeCameraEditScreen()
+        );
       case routeWardrobeEraser:
         return MaterialPageRoute(
           builder: (_) => WardrobeEraserScreen()
@@ -58,6 +61,11 @@ class Routes {
       case routeWardrobeFavorite:
         return PageTransition(
           child: WardrobeFavoriteScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+      case routeWardrobeEditInfo:
+        return PageTransition(
+          child: WardrobeEditInfoScreen(), 
           type: PageTransitionType.rightToLeft
         );
         
