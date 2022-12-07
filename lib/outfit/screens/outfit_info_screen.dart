@@ -19,7 +19,6 @@ class OutfitInfoScreen extends StatelessWidget {
         elevation: 0,
         toolbarHeight: 60,
         centerTitle: true,
-        title: Text('Outfit', style: Theme.of(context).textTheme.headline1),
         iconTheme: Theme.of(context).iconTheme,
         backgroundColor: kColorsWhite,
         leading: IconButton(
@@ -31,7 +30,7 @@ class OutfitInfoScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: (){},
-            icon: SvgPicture.asset('assets/a3_info_1.svg', color: kColorsBlack)
+            icon: SvgPicture.asset('assets/o1_save_1.svg', color: kColorsBlack)
           ),
           IconButton(
             onPressed: (){},
@@ -39,16 +38,45 @@ class OutfitInfoScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Center(
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: kColorsGrey
+      body: ListView(
+        children: [
+          AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: kColorsGrey
+              ),
             ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 22),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Cute', style: Theme.of(context).textTheme.headline1),
+                    IconButton(
+                      onPressed: (){},
+                      icon: SvgPicture.asset('assets/a1_heart_2.svg', color: kColorsRed)
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24),
+                Row(
+                  children: [
+                    Text('Detail', style: Theme.of(context).textTheme.headline2),
+                    SizedBox(width: 54),
+                    Text('Cafe outfit 🍭🍭', style: Theme.of(context).textTheme.headline5),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
       )
     );
   }
