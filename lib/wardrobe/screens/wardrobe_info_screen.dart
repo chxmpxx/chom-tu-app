@@ -12,7 +12,7 @@ class WardrobeInfoScreen extends StatelessWidget {
       appBar: AppBar(
         shape: Border(
           bottom: BorderSide(
-            color: kColorsGrey2,
+            color: kColorsLightGrey,
             width: kAppbarBorderWidth
           )
         ),
@@ -45,7 +45,7 @@ class WardrobeInfoScreen extends StatelessWidget {
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
-              color: kColorsGrey3
+              color: kColorsGrey
             ),
           ),
         ),

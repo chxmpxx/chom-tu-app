@@ -6,6 +6,6 @@ class ColorBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(height: 24, width: MediaQuery.of(context).size.width, color: kColorsGrey2);
+    return Container(height: 24, width: MediaQuery.of(context).size.width, color: kColorsLightGrey);
   }
 }

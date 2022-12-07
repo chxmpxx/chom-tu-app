@@ -25,7 +25,7 @@ class WardrobeScreen extends StatelessWidget {
       appBar: AppBar(
         shape: Border(
           bottom: BorderSide(
-            color: kColorsGrey2,
+            color: kColorsLightGrey,
             width: kAppbarBorderWidth
           )
         ),
@@ -79,7 +79,7 @@ class WardrobeScreen extends StatelessWidget {
                           child: Container(
                             height: double.infinity,
                             decoration: BoxDecoration(
-                              color: kColorsGrey3
+                              color: kColorsGrey
                             ),
                           ),
                         ),
@@ -150,7 +150,7 @@ class WardrobeScreen extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 34),
-                      child: Text('Category', style: Theme.of(context).textTheme.headline2),
+                      child: Text('Category', style: Theme.of(context).textTheme.subtitle1),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 20),
@@ -169,7 +169,7 @@ class WardrobeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20),
                   child: SvgPicture.asset('assets/a2_top_1.svg', color: kColorsWhite),
                 ),
-                title: Text('Tops', style: Theme.of(context).textTheme.subtitle2),
+                title: Text('Tops', style: Theme.of(context).textTheme.headline4),
                 tileColor: kColorsBlack,
                 onTap: (){
                   // Navigator.pop(context);
@@ -181,7 +181,7 @@ class WardrobeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20),
                   child: SvgPicture.asset('assets/a2_bottom_1.svg', color: kColorsBlack),
                 ),
-                title: Text('Bottoms', style: Theme.of(context).textTheme.subtitle1),
+                title: Text('Bottoms', style: Theme.of(context).textTheme.headline5),
                 onTap: (){
                   // Navigator.pop(context);
                   // Navigator.pushNamed(context, '/');
@@ -192,7 +192,7 @@ class WardrobeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20),
                   child: SvgPicture.asset('assets/a2_set_1.svg', color: kColorsBlack),
                 ),
-                title: Text('Set', style: Theme.of(context).textTheme.subtitle1),
+                title: Text('Set', style: Theme.of(context).textTheme.headline5),
                 onTap: (){
                   // Navigator.pop(context);
                   // Navigator.pushNamed(context, '/');
@@ -203,7 +203,7 @@ class WardrobeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20),
                   child: SvgPicture.asset('assets/a2_shoes_1.svg', color: kColorsBlack),
                 ),
-                title: Text('Shoes', style: Theme.of(context).textTheme.subtitle1),
+                title: Text('Shoes', style: Theme.of(context).textTheme.headline5),
                 onTap: (){
                   // Navigator.pop(context);
                   // Navigator.pushNamed(context, '/');
@@ -214,7 +214,7 @@ class WardrobeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20),
                   child: SvgPicture.asset('assets/a2_bag_1.svg', color: kColorsBlack),
                 ),
-                title: Text('Accessory', style: Theme.of(context).textTheme.subtitle1),
+                title: Text('Accessory', style: Theme.of(context).textTheme.headline5),
                 onTap: (){
                   // Navigator.pop(context);
                   // Navigator.pushNamed(context, '/');

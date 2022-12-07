@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:chom_tu/configs/themes/colors.dart';
-import 'package:chom_tu/wardrobe/providers/edit_tab_provider.dart';
+import 'package:chom_tu/wardrobe/providers/wardrobe_image_provider.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_camera_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -40,7 +40,7 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
   @override
   Widget build(BuildContext context) {
 
-    var wardrobeProvider = Provider.of<EditTabProvider>(context, listen: false);
+    var wardrobeProvider = Provider.of<WardrobeImageProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: kColorsBlack,

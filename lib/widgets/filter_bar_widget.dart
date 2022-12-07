@@ -14,7 +14,7 @@ class FilterBarWidget extends StatelessWidget {
       Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(title, style: Theme.of(context).textTheme.subtitle1),
+          Text(title, style: Theme.of(context).textTheme.headline5),
           SizedBox(width: 5),
           SvgPicture.asset('assets/o4_up_1.svg', color: kColorsBlack),
         ],
@@ -22,9 +22,9 @@ class FilterBarWidget extends StatelessWidget {
     : Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(title, style: Theme.of(context).textTheme.headline3),
+          Text(title, style: Theme.of(context).textTheme.headline6),
           SizedBox(width: 5),
-          SvgPicture.asset('assets/o4_down_1.svg', color: kColorsGrey1),
+          SvgPicture.asset('assets/o4_down_1.svg', color: kColorsDarkGrey),
         ],
       );
   }

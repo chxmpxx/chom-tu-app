@@ -47,7 +47,7 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
             backgroundColor: provider.tabStatus ? kColorsBlack : kColorsWhite,
             appBar: provider.tabStatus ? null : AppBar(
               shape: Border(
-                bottom: BorderSide(color: kColorsGrey2, width: kAppbarBorderWidth)
+                bottom: BorderSide(color: kColorsLightGrey, width: kAppbarBorderWidth)
               ),
               elevation: 0,
               toolbarHeight: 60,
@@ -91,7 +91,7 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: kColorsGrey3
+        color: kColorsGrey
       ),
       child: Consumer<DeleteItemProvider>(
         builder: (_, value, __) {
@@ -146,7 +146,7 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
 
       child: Container(
         decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: kColorsGrey2, width: kAppbarBorderWidth))
+          border: Border(top: BorderSide(color: kColorsLightGrey, width: kAppbarBorderWidth))
         ),
         child: NavigationBar(
           height: 75,
@@ -221,7 +221,7 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
             },
             child: SvgPicture.asset('assets/o1_false_1.svg', color: kColorsBlack)
           ),
-          Text('Top', style: Theme.of(context).textTheme.headline4),
+          Text('Top', style: Theme.of(context).textTheme.headline2),
           InkWell(
             onTap: () {
               setState(() {

@@ -13,7 +13,7 @@ class OutfitScreen extends StatelessWidget {
       appBar: AppBar(
         shape: Border(
           bottom: BorderSide(
-            color: kColorsGrey2,
+            color: kColorsLightGrey,
             width: kAppbarBorderWidth
           )
         ),
@@ -58,7 +58,7 @@ class OutfitScreen extends StatelessWidget {
                         child: Container(
                           height: double.infinity,
                           decoration: BoxDecoration(
-                            color: kColorsGrey3
+                            color: kColorsGrey
                           ),
                         ),
                       ),

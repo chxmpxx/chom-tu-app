@@ -2,8 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:chom_tu/configs/themes/colors.dart';
-import 'package:chom_tu/utils/remove_bg_api.dart';
-import 'package:chom_tu/wardrobe/providers/edit_tab_provider.dart';
+import 'package:chom_tu/wardrobe/providers/wardrobe_image_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -15,14 +14,14 @@ class WardrobeCameraEditScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var wardrobeProvider = Provider.of<EditTabProvider>(context, listen: false);
+    var wardrobeProvider = Provider.of<WardrobeImageProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
         shape: Border(
           bottom: BorderSide(
-            color: kColorsGrey2,
+            color: kColorsLightGrey,
             width: kAppbarBorderWidth
           )
         ),
@@ -51,10 +50,10 @@ class WardrobeCameraEditScreen extends StatelessWidget {
       ),
       bottomNavigationBar: cameraEditNavigationBar(context, wardrobeProvider),
       body: Center(
-        child: Consumer<EditTabProvider>(
+        child: Consumer<WardrobeImageProvider>(
           builder: (_, value, __) {
             return Container(
-              color: kColorsGrey3,
+              color: kColorsGrey,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width,
               child: Image.file(
@@ -72,7 +71,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: kColorsWhite,
-        border: Border(top: BorderSide(color: kColorsGrey2, width: kAppbarBorderWidth))
+        border: Border(top: BorderSide(color: kColorsLightGrey, width: kAppbarBorderWidth))
       ),
       height: 75,
       width: MediaQuery.of(context).size.width,
