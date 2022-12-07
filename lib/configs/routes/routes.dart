@@ -1,5 +1,6 @@
 import 'package:chom_tu/dashboard_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_create_screen.dart';
+import 'package:chom_tu/outfit/screens/outfit_favorite_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_info_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_screen.dart';
 import 'package:chom_tu/profile/screens/profile_screen.dart';
@@ -7,6 +8,7 @@ import 'package:chom_tu/social/screens/social_screen.dart';
 // import 'package:chom_tu/wardrobe/screens/wardrobe_camera_edit_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_camera_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_eraser_screen.dart';
+import 'package:chom_tu/wardrobe/screens/wardrobe_favorite_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_info_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_screen.dart';
 
@@ -18,9 +20,13 @@ const routeWardrobeInfo = '/wardrobe_info';
 const routeWardrobeCamera = '/wardrobe_camera';
 // const routeWardrobeCameraEdit = '/wardrobe_camera_edit';
 const routeWardrobeEraser = '/wardrobe_eraser';
+const routeWardrobeFavorite = '/wardrobe_favorite';
+
 const routeOutfit = '/outfit';
 const routeOutfitInfo = '/outfit_info';
 const routeOutfitCreate = '/outfit_create';
+const routeOutfitFavorite = '/outfit_favorite';
+
 const routeSocial = '/social';
 const routeProfile = '/profile';
 
@@ -49,6 +55,11 @@ class Routes {
         return MaterialPageRoute(
           builder: (_) => WardrobeEraserScreen()
         );
+      case routeWardrobeFavorite:
+        return PageTransition(
+          child: WardrobeFavoriteScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
         
       case routeOutfit:
         return PageTransition(
@@ -63,6 +74,11 @@ class Routes {
       case routeOutfitCreate:
         return PageTransition(
           child: OutfitCreateScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+      case routeOutfitFavorite:
+        return PageTransition(
+          child: OutfitFavoriteScreen(), 
           type: PageTransitionType.rightToLeft
         );
 

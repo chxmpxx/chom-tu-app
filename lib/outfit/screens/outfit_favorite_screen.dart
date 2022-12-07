@@ -3,8 +3,8 @@ import 'package:chom_tu/widgets/filter_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class OutfitScreen extends StatelessWidget {
-  const OutfitScreen({Key? key}) : super(key: key);
+class OutfitFavoriteScreen extends StatelessWidget {
+  const OutfitFavoriteScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,24 +20,16 @@ class OutfitScreen extends StatelessWidget {
         elevation: 0,
         toolbarHeight: 60,
         centerTitle: true,
-        title: Text('Outfit', style: Theme.of(context).textTheme.headline1),
+        title: Text('Favorite', style: Theme.of(context).textTheme.headline1),
         iconTheme: Theme.of(context).iconTheme,
         backgroundColor: kColorsWhite,
         bottom: filterTab(context),
-        actions: [
-          IconButton(
-            onPressed: (){
-              Navigator.pushNamed(context, '/outfit_create');
-            },
-            icon: SvgPicture.asset('assets/a1_add_1.svg', color: kColorsBlack)
-          ),
-          IconButton(
-            onPressed: (){
-              Navigator.pushNamed(context, '/outfit_favorite');
-            },
-            icon: SvgPicture.asset('assets/a1_heart_1.svg', color: kColorsBlack)
-          )
-        ],
+        leading: IconButton(
+          icon: SvgPicture.asset('assets/o3_back_1.svg', color: kColorsBlack),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(0),
@@ -69,7 +61,7 @@ class OutfitScreen extends StatelessWidget {
                         right: -10,
                         child: IconButton(
                           onPressed: (){},
-                          icon: SvgPicture.asset('assets/o2_heart_1.svg')
+                          icon: SvgPicture.asset('assets/o2_heart_2.svg')
                         ),
                       ),
                     ],

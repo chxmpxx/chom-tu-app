@@ -50,7 +50,9 @@ class WardrobeScreen extends StatelessWidget {
             icon: SvgPicture.asset('assets/a1_camera_1.svg', color: kColorsBlack)
           ),
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pushNamed(context, '/wardrobe_favorite');
+            },
             icon: SvgPicture.asset('assets/a1_heart_1.svg', color: kColorsBlack)
           )
         ],
