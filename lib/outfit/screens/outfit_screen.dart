@@ -44,38 +44,38 @@ class OutfitScreen extends StatelessWidget {
         child: Material(
           child: GridView.builder(
             itemCount: 20,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
-                  child: Stack(
-                    children: [
-                      InkWell(
-                        onTap: (){
-                          Navigator.pushNamed(context, '/outfit_info');
-                        },
-                        child: Container(
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                            color: kColorsGrey
-                          ),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
+                child: Stack(
+                  children: [
+                    InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, '/outfit_info');
+                      },
+                      child: Container(
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                          color: kColorsGrey
                         ),
                       ),
-                      Positioned(
-                        top: -10,
-                        right: -10,
-                        child: IconButton(
-                          onPressed: (){},
-                          icon: SvgPicture.asset('assets/o2_heart_1.svg')
-                        ),
+                    ),
+                    Positioned(
+                      top: -10,
+                      right: -10,
+                      child: IconButton(
+                        onPressed: (){},
+                        icon: SvgPicture.asset('assets/o2_heart_1.svg')
                       ),
-                    ],
-                  ),
-                );
-              }
+                    ),
+                  ],
+                ),
+              );
+            }
           ),
         ),
       )
