@@ -24,11 +24,15 @@ class SocialScreen extends StatelessWidget {
         backgroundColor: kColorsWhite,
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pushNamed(context, '/social_post');
+            },
             icon: SvgPicture.asset('assets/a1_add_1.svg', color: kColorsBlack)
           ),
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pushNamed(context, '/social_saved');
+            },
             icon: SvgPicture.asset('assets/a5_bookmark_1.svg', color: kColorsBlack)
           )
         ],

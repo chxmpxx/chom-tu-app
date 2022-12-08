@@ -6,6 +6,9 @@ import 'package:chom_tu/outfit/screens/outfit_screen.dart';
 import 'package:chom_tu/profile/screens/profile_change_password_screen.dart';
 import 'package:chom_tu/profile/screens/profile_edit_screen.dart';
 import 'package:chom_tu/profile/screens/profile_screen.dart';
+import 'package:chom_tu/social/screens/social_post_caption_screen.dart';
+import 'package:chom_tu/social/screens/social_post_screen.dart';
+import 'package:chom_tu/social/screens/social_saved_screen.dart';
 import 'package:chom_tu/social/screens/social_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_camera_edit_screen.dart';
 // import 'package:chom_tu/wardrobe/screens/wardrobe_camera_edit_screen.dart';
@@ -33,6 +36,9 @@ const routeOutfitCreate = '/outfit_create';
 const routeOutfitFavorite = '/outfit_favorite';
 
 const routeSocial = '/social';
+const routeSocialPost = '/social_post';
+const routeSocialPostCaptionScreen = '/social_post_caption';
+const routeSocialSavedScreen = '/social_saved';
 
 const routeProfile = '/profile';
 const routeProfileEdit = '/profile_edit';
@@ -98,6 +104,21 @@ class Routes {
       case routeSocial:
         return PageTransition(
           child: SocialScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+      case routeSocialPost:
+        return PageTransition(
+          child: SocialPostScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+      case routeSocialPostCaptionScreen:
+        return PageTransition(
+          child: SocialPostCaptionScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+      case routeSocialSavedScreen:
+        return PageTransition(
+          child: SocialSavedScreen(), 
           type: PageTransitionType.rightToLeft
         );
 
