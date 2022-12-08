@@ -1,3 +1,5 @@
+import 'package:chom_tu/auth/screen/login_screen.dart';
+import 'package:chom_tu/auth/screen/sign_up_screen.dart';
 import 'package:chom_tu/dashboard_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_create_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_favorite_screen.dart';
@@ -21,6 +23,8 @@ import 'package:chom_tu/wardrobe/screens/wardrobe_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+
+const routeLogin = '/login';
 
 const routeWardrobe = '/wardrobe';
 const routeWardrobeInfo = '/wardrobe_info';
@@ -141,7 +145,7 @@ class Routes {
       // Login
       default:
         return PageTransition(
-          child: DashboardScreen(), 
+          child: SignUpScreen(), 
           type: PageTransitionType.rightToLeft
         );
     }

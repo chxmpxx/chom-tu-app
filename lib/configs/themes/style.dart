@@ -21,6 +21,7 @@ ThemeData appTheme() {
       bodyText2: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: kColorsWhite),
 
       button: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600, color: kColorsWhite),
+      caption: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w400, color: kColorsDarkGrey),
     ),
 
     iconTheme: IconThemeData(color: kColorsBlack)
