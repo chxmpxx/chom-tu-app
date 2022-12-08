@@ -27,7 +27,9 @@ class ProfileScreen extends StatelessWidget {
             icon: SvgPicture.asset('assets/a1_add_1.svg', color: kColorsBlack)
           ),
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pushNamed(context, '/profile_change_password');
+            },
             icon: SvgPicture.asset('assets/a5_setting_1.svg', color: kColorsBlack)
           )
         ],
@@ -45,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
                       height: (MediaQuery.of(context).size.width / 2) - 44,
                       decoration: BoxDecoration(
                         color: kColorsGrey,
-                        borderRadius: BorderRadius.all(Radius.circular(130)),
+                        borderRadius: BorderRadius.all(Radius.circular((MediaQuery.of(context).size.width / 2) - 44)),
                       ),
                     ),
                     SizedBox(width: 22),

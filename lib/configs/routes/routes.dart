@@ -3,6 +3,8 @@ import 'package:chom_tu/outfit/screens/outfit_create_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_favorite_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_info_screen.dart';
 import 'package:chom_tu/outfit/screens/outfit_screen.dart';
+import 'package:chom_tu/profile/screens/profile_change_password_screen.dart';
+import 'package:chom_tu/profile/screens/profile_edit_screen.dart';
 import 'package:chom_tu/profile/screens/profile_screen.dart';
 import 'package:chom_tu/social/screens/social_screen.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_camera_edit_screen.dart';
@@ -31,7 +33,10 @@ const routeOutfitCreate = '/outfit_create';
 const routeOutfitFavorite = '/outfit_favorite';
 
 const routeSocial = '/social';
+
 const routeProfile = '/profile';
+const routeProfileEdit = '/profile_edit';
+const routeProfileChangePassword = '/profile_change_password';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -95,9 +100,20 @@ class Routes {
           child: SocialScreen(), 
           type: PageTransitionType.rightToLeft
         );
+
       case routeProfile:
         return PageTransition(
           child: ProfileScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+      case routeProfileEdit:
+        return PageTransition(
+          child: ProfileEditScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+      case routeProfileChangePassword:
+        return PageTransition(
+          child: ProfileChangePasswordScreen(),
           type: PageTransitionType.rightToLeft
         );
 
