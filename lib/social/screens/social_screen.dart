@@ -11,7 +11,7 @@ class SocialScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
-        shape: Border(
+        shape: const Border(
           bottom: BorderSide(
             color: kColorsLightGrey,
             width: kAppbarBorderWidth
@@ -38,11 +38,11 @@ class SocialScreen extends StatelessWidget {
         ],
       ),
       body: ListView(
-        children: [
+        children: const [
           PostWidget(),
           PostWidget()
         ],
-      ),
+      )
     );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chom_tu/configs/themes/colors.dart';
 import 'package:chom_tu/wardrobe/providers/wardrobe_image_provider.dart';
+import 'package:chom_tu/widgets/text_form_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +14,13 @@ class WardrobeEditInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var wardrobeProvider = Provider.of<WardrobeImageProvider>(context, listen: false);
 
+    final formKey = GlobalKey<FormState>();
+    TextEditingController type = TextEditingController();
+
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
-        shape: Border(
+        shape: const Border(
           bottom: BorderSide(
             color: kColorsLightGrey,
             width: kAppbarBorderWidth
@@ -66,11 +70,11 @@ class WardrobeEditInfoScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Row(
                   children: [
                     Text('Category', style: Theme.of(context).textTheme.headline2),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     Text('Please select category', style: Theme.of(context).textTheme.headline6),
                     Expanded(
                       child: Align(
@@ -80,11 +84,11 @@ class WardrobeEditInfoScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Row(
                   children: [
                     Text('Color', style: Theme.of(context).textTheme.headline2),
-                    SizedBox(width: 51),
+                    const SizedBox(width: 51),
                     Text('Please select color', style: Theme.of(context).textTheme.headline6),
                     Expanded(
                       child: Align(
@@ -94,14 +98,16 @@ class WardrobeEditInfoScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Row(
                   children: [
                     Text('Type', style: Theme.of(context).textTheme.headline2),
-                    SizedBox(width: 54),
-                    Text('Please enter type', style: Theme.of(context).textTheme.headline6),
+                    const SizedBox(width: 54),
+                    Expanded(
+                      child: TextFormFieldWidget(controller: type, hintText: "Please enter type (e.g. Shirt)", validator: "Please enter type")
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           )

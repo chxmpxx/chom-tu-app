@@ -1,4 +1,5 @@
 import 'package:chom_tu/configs/themes/colors.dart';
+import 'package:chom_tu/profile/widgets/setting_bottom_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -28,7 +29,7 @@ class ProfileScreen extends StatelessWidget {
           ),
           IconButton(
             onPressed: (){
-              Navigator.pushNamed(context, '/profile_change_password');
+              settingBottomSheetWidget(context);
             },
             icon: SvgPicture.asset('assets/a5_setting_1.svg', color: kColorsBlack)
           )

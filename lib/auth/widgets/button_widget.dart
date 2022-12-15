@@ -9,18 +9,21 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        height: 34,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          color: kColorsBlack,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: Align(
-          alignment: Alignment.center,
-          child: Text(name, style: Theme.of(context).textTheme.button)
+    return Padding(
+      padding: const EdgeInsets.only(top: 30),
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          height: 34,
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            color: kColorsBlack,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: Align(
+            alignment: Alignment.center,
+            child: Text(name, style: Theme.of(context).textTheme.button)
+          ),
         ),
       ),
     );

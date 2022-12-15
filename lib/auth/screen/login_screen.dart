@@ -1,59 +1,66 @@
 import 'package:chom_tu/auth/widgets/button_widget.dart';
-import 'package:chom_tu/configs/themes/colors.dart';
+import 'package:chom_tu/widgets/text_form_field_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('ChomTu', style: Theme.of(context).textTheme.headline1),
-          SizedBox(height: 45),
-          Padding(
-            padding: const EdgeInsets.all(22),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Username', style: Theme.of(context).textTheme.headline6),
-                SizedBox(height: 24),
-                Row(
-                  children: [
-                    Text('Password', style: Theme.of(context).textTheme.headline6),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: SvgPicture.asset('assets/o7_eye_1.svg', color: kColorsDarkGrey)
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(height: 11),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text('Forgot Your Password?', style: Theme.of(context).textTheme.caption)
-                ),
-                SizedBox(height: 24),
-                ButtonWidget(name: 'Login', onTap: (){}),
-                SizedBox(height: 11),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+    final formKey = GlobalKey<FormState>();
+    TextEditingController username = TextEditingController();
+    TextEditingController password = TextEditingController();
+
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        body: Center(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Center(
+                child: Text('ChomTu', style: Theme.of(context).textTheme.headline1)
+              ),
+              const SizedBox(height: 13),
+              Padding(
+                padding: const EdgeInsets.all(22),
+                child: Form(
+                  key: formKey,
+                  child: Column(
                     children: [
-                      Text('Don\'t have an account?', style: Theme.of(context).textTheme.caption),
-                      Text(' Sign up', style: Theme.of(context).textTheme.subtitle2),
+                      TextFormFieldWidget(controller: username, hintText: "Username", validator: "Please enter username"),
+                      TextFormFieldWidget(controller: password, hintText: "Password", validator: "Please enter password", isPassword: true),
+                      const SizedBox(height: 11),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Text('Forgot your password?', style: Theme.of(context).textTheme.caption)
+                      ),
+                      ButtonWidget(name: 'Login', onTap: (){}),
+                      const SizedBox(height: 11),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text('Don\'t have an account?', style: Theme.of(context).textTheme.caption),
+                            InkWell(
+                              onTap: (){
+                                Navigator.pushNamed(context, '/sign_up');
+                              },
+                              child: Text(' Sign up', style: Theme.of(context).textTheme.subtitle2)
+                            ),
+                          ],
+                        )
+                      ),
                     ],
-                  )
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

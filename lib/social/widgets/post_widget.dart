@@ -1,4 +1,5 @@
 import 'package:chom_tu/configs/themes/colors.dart';
+import 'package:chom_tu/social/widgets/post_bottom_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -19,7 +20,7 @@ class PostWidget extends StatelessWidget {
                   Container(
                     width: 32,
                     height: 32,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: kColorsGrey,
                       borderRadius: BorderRadius.all(Radius.circular(32)),
                     ),
@@ -29,12 +30,17 @@ class PostWidget extends StatelessWidget {
                   Expanded(
                     child: Align(
                       alignment: Alignment.centerRight,
-                      child: SvgPicture.asset('assets/o6_more_1.svg')
+                      child: InkWell(
+                        onTap: (){
+                          postBottomSheetWidget(context);
+                        },
+                        child: SvgPicture.asset('assets/o6_more_1.svg')
+                      )
                     )
                   ),
                 ],
               ),
-              SizedBox(height: 11),
+              const SizedBox(height: 11),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text('My outfit for christmas party 💅💅 ', style: Theme.of(context).textTheme.bodyText1)
@@ -64,7 +70,8 @@ class PostWidget extends StatelessWidget {
         ),
         Container(
           height: 1,
-          child: Expanded(child: Divider(color: kColorsLightGrey))
+          width: MediaQuery.of(context).size.width,
+          color: kColorsLightGrey
         ),
       ],
     );

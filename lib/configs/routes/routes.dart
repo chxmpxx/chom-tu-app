@@ -25,6 +25,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 const routeLogin = '/login';
+const routeSignUp = '/sign_up';
 
 const routeWardrobe = '/wardrobe';
 const routeWardrobeInfo = '/wardrobe_info';
@@ -142,10 +143,16 @@ class Routes {
           type: PageTransitionType.rightToLeft
         );
 
+      case routeSignUp:
+        return PageTransition(
+          child: SignUpScreen(),
+          type: PageTransitionType.rightToLeft
+        );
+
       // Login
       default:
         return PageTransition(
-          child: SignUpScreen(), 
+          child: DashboardScreen(), 
           type: PageTransitionType.rightToLeft
         );
     }
