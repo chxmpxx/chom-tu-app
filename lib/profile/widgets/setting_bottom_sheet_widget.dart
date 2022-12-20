@@ -13,7 +13,6 @@ Future<void> settingBottomSheetWidget(BuildContext context) {
         children: [
           bottomSheetMenuWidget(
             icon: 'assets/a3_edit_1.svg',
-            color: kColorsBlack,
             title: 'Edit Profile',
             onTap: (){},
           ),
@@ -26,7 +25,6 @@ Future<void> settingBottomSheetWidget(BuildContext context) {
           ),
           bottomSheetMenuWidget(
             icon: 'assets/o8_key_1.svg',
-            color: kColorsBlack,
             title: 'Change Password',
             onTap: (){},
           ),
@@ -39,7 +37,6 @@ Future<void> settingBottomSheetWidget(BuildContext context) {
           ),
           bottomSheetMenuWidget(
             icon: 'assets/o8_logout_1.svg',
-            color: kColorsBlack,
             title: 'Log Out',
             onTap: (){},
           ),

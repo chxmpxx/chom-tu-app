@@ -13,7 +13,6 @@ Future<void> postBottomSheetWidget(BuildContext context) {
         children: [
           bottomSheetMenuWidget(
             icon: 'assets/a5_bookmark_1.svg',
-            color: kColorsBlack,
             title: 'Save Post',
             onTap: (){},
           ),
@@ -26,7 +25,6 @@ Future<void> postBottomSheetWidget(BuildContext context) {
           ),
           bottomSheetMenuWidget(
             icon: 'assets/o1_save_1.svg',
-            color: kColorsBlack,
             title: 'Save Image',
             onTap: (){},
           ),
@@ -39,7 +37,6 @@ Future<void> postBottomSheetWidget(BuildContext context) {
           ),
           bottomSheetMenuWidget(
             icon: 'assets/o8_report_1.svg',
-            color: kColorsRed,
             title: 'Repost',
             onTap: (){},
           ),

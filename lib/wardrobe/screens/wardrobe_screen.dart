@@ -1,8 +1,10 @@
 import 'package:chom_tu/configs/themes/colors.dart';
-import 'package:chom_tu/wardrobe/providers/filter_tab_provider.dart';
+import 'package:chom_tu/wardrobe/providers/wardrobe_filter_tab_provider.dart';
+import 'package:chom_tu/wardrobe/widgets/wardrobe_color_filter_tab_widget.dart';
+import 'package:chom_tu/wardrobe/widgets/wardrobe_sort_filter_tab_widget.dart';
+import 'package:chom_tu/wardrobe/widgets/wardrobe_type_filter_tab_widget.dart';
 import 'package:chom_tu/widgets/filter_bar_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
@@ -11,19 +13,17 @@ class WardrobeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    // true: คือเรียกตลอด (เหมือน setState) false: เรียกเฉพาะตอนใช้
-    var filterTab = Provider.of<FilterTabProvider>(context, listen: false);
+    var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: false);
     List<Widget> filterTabContent = [
-      sortFilterTab(),
-      typeFilterTab(),
-      colorFilterTab()
+      wardrobSortFilterTab(context),
+      wardrobeTypeFilterTab(context),
+      wardrobeColorFilterTab(context)
     ];
 
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
-        shape: Border(
+        shape: const Border(
           bottom: BorderSide(
             color: kColorsLightGrey,
             width: kAppbarBorderWidth
@@ -80,7 +80,7 @@ class WardrobeScreen extends StatelessWidget {
                           },
                           child: Container(
                             height: double.infinity,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: kColorsGrey
                             ),
                           ),
@@ -101,15 +101,16 @@ class WardrobeScreen extends StatelessWidget {
             ),
           ),
 
-          Consumer<FilterTabProvider>(
+          Consumer<WardrobeFilterTabProvider>(
             builder: (_, value, __) {
               return filterTab.tabStatus ?
                 Container(
                   height: double.infinity,
                   child: Column(
                     children: [
+                      // Create Filter Area
                       Container(
-                        height: MediaQuery.of(context).size.width * 0.34,
+                        height: filterTab.indexTab == 0 ? MediaQuery.of(context).size.width * 0.28 : MediaQuery.of(context).size.width * 0.47,
                         color: kColorsWhite,
                         child: filterTabContent[filterTab.indexTab],
                       ),
@@ -230,7 +231,7 @@ class WardrobeScreen extends StatelessWidget {
   }
 
   // Create Filter Bar
-  PreferredSize filterBar(context, FilterTabProvider filterTab) {
+  PreferredSize filterBar(context, WardrobeFilterTabProvider filterTab) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(60),
       child: Container(
@@ -240,38 +241,38 @@ class WardrobeScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Consumer<FilterTabProvider>(
+            Consumer<WardrobeFilterTabProvider>(
               builder: (_, value, __) {
                 return Container(
                   child: InkWell(
                     onTap: () {
                       filterTab.filterTab(0);
                     },
-                    child: filterTab.indexTab == 0 && filterTab.tabStatus == true ? FilterBarWidget(title: 'Sort', status: true) : FilterBarWidget(title: 'Sort', status: false)
+                    child: filterTab.indexTab == 0 && filterTab.tabStatus == true ? const FilterBarWidget(title: 'Sort', status: true) : const FilterBarWidget(title: 'Sort', status: false)
                   ),
                 );
               }
             ),
-            Consumer<FilterTabProvider>(
+            Consumer<WardrobeFilterTabProvider>(
               builder: (_, value, __) {
                 return Container(
                   child: InkWell(
                     onTap: () {
                       filterTab.filterTab(1);
                     },
-                    child: filterTab.indexTab == 1 && filterTab.tabStatus == true ? FilterBarWidget(title: 'Type', status: true) : FilterBarWidget(title: 'Type', status: false)
+                    child: filterTab.indexTab == 1 && filterTab.tabStatus == true ? const FilterBarWidget(title: 'Type', status: true) : const FilterBarWidget(title: 'Type', status: false)
                   ),
                 );
               }
             ),
-            Consumer<FilterTabProvider>(
+            Consumer<WardrobeFilterTabProvider>(
               builder: (_, value, __) {
                 return Container(
                   child: InkWell(
                     onTap: () {
                       filterTab.filterTab(2);
                     },
-                    child: filterTab.indexTab == 2 && filterTab.tabStatus == true ? FilterBarWidget(title: 'Color', status: true) : FilterBarWidget(title: 'Color', status: false)
+                    child: filterTab.indexTab == 2 && filterTab.tabStatus == true ? const FilterBarWidget(title: 'Color', status: true) : const FilterBarWidget(title: 'Color', status: false)
                   ),
                 );
               }
@@ -281,17 +282,4 @@ class WardrobeScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget sortFilterTab() {
-    return Center(child: Text('Sort'));
-  }
-
-  Widget typeFilterTab() {
-    return Center(child: Text('Type'));
-  }
-
-  Widget colorFilterTab() {
-    return Center(child: Text('Color'));
-  }
-
 }

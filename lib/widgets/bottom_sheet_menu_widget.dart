@@ -4,10 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class bottomSheetMenuWidget extends StatelessWidget {
   String icon;
-  Color color;
   String title;
   void Function()? onTap;
-  bottomSheetMenuWidget({Key? key, required this.icon, required this.color, required this.title, required this.onTap}) : super(key: key);
+  bottomSheetMenuWidget({Key? key, required this.icon, required this.title, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class bottomSheetMenuWidget extends StatelessWidget {
           children: [
             SvgPicture.asset(icon),
             const SizedBox(width: 22),
-            Text(title, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600, color: color)),
+            Text(title, style: Theme.of(context).textTheme.headline2),
           ],
         ),
       ),
