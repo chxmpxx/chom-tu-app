@@ -23,18 +23,18 @@ Widget wardrobeTypeFilterTab(context) {
                     ...List.generate(types.length, (index) {
                         return InkWell(
                           onTap: (){
-                            if(filterTab.type == types[index]) {
-                              filterTab.selectType('None');
+                            if(filterTab.types.contains(types[index])) {
+                              filterTab.removeTypes(types[index]);
                             } else {
-                              filterTab.selectType(types[index]);   
-                            }          
+                              filterTab.addTypes(types[index]);
+                            }
                           },
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                              border: filterTab.type == types[index] ? Border.all(color: kColorsBlack) : Border.all(color: kColorsLightGrey)
+                              border: filterTab.types.contains(types[index]) ? Border.all(color: kColorsBlack) : Border.all(color: kColorsLightGrey)
                             ),
-                            child: Text(types[index], style: filterTab.type == types[index] ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
+                            child: Text(types[index], style: filterTab.types.contains(types[index]) ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
                           ),
                         );
                       }
@@ -58,7 +58,7 @@ Widget wardrobeTypeFilterTab(context) {
             color: kColorsWhite,
             child: InkWell(
               onTap: (){
-                filterTab.selectType('None');
+                filterTab.removeAllTypes();
               },
               child: SvgPicture.asset('assets/o9_bin_1.svg')
             ),

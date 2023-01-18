@@ -25,16 +25,16 @@ Widget wardrobeColorFilterTab(context) {
                     ...List.generate(colors.length, (index) {
                         return InkWell(
                           onTap: (){
-                            if(filterTab.color == colors[index]) {
-                              filterTab.selectColor('None');
+                            if(filterTab.colors.contains(colors[index])) {
+                              filterTab.removeColors(colors[index]);
                             } else {
-                              filterTab.selectColor(colors[index]);   
-                            }          
+                              filterTab.addColors(colors[index]);
+                            }
                           },
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                              border: filterTab.color == colors[index] ? Border.all(color: kColorsBlack) : Border.all(color: kColorsLightGrey)
+                              border: filterTab.colors.contains(colors[index]) ? Border.all(color: kColorsBlack) : Border.all(color: kColorsLightGrey)
                             ),
                             child: Wrap(
                               children: [
@@ -47,7 +47,7 @@ Widget wardrobeColorFilterTab(context) {
                                   ),
                                 ),
                                 const SizedBox(width: 5),
-                                Text(colors[index], style: filterTab.color == colors[index] ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
+                                Text(colors[index], style: filterTab.colors.contains(colors[index]) ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
                               ],
                             ),
                           ),
@@ -56,22 +56,22 @@ Widget wardrobeColorFilterTab(context) {
                     ),
                     InkWell(
                       onTap: (){
-                        if(filterTab.color == 'Multi') {
-                          filterTab.selectColor('None');
+                        if(filterTab.colors.contains('Multi')) {
+                          filterTab.removeColors('Multi');
                         } else {
-                          filterTab.selectColor('Multi');
+                          filterTab.addColors('Multi');
                         }
                       },
                       child: Container(
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                          border: filterTab.color == 'Multi' ? Border.all(color: kColorsBlack) : Border.all(color: kColorsLightGrey)
+                          border: filterTab.colors.contains('Multi') ? Border.all(color: kColorsBlack) : Border.all(color: kColorsLightGrey)
                         ),
                         child: Wrap(
                           children: [
                             SvgPicture.asset('assets/o9_multi_1.svg'),
                             const SizedBox(width: 5),
-                            Text('Multi', style: filterTab.color == 'Multi' ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
+                            Text('Multi', style: filterTab.colors.contains('Multi') ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
                           ],
                         ),
                       ),
@@ -95,7 +95,7 @@ Widget wardrobeColorFilterTab(context) {
             color: kColorsWhite,
             child: InkWell(
               onTap: (){
-                filterTab.selectColor('None');
+                filterTab.removeAllColors();
               },
               child: SvgPicture.asset('assets/o9_bin_1.svg')
             ),
