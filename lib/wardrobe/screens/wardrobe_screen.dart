@@ -1,5 +1,6 @@
 import 'package:chom_tu/configs/themes/colors.dart';
 import 'package:chom_tu/wardrobe/providers/wardrobe_filter_tab_provider.dart';
+import 'package:chom_tu/wardrobe/widgets/wardrobe_category_widget.dart';
 import 'package:chom_tu/wardrobe/widgets/wardrobe_color_filter_tab_widget.dart';
 import 'package:chom_tu/wardrobe/widgets/wardrobe_sort_filter_tab_widget.dart';
 import 'package:chom_tu/wardrobe/widgets/wardrobe_type_filter_tab_widget.dart';
@@ -167,62 +168,7 @@ class WardrobeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              ListTile(
-                leading: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: SvgPicture.asset('assets/a2_top_1.svg', color: kColorsWhite),
-                ),
-                title: Text('Tops', style: Theme.of(context).textTheme.headline4),
-                tileColor: kColorsBlack,
-                onTap: (){
-                  // Navigator.pop(context);
-                  // Navigator.pushNamed(context, '/');
-                },
-              ),
-              ListTile(
-                leading: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: SvgPicture.asset('assets/a2_bottom_1.svg', color: kColorsBlack),
-                ),
-                title: Text('Bottoms', style: Theme.of(context).textTheme.headline5),
-                onTap: (){
-                  // Navigator.pop(context);
-                  // Navigator.pushNamed(context, '/');
-                },
-              ),
-              ListTile(
-                leading: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: SvgPicture.asset('assets/a2_set_1.svg', color: kColorsBlack),
-                ),
-                title: Text('Set', style: Theme.of(context).textTheme.headline5),
-                onTap: (){
-                  // Navigator.pop(context);
-                  // Navigator.pushNamed(context, '/');
-                },
-              ),
-              ListTile(
-                leading: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: SvgPicture.asset('assets/a2_shoes_1.svg', color: kColorsBlack),
-                ),
-                title: Text('Shoes', style: Theme.of(context).textTheme.headline5),
-                onTap: (){
-                  // Navigator.pop(context);
-                  // Navigator.pushNamed(context, '/');
-                },
-              ),
-              ListTile(
-                leading: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: SvgPicture.asset('assets/a2_bag_1.svg', color: kColorsBlack),
-                ),
-                title: Text('Accessory', style: Theme.of(context).textTheme.headline5),
-                onTap: (){
-                  // Navigator.pop(context);
-                  // Navigator.pushNamed(context, '/');
-                },
-              ),
+              const WardrobeCategoryWidget()
             ],
           ),
         ),
