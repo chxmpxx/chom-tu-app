@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:chom_tu/configs/themes/colors.dart';
-import 'package:chom_tu/wardrobe/providers/wardrobe_image_provider.dart';
-import 'package:chom_tu/wardrobe/screens/wardrobe_camera_edit_screen.dart';
+import 'package:chom_tu/wardrobe/providers/wardrobe_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +13,7 @@ import 'package:provider/provider.dart';
 List<CameraDescription>? cameras;
 
 class WardrobeCameraScreen extends StatefulWidget {
-  WardrobeCameraScreen({Key? key}) : super(key: key);
+  const WardrobeCameraScreen({Key? key}) : super(key: key);
 
   @override
   State<WardrobeCameraScreen> createState() => _WardrobeCameraScreenState();
@@ -40,7 +39,7 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
   @override
   Widget build(BuildContext context) {
 
-    var wardrobeProvider = Provider.of<WardrobeImageProvider>(context, listen: false);
+    var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: kColorsBlack,
@@ -70,7 +69,7 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
       ),
       bottomNavigationBar: cameraNavigationBar(context, wardrobeProvider),
       body: Center(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.width,
           child: FutureBuilder(
@@ -79,7 +78,7 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
               if(snapshot.connectionState == ConnectionState.done) {
                 return CameraPreview(_cameraController!);
               } else {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
@@ -106,7 +105,7 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset('assets/b2_gallery_1.svg', color: kColorsWhite),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text('Gallery', style: Theme.of(context).textTheme.bodyText2),
               ],
             ),
@@ -128,7 +127,7 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 flash ? SvgPicture.asset('assets/b2_flash_2.svg', color: kColorsWhite) : SvgPicture.asset('assets/b2_flash_1.svg', color: kColorsWhite),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text('Flash', style: Theme.of(context).textTheme.bodyText2),
               ],
             ),

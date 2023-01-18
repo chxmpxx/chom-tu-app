@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const Color kColorsLightGrey = Color.fromARGB(255, 239, 239, 239);
-const Color kColorsGrey = Color.fromARGB(255, 220, 220, 220);
+const Color kColorsLightGrey = Color(0xffEFEFEF);
+const Color kColorsGrey = Color(0xffDCDCDC);
 
 const Color kColorsBrown = Color(0xff9F6869);
 const Color kColorsYellow = Color(0xffFAF238);
@@ -14,6 +14,6 @@ const Color kColorsRed = Color.fromARGB(255, 250, 56, 62);
 const Color kColorsWhite = Colors.white;
 const Color kColorsCream = Color(0xffFFFDEC);
 const Color kColorsBlack = Color.fromARGB(255, 38, 38, 38);
-const Color kColorsDarkGrey = Color.fromARGB(255, 142, 142, 142);
+const Color kColorsDarkGrey = Color(0xff8E8E8E);
 
 const double kAppbarBorderWidth = 1;

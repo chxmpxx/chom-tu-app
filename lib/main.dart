@@ -6,7 +6,7 @@ import 'package:chom_tu/outfit/providers/is_delete_btn_active_provider.dart';
 import 'package:chom_tu/outfit/providers/outfit_create_provider.dart';
 import 'package:chom_tu/outfit/providers/outfit_filter_tab_provider.dart';
 import 'package:chom_tu/outfit/providers/show_delete_btn_provider.dart';
-import 'package:chom_tu/wardrobe/providers/wardrobe_image_provider.dart';
+import 'package:chom_tu/wardrobe/providers/wardrobe_provider.dart';
 import 'package:chom_tu/wardrobe/providers/wardrobe_filter_tab_provider.dart';
 import 'package:chom_tu/wardrobe/screens/wardrobe_camera_screen.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ShowDeleteBtnProvider()),
         ChangeNotifierProvider(create: (context) => IsDeleteBtnActiveProvider()),
         ChangeNotifierProvider(create: (context) => DeleteItemProvider()),
-        ChangeNotifierProvider(create: (context) => WardrobeImageProvider()),
+        ChangeNotifierProvider(create: (context) => WardrobeProvider()),
         ChangeNotifierProvider(create: (context) => OutfitFilterTabProvider()),
       ],
       child: MaterialApp(

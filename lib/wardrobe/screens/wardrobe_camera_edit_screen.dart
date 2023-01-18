@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:chom_tu/configs/themes/colors.dart';
-import 'package:chom_tu/wardrobe/providers/wardrobe_image_provider.dart';
+import 'package:chom_tu/wardrobe/providers/wardrobe_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -10,16 +10,16 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class WardrobeCameraEditScreen extends StatelessWidget {
-  WardrobeCameraEditScreen({Key? key}) : super(key: key);
+  const WardrobeCameraEditScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var wardrobeProvider = Provider.of<WardrobeImageProvider>(context, listen: false);
+    var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
-        shape: Border(
+        shape: const Border(
           bottom: BorderSide(
             color: kColorsLightGrey,
             width: kAppbarBorderWidth
@@ -46,7 +46,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
       ),
       bottomNavigationBar: cameraEditNavigationBar(context, wardrobeProvider),
       body: Center(
-        child: Consumer<WardrobeImageProvider>(
+        child: Consumer<WardrobeProvider>(
           builder: (_, value, __) {
             return Container(
               color: kColorsGrey,
@@ -65,7 +65,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
 
   Widget cameraEditNavigationBar(context, wardrobeProvider) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: kColorsWhite,
         border: Border(top: BorderSide(color: kColorsLightGrey, width: kAppbarBorderWidth))
       ),
@@ -83,8 +83,8 @@ class WardrobeCameraEditScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset('assets/a3_info_1.svg'),
-                SizedBox(height: 5),
-                Text('  Info  ', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kColorsBlack),),
+                const SizedBox(height: 5),
+                const Text('  Info  ', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kColorsBlack),),
               ],
             ),
           ),
@@ -96,8 +96,8 @@ class WardrobeCameraEditScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset('assets/b3_crop_1.svg'),
-                SizedBox(height: 5),
-                Text('  Crop  ', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kColorsBlack),),
+                const SizedBox(height: 5),
+                const Text('  Crop  ', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kColorsBlack),),
               ],
             ),
           ),
@@ -109,8 +109,8 @@ class WardrobeCameraEditScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset('assets/b3_eraser_1.svg', color: kColorsBlack),
-                SizedBox(height: 5),
-                Text('Eraser', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kColorsBlack),),
+                const SizedBox(height: 5),
+                const Text('Eraser', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: kColorsBlack),),
               ],
             ),
           ),
@@ -119,11 +119,10 @@ class WardrobeCameraEditScreen extends StatelessWidget {
     );
   }
 
-  Future<String> createFileFromString(Uint8List ImageRemoveBg) async {
-    Uint8List bytes = ImageRemoveBg;
+  Future<String> createFileFromString(Uint8List imageRemoveBg) async {
+    Uint8List bytes = imageRemoveBg;
     String dir = (await getApplicationDocumentsDirectory()).path;
-    File file = File(
-      "$dir/" + DateTime.now().millisecondsSinceEpoch.toString() + ".png");
+    File file = File("$dir/${DateTime.now().millisecondsSinceEpoch}.png");
     await file.writeAsBytes(bytes);
     return file.path;
   }
@@ -131,7 +130,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
   Future<void> cropSquareImage(wardrobeProvider) async {
     CroppedFile? cropImage = await ImageCropper().cropImage(
       sourcePath: wardrobeProvider.currentPath,
-      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
       aspectRatioPresets: [CropAspectRatioPreset.square],
       compressFormat: ImageCompressFormat.png,
       uiSettings: [

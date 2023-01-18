@@ -10,7 +10,7 @@ class WardrobeInfoScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
-        shape: Border(
+        shape: const Border(
           bottom: BorderSide(
             color: kColorsLightGrey,
             width: kAppbarBorderWidth
@@ -44,7 +44,7 @@ class WardrobeInfoScreen extends StatelessWidget {
             aspectRatio: 1,
             child: Container(
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: kColorsGrey
               ),
             ),
@@ -54,7 +54,7 @@ class WardrobeInfoScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -65,27 +65,27 @@ class WardrobeInfoScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Row(
                   children: [
                     Text('Color', style: Theme.of(context).textTheme.headline2),
-                    SizedBox(width: 51),
+                    const SizedBox(width: 51),
                     Container(
                       width: 16,
                       height: 16,
                       decoration: BoxDecoration(
                         color: Colors.purple[400],
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                        borderRadius: const BorderRadius.all(Radius.circular(16)),
                       ),
                     ),
                     Text('  Purple', style: Theme.of(context).textTheme.headline5),
                   ],
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Row(
                   children: [
                     Text('Type', style: Theme.of(context).textTheme.headline2),
-                    SizedBox(width: 54),
+                    const SizedBox(width: 54),
                     Text('Camisole', style: Theme.of(context).textTheme.headline5),
                   ],
                 )

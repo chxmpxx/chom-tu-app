@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:chom_tu/configs/themes/colors.dart';
 import 'package:chom_tu/utils/remove_bg_api.dart';
-import 'package:chom_tu/wardrobe/providers/wardrobe_image_provider.dart';
+import 'package:chom_tu/wardrobe/providers/wardrobe_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +13,7 @@ class WardrobeEraserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var wardrobeProvider = Provider.of<WardrobeImageProvider>(context, listen: false);
+    var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
     String imagePath;
     bool waitImage = true;
 
@@ -48,9 +48,9 @@ class WardrobeEraserScreen extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Consumer<WardrobeImageProvider>(
+        child: Consumer<WardrobeProvider>(
           builder: (_, value, __) {
-            return waitImage ? CircularProgressIndicator()
+            return waitImage ? const CircularProgressIndicator()
             : Container(
               color: kColorsGrey,
               width: MediaQuery.of(context).size.width,

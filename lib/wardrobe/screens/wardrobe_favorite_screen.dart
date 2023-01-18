@@ -11,7 +11,7 @@ class WardrobeFavoriteScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
-        shape: Border(
+        shape: const Border(
           bottom: BorderSide(
             color: kColorsLightGrey,
             width: kAppbarBorderWidth
@@ -36,7 +36,7 @@ class WardrobeFavoriteScreen extends StatelessWidget {
         child: Material(
           child: GridView.builder(
             itemCount: 20,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
               childAspectRatio: 1
             ),
@@ -51,7 +51,7 @@ class WardrobeFavoriteScreen extends StatelessWidget {
                       },
                       child: Container(
                         height: double.infinity,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: kColorsGrey
                         ),
                       ),

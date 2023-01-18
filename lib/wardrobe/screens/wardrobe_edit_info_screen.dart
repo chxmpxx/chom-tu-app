@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:chom_tu/configs/themes/colors.dart';
-import 'package:chom_tu/wardrobe/providers/wardrobe_image_provider.dart';
-import 'package:chom_tu/widgets/text_form_field_widget.dart';
+import 'package:chom_tu/wardrobe/providers/wardrobe_provider.dart';
+import 'package:chom_tu/wardrobe/widgets/wardrobe_circle_btn_widget.dart';
+import 'package:chom_tu/wardrobe/widgets/wardrobe_drop_down_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -12,10 +13,7 @@ class WardrobeEditInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var wardrobeProvider = Provider.of<WardrobeImageProvider>(context, listen: false);
-
-    final formKey = GlobalKey<FormState>();
-    TextEditingController type = TextEditingController();
+    var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: kColorsWhite,
@@ -52,7 +50,7 @@ class WardrobeEditInfoScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Consumer<WardrobeImageProvider>(
+          Consumer<WardrobeProvider>(
             builder: (_, value, __) {
               return Container(
                 color: kColorsGrey,
@@ -67,49 +65,32 @@ class WardrobeEditInfoScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 24),
-                Row(
+            child: Consumer<WardrobeProvider>(
+              builder: (_, value, __) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('Category', style: Theme.of(context).textTheme.headline2),
-                    const SizedBox(width: 20),
-                    Text('Please select category', style: Theme.of(context).textTheme.headline6),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: SvgPicture.asset('assets/o4_down_1.svg', color: kColorsBlack)
-                      )
-                    ),
+                    WardrobeDropDownField(list: const ['Top', 'B', 'C'], name: 'Category', value: wardrobeProvider.category),
+                    wardrobeProvider.category == 'B' ? Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            const SizedBox(width: 93),
+                            Expanded(
+                              child: WardrobeCircleBtnWidget(list: const ['Skirts', 'Shorts', 'Trousers'], value: wardrobeProvider.subCategory)
+                            )
+                          ],
+                        ),
+                      ],
+                    ) : Container(),
+                    WardrobeDropDownField(list: const ['Red', 'B', 'C'], name: 'Color', value: wardrobeProvider.color),
+                    WardrobeDropDownField(list: const ['Vest', 'B', 'C'], name: 'Type', value: wardrobeProvider.type),
+                    const SizedBox(height: 10)
                   ],
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Text('Color', style: Theme.of(context).textTheme.headline2),
-                    const SizedBox(width: 51),
-                    Text('Please select color', style: Theme.of(context).textTheme.headline6),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: SvgPicture.asset('assets/o4_down_1.svg', color: kColorsBlack)
-                      )
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Text('Type', style: Theme.of(context).textTheme.headline2),
-                    const SizedBox(width: 54),
-                    Expanded(
-                      child: TextFormFieldWidget(controller: type, hintText: "Please enter type (e.g. Shirt)", validator: "Please enter type")
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                );
+              }
+            )
           )
         ],
       )

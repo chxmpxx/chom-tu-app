@@ -65,7 +65,7 @@ class WardrobeScreen extends StatelessWidget {
             child: Material(
               child: GridView.builder(
                 itemCount: 20,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   childAspectRatio: 1
                 ),
