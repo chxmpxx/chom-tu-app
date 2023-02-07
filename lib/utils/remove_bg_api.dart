@@ -20,11 +20,11 @@ class ApiClient {
     }
   }
 
-  Future<String> createFileFromString(Uint8List ImageRemoveBg) async {
-    Uint8List bytes = ImageRemoveBg;
+  Future<String> createFileFromString(Uint8List imageRemoveBg) async {
+    Uint8List bytes = imageRemoveBg;
     String dir = (await getApplicationDocumentsDirectory()).path;
-    File file = File(
-      "$dir/" + DateTime.now().millisecondsSinceEpoch.toString() + ".png");
+    File file = File("$dir/${DateTime.now().millisecondsSinceEpoch}.png");
+    // File file = File("$dir/" + DateTime.now().millisecondsSinceEpoch.toString() + ".png");
     await file.writeAsBytes(bytes);
     return file.path;
   }
