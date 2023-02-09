@@ -10,8 +10,8 @@ class WardrobeFilterTabProvider with ChangeNotifier {
   bool tabStatus = false;
   int indexTab = -1;
   String category = 'Top';
-  List<String> colors = ['None'];
   String sort = 'Newest';
+  List<String> colors = ['None'];
   List<String> types = ['None'];
 
   filterTab(int index) {
@@ -61,6 +61,21 @@ class WardrobeFilterTabProvider with ChangeNotifier {
 
   selectSort(String value) {
     sort = value;
+    notifyListeners();
+  }
+
+  removeAllFilterTab() {
+    sort = 'Newest';
+    colors = ['None'];
+    types = ['None'];
+    notifyListeners();
+  }
+
+  removeAll() {
+    category = 'Top';
+    sort = 'Newest';
+    colors = ['None'];
+    types = ['None'];
     notifyListeners();
   }
 

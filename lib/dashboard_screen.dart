@@ -2,10 +2,12 @@ import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_screen.dart';
 import 'package:chom_tu/features/profile/screens/profile_screen.dart';
 import 'package:chom_tu/features/social/screens/social_screen.dart';
+import 'package:chom_tu/features/wardrobe/providers/wardrobe_filter_tab_provider.dart';
 import 'package:chom_tu/features/wardrobe/screens/wardrobe_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -27,6 +29,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var wardrobeFilterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: true);
+
     return Scaffold(
       body: screens[_currentIndex],
       bottomNavigationBar: NavigationBarTheme(
@@ -44,6 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           selectedIndex: _currentIndex,
           onDestinationSelected: (index) {
             setState(() {
+              wardrobeFilterTab.removeAll();
               _currentIndex = index;
             });
           },

@@ -1,0 +1,7 @@
+List<String> topTypes = ['Bardot', 'Camisole', 'Cardigans', 'Coat', 'Crop', 'Hoodie', 'Jacket', 'Polo', 'Sleeveless', 'Suit Shirt', 'Sweater', 'Transparent Top', 'T Shirt', 'Tube Top', 'Tunics', 'Turtleneck', 'Vest', 'Waistcoat', 'Wrap Top'];
+  List<String> bottomShortsTypes = ['Biker Shorts', 'Cargo', 'Harem', 'Leather', 'Skinny', 'Skort', 'Straight Lag', 'Track Shorts', 'Wide Leg'];
+  List<String> bottomTrousersTypes = ['Baggy', 'Cargo', 'Flare Leg', 'Harem', 'Jogger', 'Leather', 'Legging', 'Skinny', 'Straight Lag', 'Wide Leg'];
+  List<String> bottomSkirtsTypes = ['A Line', 'Asymmetrical', 'Balloon', 'Denim', 'Draped', 'Godet', 'Gypsy', 'Layered', 'Leather', 'Mermaid', 'Pencil', 'Pleated', 'Slit', 'Tulip', 'Tulle', 'Wrap'];
+  List<String> setTypes = ['Bathrobes', 'Beachwear', 'Bodysuit', 'Dungaree', 'Jumpsuits', 'Maxi Dress', 'Mini Dress', 'Pinafore', 'Playsuits', 'Pyjamas'];
+  List<String> shoesTypes = ['Ballerinas', 'Boots', 'Crocs', 'Espadrilles', 'Flip Flops', 'Formal', 'Mary Jane', 'Mules', 'Pumps', 'Sandals', 'Slippers', 'Sneakers'];
+  List<String> accessoryTypes = ['Bag', 'Belt', 'Bracelets', 'Brooches', 'Cufflinks', 'Earrings', 'Glasses', 'Gloves', 'Hat', 'Headband', 'Necklaces', 'Ring', 'Scarf', 'Sock', 'Stockings', 'Tie', 'Watch'];
