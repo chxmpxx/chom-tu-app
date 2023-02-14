@@ -1,4 +1,5 @@
 // import 'package:chom_tu/features/auth/screen/login_screen.dart';
+import 'package:chom_tu/features/admin/screen/admin_user_screen.dart';
 import 'package:chom_tu/features/auth/screen/sign_up_screen.dart';
 import 'package:chom_tu/dashboard_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_create_screen.dart';
@@ -48,6 +49,8 @@ const routeSocialSavedScreen = '/social_saved';
 const routeProfile = '/profile';
 const routeProfileEdit = '/profile_edit';
 const routeProfileChangePassword = '/profile_change_password';
+
+const routeAdminUser = '/admin_user';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -152,7 +155,7 @@ class Routes {
       // Login
       default:
         return PageTransition(
-          child: const DashboardScreen(), 
+          child: const AdminUserScreen(),
           type: PageTransitionType.rightToLeft
         );
     }

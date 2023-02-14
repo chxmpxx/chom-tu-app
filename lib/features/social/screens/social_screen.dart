@@ -31,7 +31,7 @@ class SocialScreen extends StatelessWidget {
           ),
           IconButton(
             onPressed: (){},
-            icon: SvgPicture.asset('assets/icons/a5_seach.svg')
+            icon: SvgPicture.asset('assets/icons/a5_seach_1.svg')
           ),
           IconButton(
             onPressed: (){

@@ -14,8 +14,6 @@ class WardrobeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: true);
-
-    print(filterTab.types);
     
     List<Widget> filterTabContent = [
       wardrobSortFilterTab(context),

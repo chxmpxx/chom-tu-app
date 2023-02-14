@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:chom_tu/features/admin/providers/admin_filter_tab_provider.dart';
 import 'package:chom_tu/routes/routes.dart';
 import 'package:chom_tu/constants/themes/style.dart';
 import 'package:chom_tu/features/outfit/providers/delete_item_provider.dart';
@@ -34,13 +35,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => WardrobeProvider()),
         ChangeNotifierProvider(create: (context) => WardrobeFilterTabProvider()),
+
         ChangeNotifierProvider(create: (context) => OutfitCreateProvider()),
         ChangeNotifierProvider(create: (context) => ShowDeleteBtnProvider()),
         ChangeNotifierProvider(create: (context) => IsDeleteBtnActiveProvider()),
         ChangeNotifierProvider(create: (context) => DeleteItemProvider()),
-        ChangeNotifierProvider(create: (context) => WardrobeProvider()),
         ChangeNotifierProvider(create: (context) => OutfitFilterTabProvider()),
+
+        ChangeNotifierProvider(create: (context) => AdminFilterTabProvider()),
       ],
       child: MaterialApp(
         theme: appTheme(),

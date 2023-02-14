@@ -20,8 +20,8 @@ class WardrobeFilterTabProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  setCategory(String data) {
-    category = data;
+  setCategory(String value) {
+    category = value;
     notifyListeners();
   }
 
