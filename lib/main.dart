@@ -1,5 +1,7 @@
 import 'package:camera/camera.dart';
-import 'package:chom_tu/features/admin/providers/admin_filter_tab_provider.dart';
+import 'package:chom_tu/features/admin/providers/admin_controller.dart';
+import 'package:chom_tu/features/admin/providers/admin_report_filter_tab_provider.dart';
+import 'package:chom_tu/features/admin/providers/admin_user_filter_tab_provider.dart';
 import 'package:chom_tu/routes/routes.dart';
 import 'package:chom_tu/constants/themes/style.dart';
 import 'package:chom_tu/features/outfit/providers/delete_item_provider.dart';
@@ -44,7 +46,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => DeleteItemProvider()),
         ChangeNotifierProvider(create: (context) => OutfitFilterTabProvider()),
 
-        ChangeNotifierProvider(create: (context) => AdminFilterTabProvider()),
+        ChangeNotifierProvider(create: (context) => AdminUserFilterTabProvider()),
+        ChangeNotifierProvider(create: (context) => AdminReportFilterTabProvider()),
+        ChangeNotifierProvider(create: (context) => AdminControllerProvider()),
       ],
       child: MaterialApp(
         theme: appTheme(),

@@ -1,4 +1,5 @@
 // import 'package:chom_tu/features/auth/screen/login_screen.dart';
+import 'package:chom_tu/features/admin/screen/admin_report_screen.dart';
 import 'package:chom_tu/features/admin/screen/admin_user_screen.dart';
 import 'package:chom_tu/features/auth/screen/sign_up_screen.dart';
 import 'package:chom_tu/dashboard_screen.dart';
@@ -43,14 +44,15 @@ const routeOutfitFavorite = '/outfit_favorite';
 
 const routeSocial = '/social';
 const routeSocialPost = '/social_post';
-const routeSocialPostCaptionScreen = '/social_post_caption';
-const routeSocialSavedScreen = '/social_saved';
+const routeSocialPostCaption = '/social_post_caption';
+const routeSocialSaved = '/social_saved';
 
 const routeProfile = '/profile';
 const routeProfileEdit = '/profile_edit';
 const routeProfileChangePassword = '/profile_change_password';
 
 const routeAdminUser = '/admin_user';
+const routeadminReport = '/admin_report';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -119,12 +121,12 @@ class Routes {
           child: const SocialPostScreen(), 
           type: PageTransitionType.rightToLeft
         );
-      case routeSocialPostCaptionScreen:
+      case routeSocialPostCaption:
         return PageTransition(
           child: const SocialPostCaptionScreen(), 
           type: PageTransitionType.rightToLeft
         );
-      case routeSocialSavedScreen:
+      case routeSocialSaved:
         return PageTransition(
           child: const SocialSavedScreen(), 
           type: PageTransitionType.rightToLeft
@@ -150,6 +152,15 @@ class Routes {
         return PageTransition(
           child: const SignUpScreen(),
           type: PageTransitionType.rightToLeft
+        );
+
+      case routeAdminUser:
+        return MaterialPageRoute(
+          builder: (_) => const AdminUserScreen()
+        );
+      case routeadminReport:
+        return MaterialPageRoute(
+          builder: (_) => const AdminReportScreen()
         );
 
       // Login

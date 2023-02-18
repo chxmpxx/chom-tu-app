@@ -1,5 +1,6 @@
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_provider.dart';
+import 'package:chom_tu/utils/types.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -7,13 +8,18 @@ import 'package:provider/provider.dart';
 class WardrobeDropDownField extends StatelessWidget {
   final List<String> list;
   final String name;
-  final String value;
-  const WardrobeDropDownField({super.key, required this.list, required this.name, required this.value});
+  final String wardrobeValue;
+  const WardrobeDropDownField({super.key, required this.list, required this.name, required this.wardrobeValue});
 
   @override
   Widget build(BuildContext context) {
     var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
-    String dropdownValue = value;
+    String dropdownValue = wardrobeValue;
+
+    if(!list.contains(wardrobeValue)) {
+      dropdownValue = types(wardrobeProvider.category, wardrobeProvider.subCategory)[0];
+      wardrobeProvider.type = types(wardrobeProvider.category, wardrobeProvider.subCategory)[0];
+    }
 
     return Column(
       children: [
@@ -39,7 +45,6 @@ class WardrobeDropDownField extends StatelessWidget {
                     ),
                     onChanged: (String? value) {
                       wardrobeProvider.setData(name, value!);
-                      dropdownValue = value;
                     },
                     items: list.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(

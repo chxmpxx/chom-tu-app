@@ -10,30 +10,40 @@ String wardrobeModelToJson(WardrobeModel data) {
   return json.encode(jsonData);
 }
 
+Map<String, String> wardrobeModelToMap(WardrobeModel data) {
+  return {
+    "user_id": data.userId.toString(),
+    "category": data.category,
+    "sub_category": data.subCategory,
+    "color": data.color,
+    "type": data.type,
+  };
+}
+
 class WardrobeModel {
   WardrobeModel({
-    required this.id,
+    this.id,
     required this.userId,
     required this.category,
     required this.subCategory,
     required this.color,
     required this.type,
-    required this.isFavorite,
-    required this.wardrobeImg,
-    required this.createdAt,
-    required this.updatedAt,
+    this.isFavorite,
+    this.wardrobeImg,
+    this.createdAt,
+    this.updatedAt,
   });
 
-  int id;
+  int? id;
   int userId;
   String category;
   String subCategory;
   String color;
   String type;
-  bool isFavorite;
-  String wardrobeImg;
-  DateTime createdAt;
-  DateTime updatedAt;
+  bool? isFavorite;
+  String? wardrobeImg;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   factory WardrobeModel.fromJson(Map<String, dynamic> json) => WardrobeModel(
     id: json["id"],
@@ -49,15 +59,10 @@ class WardrobeModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
     "user_id": userId,
     "category": category,
     "sub_category": subCategory,
     "color": color,
     "type": type,
-    "is_favorite": isFavorite,
-    "wardrobe_img": wardrobeImg,
-    "createdAt": createdAt.toIso8601String(),
-    "updatedAt": updatedAt.toIso8601String(),
   };
 }

@@ -36,5 +36,4 @@ class WardrobeProvider with ChangeNotifier {
     }
     notifyListeners();
   }
-
 }

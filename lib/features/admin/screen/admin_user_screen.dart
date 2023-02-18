@@ -1,9 +1,10 @@
 import 'package:chom_tu/common_widgets/filter_bar_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
-import 'package:chom_tu/features/admin/providers/admin_filter_tab_provider.dart';
-import 'package:chom_tu/features/admin/widgets/admin_charges_filter_tab_widget.dart';
-import 'package:chom_tu/features/admin/widgets/admin_sort_filter_tab_widget.dart';
-import 'package:chom_tu/features/admin/widgets/admin_status_filter_tab_widget.dart';
+import 'package:chom_tu/features/admin/providers/admin_user_filter_tab_provider.dart';
+import 'package:chom_tu/features/admin/widgets/admin_drawer_widget.dart';
+import 'package:chom_tu/features/admin/widgets/user_charges_filter_tab_widget.dart';
+import 'package:chom_tu/features/admin/widgets/user_sort_filter_tab_widget.dart';
+import 'package:chom_tu/features/admin/widgets/user_status_filter_tab_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -13,12 +14,12 @@ class AdminUserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var filterTab = Provider.of<AdminFilterTabProvider>(context, listen: true);
+    var filterTab = Provider.of<AdminUserFilterTabProvider>(context, listen: true);
     
     List<Widget> filterTabContent = [
-      adminSortFilterTab(context),
-      adminChargesFilterTab(context),
-      adminStatusFilterTab(context)
+      userSortFilterTab(context),
+      userChargesFilterTab(context),
+      userStatusFilterTab(context)
     ];
 
     return Scaffold(
@@ -33,7 +34,7 @@ class AdminUserScreen extends StatelessWidget {
         elevation: 0,
         toolbarHeight: 60,
         centerTitle: true,
-        title: Text('User', style: Theme.of(context).textTheme.headline1),
+        title: Text('User', style: Theme.of(context).textTheme.subtitle1),
         iconTheme: Theme.of(context).iconTheme,
         backgroundColor: kColorsWhite,
         leading: Builder(
@@ -50,7 +51,7 @@ class AdminUserScreen extends StatelessWidget {
           )
         ],
       ),
-      drawer: categoryDrawer(context, filterTab),
+      drawer: adminDrawer(context),
       body: Stack(
         children: [
           Padding(
@@ -60,11 +61,15 @@ class AdminUserScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        const SizedBox(width: 34),
-                        Text('Username', style: Theme.of(context).textTheme.subtitle2),
-                      ],
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      width: 95,
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 34),
+                          Text('Username', style: Theme.of(context).textTheme.subtitle2),
+                        ],
+                      ),
                     ),
                     Container(
                       alignment: Alignment.center,
@@ -103,7 +108,7 @@ class AdminUserScreen extends StatelessWidget {
                               const SizedBox(width: 10),
                               Container(
                                 alignment: Alignment.centerLeft,
-                                width: 60,
+                                width: 61,
                                 child: Text('Chxm.xoxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', style: Theme.of(context).textTheme.bodyText1, overflow: TextOverflow.ellipsis)
                               ),
                             ],
@@ -212,69 +217,8 @@ class AdminUserScreen extends StatelessWidget {
     );
   }
 
-  // Create Category Drawer
-  Widget categoryDrawer(context, AdminFilterTabProvider filterTab) {
-    List<String> list = ['User', 'Report', 'History', 'Setting', 'Log Out'];
-    List<String> iconList = ['b1_profile_1.svg', 'o8_report_1.svg', 'o8_history_1.svg', 'a5_setting_1.svg', 'o8_logout_1.svg'];
-
-    return Drawer(
-      width: MediaQuery.of(context).size.width * 0.67,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 6),
-        child: Ink(
-          color: kColorsWhite,
-          child: ListView(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 34),
-                      child: Text('Menu', style: Theme.of(context).textTheme.subtitle1),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: IconButton(
-                        onPressed: (){
-                          Navigator.pop(context);
-                        },
-                        icon: SvgPicture.asset('assets/icons/o1_false_1.svg', color: kColorsBlack)
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  ...List.generate(list.length, (index) {
-                    return ListTile(
-                      leading: Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: list[index] != 'Log Out' ? 
-                          SvgPicture.asset('assets/icons/${iconList[index]}', color: filterTab.menu == list[index] ? kColorsWhite : kColorsBlack)
-                          : filterTab.menu != 'Log Out' ? SvgPicture.asset('assets/icons/o8_logout_1.svg') : SvgPicture.asset('assets/icons/o8_logout_2.svg'),
-                      ),
-                      title: Text(list[index], style: filterTab.menu == list[index] ? Theme.of(context).textTheme.headline4 : Theme.of(context).textTheme.headline5),
-                      tileColor: filterTab.menu == list[index] ? kColorsBlack : kColorsWhite,
-                      onTap: (){
-                        filterTab.removeAllFilterTab();
-                        filterTab.setMenu(list[index]);
-                      },
-                    );
-                  })
-                ]
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   // Create Filter Bar
-  PreferredSize filterBar(context, AdminFilterTabProvider filterTab) {
+  PreferredSize filterBar(context, AdminUserFilterTabProvider filterTab) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(60),
       child: Container(

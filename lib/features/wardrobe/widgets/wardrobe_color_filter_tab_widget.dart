@@ -1,3 +1,4 @@
+import 'package:chom_tu/constants/data_constant.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_filter_tab_provider.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +7,7 @@ import 'package:provider/provider.dart';
 
 Widget wardrobeColorFilterTab(context) {
   var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: false);
-
-  List<String> colors = ['Brown', 'Yellow', 'Purple', 'Orange', 'Green', 'Pink', 'Blue', 'Red', 'White', 'Cream', 'Black', 'Gray'];
-  List<Color> colorCodes = [kColorsBrown, kColorsYellow, kColorsPurple, kColorsOrange, kColorsGreen, kColorsPink, kColorsBlue, kColorsRed, kColorsWhite, kColorsCream, kColorsBlack, kColorsDarkGrey];
-
+  
   return Stack(
     children: [
       Padding(

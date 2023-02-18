@@ -1,5 +1,5 @@
 import 'package:chom_tu/constants/themes/colors.dart';
-import 'package:chom_tu/constants/type_constant.dart';
+import 'package:chom_tu/constants/data_constant.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_filter_tab_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,32 +7,30 @@ import 'package:provider/provider.dart';
 
 Widget wardrobeTypeFilterTab(context) {
   var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: false);
-  var wardrobeFilterTabProvider = Provider.of<WardrobeFilterTabProvider>(context, listen: false);
 
   List<String> types = [];
   List<String> shortsTypes = [];
   List<String> trousersTypes = [];
   List<String> skirtsTypes = [];
-  List<String> bottom = ['Shorts', 'Trousers', 'Skirts'];
 
-  if (wardrobeFilterTabProvider.category == 'Top') {
+  if (filterTab.category == 'Top') {
     types = topTypes;
-  } else if (wardrobeFilterTabProvider.category == 'Bottom') {
+  } else if (filterTab.category == 'Bottom') {
+    skirtsTypes = bottomSkirtsTypes;
     shortsTypes = bottomShortsTypes;
     trousersTypes = bottomTrousersTypes;
-    skirtsTypes = bottomSkirtsTypes;
-  } else if (wardrobeFilterTabProvider.category == 'Set') {
+  } else if (filterTab.category == 'Set') {
     types = setTypes;
-  } else if (wardrobeFilterTabProvider.category == 'Shoes') {
+  } else if (filterTab.category == 'Shoes') {
     types = shoesTypes;
-  } else if (wardrobeFilterTabProvider.category == 'Accessory') {
+  } else if (filterTab.category == 'Accessory') {
     types = accessoryTypes;
   }
 
 
   return Stack(
     children: [
-      wardrobeFilterTabProvider.category != 'Bottom' ?
+      filterTab.category != 'Bottom' ?
       Padding(
         padding: const EdgeInsets.all(18),
         child: ListView(
@@ -57,6 +55,11 @@ Widget wardrobeTypeFilterTab(context) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Text('Skirts', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
+                    const SizedBox(height: 18),
+                    filterBtn(filterTab, skirtsTypes, context, 'Skirts '),
+                    const SizedBox(height: 18),
+
                     const Text('Shorts', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
                     const SizedBox(height: 18),
                     filterBtn(filterTab, shortsTypes, context, 'Shorts '),
@@ -64,12 +67,7 @@ Widget wardrobeTypeFilterTab(context) {
 
                     const Text('Trousers', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
                     const SizedBox(height: 18),
-                    filterBtn(filterTab, trousersTypes, context, 'Trousers '),
-                    const SizedBox(height: 18),
-
-                    const Text('Skirts', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
-                    const SizedBox(height: 18),
-                    filterBtn(filterTab, skirtsTypes, context, 'Skirts '),
+                    filterBtn(filterTab, trousersTypes, context, 'Trousers ')
                   ],
                 );
               }

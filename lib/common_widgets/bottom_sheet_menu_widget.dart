@@ -5,7 +5,8 @@ class BottomSheetMenuWidget extends StatelessWidget {
   final String icon;
   final String title;
   final void Function()? onTap;
-  const BottomSheetMenuWidget({Key? key, required this.icon, required this.title, required this.onTap}) : super(key: key);
+  final String color;
+  const BottomSheetMenuWidget({Key? key, required this.icon, required this.title, required this.onTap, this.color = 'black'}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class BottomSheetMenuWidget extends StatelessWidget {
           children: [
             SvgPicture.asset(icon),
             const SizedBox(width: 22),
-            Text(title, style: Theme.of(context).textTheme.headline2),
+            color != 'red' ? Text(title, style: Theme.of(context).textTheme.headline2) : Text(title, style: Theme.of(context).textTheme.headline3)
           ],
         ),
       ),

@@ -1,12 +1,13 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
+import 'package:chom_tu/features/wardrobe/providers/wardrobe_controller.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_provider.dart';
+import 'package:chom_tu/features/wardrobe/screens/wardrobe_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class WardrobeCameraEditScreen extends StatelessWidget {
@@ -15,6 +16,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
+    WardrobeModel data;
 
     return Scaffold(
       backgroundColor: kColorsWhite,
@@ -40,7 +42,14 @@ class WardrobeCameraEditScreen extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 22, top: 22),
-            child: Text('Save', style: Theme.of(context).textTheme.headline5),
+            child: InkWell(
+              onTap: () async {
+                data = WardrobeModel(userId: 2, category: wardrobeProvider.category, subCategory: wardrobeProvider.subCategory, color: wardrobeProvider.color, type: wardrobeProvider.type);
+                await WardrobeController().addWardrobe(data, wardrobeProvider.currentPath);
+                // Navigator.pushNamed(context, '/wardrobe');
+              },
+              child: Text('Save', style: Theme.of(context).textTheme.headline5)
+            ),
           ),
         ],
       ),
@@ -117,14 +126,6 @@ class WardrobeCameraEditScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<String> createFileFromString(Uint8List imageRemoveBg) async {
-    Uint8List bytes = imageRemoveBg;
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    File file = File("$dir/${DateTime.now().millisecondsSinceEpoch}.png");
-    await file.writeAsBytes(bytes);
-    return file.path;
   }
 
   Future<void> cropSquareImage(wardrobeProvider) async {

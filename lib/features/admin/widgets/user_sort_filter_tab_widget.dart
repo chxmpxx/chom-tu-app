@@ -1,23 +1,23 @@
 import 'package:chom_tu/constants/themes/colors.dart';
-import 'package:chom_tu/features/admin/providers/admin_filter_tab_provider.dart';
+import 'package:chom_tu/features/admin/providers/admin_user_filter_tab_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-Widget adminStatusFilterTab(context) {
-  var filterTab = Provider.of<AdminFilterTabProvider>(context, listen: false);
+Widget userSortFilterTab(context) {
+  var filterTab = Provider.of<AdminUserFilterTabProvider>(context, listen: false);
 
-  return Consumer<AdminFilterTabProvider>(
+  return Consumer<AdminUserFilterTabProvider>(
     builder: (_, value, __) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
             onTap: (){
-              filterTab.selectStatus('Active');
+              filterTab.selectSort('Newest');
             },
             child: Padding(
               padding: const EdgeInsets.all(18),
-              child: Text('Active', style: filterTab.status == 'Active' ? Theme.of(context).textTheme.headline5 : Theme.of(context).textTheme.headline6)
+              child: Text('Newest', style: filterTab.sort == 'Newest' ? Theme.of(context).textTheme.headline5 : Theme.of(context).textTheme.headline6)
             ),
           ),
           Center(
@@ -29,11 +29,11 @@ Widget adminStatusFilterTab(context) {
           ),
           InkWell(
             onTap: (){
-              filterTab.selectStatus('Banned');
+              filterTab.selectSort('Oldest');
             },
             child: Padding(
               padding: const EdgeInsets.all(18),
-              child: Text('Banned', style: filterTab.status == 'Banned' ? Theme.of(context).textTheme.headline5 : Theme.of(context).textTheme.headline6)
+              child: Text('Oldest', style: filterTab.sort == 'Oldest' ? Theme.of(context).textTheme.headline5 : Theme.of(context).textTheme.headline6)
             ),
           ),
         ],

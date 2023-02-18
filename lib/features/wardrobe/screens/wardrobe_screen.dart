@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
+import 'package:chom_tu/features/wardrobe/providers/wardrobe_controller.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_filter_tab_provider.dart';
+import 'package:chom_tu/features/wardrobe/providers/wardrobe_provider.dart';
 import 'package:chom_tu/features/wardrobe/widgets/wardrobe_color_filter_tab_widget.dart';
 import 'package:chom_tu/features/wardrobe/widgets/wardrobe_sort_filter_tab_widget.dart';
 import 'package:chom_tu/features/wardrobe/widgets/wardrobe_type_filter_tab_widget.dart';
@@ -14,6 +19,7 @@ class WardrobeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: true);
+    var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
     
     List<Widget> filterTabContent = [
       wardrobSortFilterTab(context),
@@ -63,46 +69,24 @@ class WardrobeScreen extends StatelessWidget {
       drawer: categoryDrawer(context, filterTab),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(0),
-            child: Material(
-              child: GridView.builder(
-                itemCount: 20,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 1
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
-                    child: Stack(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            // filterTab.getAllWardrobe();
-                            Navigator.pushNamed(context, '/wardrobe_info');
-                          },
-                          child: Container(
-                            height: double.infinity,
-                            decoration: const BoxDecoration(
-                              color: kColorsGrey
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: -10,
-                          right: -10,
-                          child: IconButton(
-                            onPressed: (){},
-                            icon: SvgPicture.asset('assets/icons/o2_heart_1.svg')
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              ),
-            ),
+          FutureBuilder(
+            future: WardrobeController().getAllWardrobe(filterTab.category, filterTab.colors, filterTab.types),
+            builder: (BuildContext context, AsyncSnapshot<List<WardrobeModel>> snapshot) {
+              if(snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              }
+              else if(snapshot.connectionState == ConnectionState.done) {
+                List<WardrobeModel> wardrobeList = snapshot.data!;
+                return wardrobeBody(wardrobeList, wardrobeProvider);
+              }
+              else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
           ),
 
           filterTab.tabStatus ?
@@ -182,6 +166,7 @@ class WardrobeScreen extends StatelessWidget {
                       onTap: (){
                         filterTab.removeAllFilterTab();
                         filterTab.setCategory(list[index]);
+                        Navigator.pop(context);
                       },
                     );
                   })
@@ -225,6 +210,54 @@ class WardrobeScreen extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget wardrobeBody(List<WardrobeModel> wardrobeList, WardrobeProvider wardrobeProvider) {
+    return Padding(
+      padding: const EdgeInsets.all(0),
+      child: GridView.builder(
+        itemCount: wardrobeList.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 1
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          WardrobeModel wardrobe = wardrobeList[index];
+
+          return Padding(
+            padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
+            child: Stack(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/wardrobe_info');
+                  },
+                  child:
+                  Container(
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      // color: kColorsGrey
+                      image: DecorationImage(
+                        image: AssetImage(wardrobe.wardrobeImg!),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                ),
+                Positioned(
+                  top: -10,
+                  right: -10,
+                  child: IconButton(
+                    onPressed: (){},
+                    icon: SvgPicture.asset('assets/icons/o2_heart_1.svg')
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
       ),
     );
   }

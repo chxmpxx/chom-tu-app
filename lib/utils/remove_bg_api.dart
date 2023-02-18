@@ -1,7 +1,5 @@
-import 'dart:io';
-import 'dart:typed_data';
+import 'package:chom_tu/utils/create_file_from_string.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 
 class ApiClient {
   Future<String> removeBgApi(String imagePath) async {
@@ -18,14 +16,5 @@ class ApiClient {
     } else {
       throw Exception("Error occurred with response ${response.statusCode}");
     }
-  }
-
-  Future<String> createFileFromString(Uint8List imageRemoveBg) async {
-    Uint8List bytes = imageRemoveBg;
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    File file = File("$dir/${DateTime.now().millisecondsSinceEpoch}.png");
-    // File file = File("$dir/" + DateTime.now().millisecondsSinceEpoch.toString() + ".png");
-    await file.writeAsBytes(bytes);
-    return file.path;
   }
 }

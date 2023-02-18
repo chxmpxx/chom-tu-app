@@ -1,23 +1,23 @@
 import 'package:chom_tu/constants/themes/colors.dart';
-import 'package:chom_tu/features/admin/providers/admin_filter_tab_provider.dart';
+import 'package:chom_tu/features/admin/providers/admin_report_filter_tab_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-Widget adminChargesFilterTab(context) {
-  var filterTab = Provider.of<AdminFilterTabProvider>(context, listen: false);
+Widget reportSortFilterTab(context) {
+  var filterTab = Provider.of<AdminReportFilterTabProvider>(context, listen: false);
 
-  return Consumer<AdminFilterTabProvider>(
+  return Consumer<AdminReportFilterTabProvider>(
     builder: (_, value, __) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
             onTap: (){
-              filterTab.selectCharges('Sort Lowest to Highest');
+              filterTab.selectSort('Newest');
             },
             child: Padding(
               padding: const EdgeInsets.all(18),
-              child: Text('Sort Lowest to Highest', style: filterTab.charges == 'Sort Lowest to Highest' ? Theme.of(context).textTheme.headline5 : Theme.of(context).textTheme.headline6)
+              child: Text('Newest', style: filterTab.sort == 'Newest' ? Theme.of(context).textTheme.headline5 : Theme.of(context).textTheme.headline6)
             ),
           ),
           Center(
@@ -29,11 +29,11 @@ Widget adminChargesFilterTab(context) {
           ),
           InkWell(
             onTap: (){
-              filterTab.selectCharges('Sort Highest to Lowest');
+              filterTab.selectSort('Oldest');
             },
             child: Padding(
               padding: const EdgeInsets.all(18),
-              child: Text('Sort Highest to Lowest', style: filterTab.charges == 'Sort Highest to Lowest' ? Theme.of(context).textTheme.headline5 : Theme.of(context).textTheme.headline6)
+              child: Text('Oldest', style: filterTab.sort == 'Oldest' ? Theme.of(context).textTheme.headline5 : Theme.of(context).textTheme.headline6)
             ),
           ),
         ],

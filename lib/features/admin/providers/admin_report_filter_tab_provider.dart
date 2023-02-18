@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
 
-class AdminFilterTabProvider with ChangeNotifier {
+class AdminReportFilterTabProvider with ChangeNotifier {
 
   bool tabStatus = false;
   int indexTab = -1;
-  String menu = 'User';
   String sort = 'Newest';
-  String charges = 'Sort Lowest to Highest';
-  String status = 'Active';
+  List<String> details = ['None'];
 
   filterTab(int index) {
     indexTab == index ? (tabStatus ? tabStatus = false : tabStatus = true) : tabStatus = true;
     indexTab = index;
-    notifyListeners();
-  }
-
-  setMenu(String value) {
-    menu = value;
     notifyListeners();
   }
 
@@ -25,20 +18,25 @@ class AdminFilterTabProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  selectCharges(String value) {
-    charges = value;
+  addDetails(String detail) {
+    if(details.contains('None')) {
+      details.remove('None');
+    }
+    details.add(detail);
     notifyListeners();
   }
-
-  selectStatus(String value) {
-    status = value;
+  removeDetails(String detail) {
+    details.remove(detail);
+    notifyListeners();
+  }
+  removeAllDetails() {
+    details = ['None'];
     notifyListeners();
   }
 
   removeAllFilterTab() {
     sort = 'Newest';
-    charges = 'Sort Lowest to Highest';
-    status = 'Active';
+    details = ['None'];
     notifyListeners();
   }
 }
