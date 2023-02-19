@@ -30,10 +30,6 @@ class OutfitInfoScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: (){},
-            icon: SvgPicture.asset('assets/icons/o1_save_1.svg', color: kColorsBlack)
-          ),
-          IconButton(
-            onPressed: (){},
             icon: SvgPicture.asset('assets/icons/a3_edit_1.svg', color: kColorsBlack)
           )
         ],

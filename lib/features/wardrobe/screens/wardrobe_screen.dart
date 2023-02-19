@@ -58,8 +58,8 @@ class WardrobeScreen extends StatelessWidget {
             icon: SvgPicture.asset('assets/icons/a1_camera_1.svg', color: kColorsBlack)
           ),
           IconButton(
-            onPressed: () async {
-              await Navigator.pushNamed(context, '/wardrobe_favorite');
+            onPressed: () {
+              Navigator.pushNamed(context, '/wardrobe_favorite');
               filterTab.removeAll();
             },
             icon: SvgPicture.asset('assets/icons/a1_heart_1.svg', color: kColorsBlack)
@@ -232,15 +232,13 @@ class WardrobeScreen extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, '/wardrobe_info');
+                    Navigator.pushNamed(context, '/wardrobe_info', arguments: '${wardrobe.id}');
                   },
-                  child:
-                  Container(
+                  child: Container(
                     height: double.infinity,
                     decoration: BoxDecoration(
-                      // color: kColorsGrey
                       image: DecorationImage(
-                        image: AssetImage(wardrobe.wardrobeImg!),
+                        image: NetworkImage(wardrobe.wardrobeImg!),
                         fit: BoxFit.cover,
                       ),
                     ),

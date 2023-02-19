@@ -1,8 +1,13 @@
 import 'dart:convert';
 
-List<WardrobeModel> wardrobeModelFromJson(String jsonData) {
+List<WardrobeModel> wardrobeListModelFromJson(String jsonData) {
   final data = json.decode(jsonData);
   return List<WardrobeModel>.from(data.map((element) => WardrobeModel.fromJson(element)));
+}
+
+WardrobeModel wardrobeModelFromJson(String jsonData) {
+  final data = json.decode(jsonData);
+  return WardrobeModel.fromJson(data);
 }
 
 String wardrobeModelToJson(WardrobeModel data) {

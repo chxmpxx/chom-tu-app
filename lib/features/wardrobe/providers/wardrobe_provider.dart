@@ -6,13 +6,15 @@ class WardrobeProvider with ChangeNotifier {
   bool isGallery = false;
   String? currentPath;
   String? previousPath;
+  // if isEditImage = false -> don't change image in firebase
+  bool isEditImage = false;
 
   // info
-  // todo: get value from api
   String category = 'Top';
   String subCategory = 'Skirts';
   String color = 'Red';
   String type = 'Vest';
+  String? image;
 
   setPath(String path) {
     if(currentPath == null) {
@@ -34,6 +36,11 @@ class WardrobeProvider with ChangeNotifier {
     } else {
       subCategory = data;
     }
+    notifyListeners();
+  }
+
+  setImage(String data) {
+    image = data;
     notifyListeners();
   }
 }

@@ -5,6 +5,7 @@ import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_controller.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_provider.dart';
 import 'package:chom_tu/features/wardrobe/screens/wardrobe_screen.dart';
+import 'package:chom_tu/utils/create_file_from_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -15,6 +16,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wardrobeId = ModalRoute.of(context)?.settings.arguments ?? '-1';
     var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
     WardrobeModel data;
 
@@ -45,25 +47,39 @@ class WardrobeCameraEditScreen extends StatelessWidget {
             child: InkWell(
               onTap: () async {
                 data = WardrobeModel(userId: 2, category: wardrobeProvider.category, subCategory: wardrobeProvider.subCategory, color: wardrobeProvider.color, type: wardrobeProvider.type);
-                await WardrobeController().addWardrobe(data, wardrobeProvider.currentPath);
-                // Navigator.pushNamed(context, '/wardrobe');
+
+                if (wardrobeId == '-1') {
+                  // new wardrobe (add)
+                  await WardrobeController().addWardrobe(data, wardrobeProvider.currentPath);
+                } else {
+                  // edit wardrobe (update)
+                  if (wardrobeProvider.isEditImage == false) {
+                    // if isEditImage = false -> don't change image in firebase
+                    await WardrobeController().updateWardrobe(wardrobeId, data);
+                  } else {
+                    await WardrobeController().updateWardrobe(wardrobeId, data, wardrobeProvider.currentPath);
+                  }
+                  wardrobeProvider.isEditImage = false;
+                }
+
+                Navigator.pushNamed(context, '/wardrobe');
               },
               child: Text('Save', style: Theme.of(context).textTheme.headline5)
             ),
           ),
         ],
       ),
-      bottomNavigationBar: cameraEditNavigationBar(context, wardrobeProvider),
+      bottomNavigationBar: cameraEditNavigationBar(context, wardrobeProvider, wardrobeId),
       body: Center(
         child: Consumer<WardrobeProvider>(
           builder: (_, value, __) {
-            return Container(
-              color: kColorsGrey,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width,
-              child: Image.file(
-                File(wardrobeProvider.currentPath!),
-                fit: wardrobeProvider.isGallery ? BoxFit.cover : BoxFit.fill,
+            return AspectRatio(
+              aspectRatio: 1,
+              child: SizedBox(
+                width: double.infinity,
+                child: wardrobeId == '-1' || wardrobeProvider.isEditImage == true ?
+                  Image.file(File(wardrobeProvider.currentPath!), fit: wardrobeProvider.isGallery ? BoxFit.cover : BoxFit.fill)
+                  : Image.network(wardrobeProvider.image!, fit: BoxFit.cover)
               )
             );
           }
@@ -72,7 +88,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
     );
   }
 
-  Widget cameraEditNavigationBar(context, wardrobeProvider) {
+  Widget cameraEditNavigationBar(context, wardrobeProvider, wardrobeId) {
     return Container(
       decoration: const BoxDecoration(
         color: kColorsWhite,
@@ -86,7 +102,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
         children: [
           InkWell(
             onTap: () async {
-              Navigator.pushNamed(context, '/wardrobe_edit_info');
+              Navigator.pushNamed(context, '/wardrobe_edit_info', arguments: wardrobeId);
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -99,7 +115,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              cropSquareImage(wardrobeProvider);
+              cropSquareImage(wardrobeProvider, wardrobeId);
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -128,9 +144,13 @@ class WardrobeCameraEditScreen extends StatelessWidget {
     );
   }
 
-  Future<void> cropSquareImage(wardrobeProvider) async {
+  Future<void> cropSquareImage(WardrobeProvider wardrobeProvider, wardrobeId) async {
+    if (wardrobeId != '-1') {
+      wardrobeProvider.currentPath = await createFileFromUrl(wardrobeProvider.image!);
+    }
+
     CroppedFile? cropImage = await ImageCropper().cropImage(
-      sourcePath: wardrobeProvider.currentPath,
+      sourcePath:  wardrobeProvider.currentPath!,
       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
       aspectRatioPresets: [CropAspectRatioPreset.square],
       compressFormat: ImageCompressFormat.png,
@@ -153,6 +173,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
       ],
     );
     if(cropImage != null) {
+      wardrobeProvider.isEditImage = true;
       wardrobeProvider.setPath(cropImage.path);
     }
   }

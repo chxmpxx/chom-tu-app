@@ -41,7 +41,8 @@ Widget wardrobeColorFilterTab(context) {
                                   height: 12,
                                   decoration: BoxDecoration(
                                     color: colorCodes[index],
-                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+                                    border: Border.all(color: kColorsLightGrey)
                                   ),
                                 ),
                                 const SizedBox(width: 5),

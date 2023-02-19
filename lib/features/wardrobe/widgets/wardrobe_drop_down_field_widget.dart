@@ -1,3 +1,4 @@
+import 'package:chom_tu/constants/data_constant.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_provider.dart';
 import 'package:chom_tu/utils/types.dart';
@@ -34,6 +35,7 @@ class WardrobeDropDownField extends StatelessWidget {
               child: Consumer<WardrobeProvider>(
                 builder: (_, value, __) {
                   return DropdownButton<String>(
+                    dropdownColor: kColorsWhite,
                     value: dropdownValue,
                     icon: SvgPicture.asset('assets/icons/o4_down_1.svg', color: kColorsBlack),
                     elevation: 3,
@@ -49,7 +51,23 @@ class WardrobeDropDownField extends StatelessWidget {
                     items: list.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value, style:Theme.of(context).textTheme.headline5)
+                        child: name == 'Color' ? 
+                          Row(
+                            children: [
+                              Container(
+                                width: 16,
+                                height: 16,
+                                decoration: BoxDecoration(
+                                  color: colorCodes[list.indexOf(value)],
+                                  borderRadius: const BorderRadius.all(Radius.circular(16)),
+                                  border: Border.all(color: kColorsLightGrey)
+                                ),
+                              ),
+                              const SizedBox(width: 7),
+                              Text(value, style:Theme.of(context).textTheme.headline5),
+                            ],
+                          )
+                          : Text(value, style:Theme.of(context).textTheme.headline5)
                       );
                     }).toList(),
                   );

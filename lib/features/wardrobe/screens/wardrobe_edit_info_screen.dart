@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chom_tu/common_widgets/line_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/constants/data_constant.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_provider.dart';
@@ -15,6 +16,7 @@ class WardrobeEditInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wardrobeId = ModalRoute.of(context)?.settings.arguments ?? '-1';
     var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
 
     return Scaffold(
@@ -43,7 +45,7 @@ class WardrobeEditInfoScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 22, top: 22),
             child: InkWell(
               onTap: (){
-                Navigator.pushNamed(context, '/wardrobe_camera_edit');
+                Navigator.pushNamed(context, '/wardrobe_camera_edit', arguments: wardrobeId);
               },
               child: Text('Next', style: Theme.of(context).textTheme.headline5)
             ),
@@ -54,22 +56,18 @@ class WardrobeEditInfoScreen extends StatelessWidget {
         children: [
           Consumer<WardrobeProvider>(
             builder: (_, value, __) {
-              return Container(
-                color: kColorsGrey,
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width,
-                child: Image.file(
-                  File(wardrobeProvider.currentPath!),
-                  fit: wardrobeProvider.isGallery ? BoxFit.cover : BoxFit.fill,
+              return AspectRatio(
+                aspectRatio: 1,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: wardrobeId == '-1' || wardrobeProvider.isEditImage == true ?
+                    Image.file(File(wardrobeProvider.currentPath!), fit: wardrobeProvider.isGallery ? BoxFit.cover : BoxFit.fill)
+                    : Image.network(wardrobeProvider.image!, fit: BoxFit.cover)
                 )
               );
             }
           ),
-          Container(
-            height: kAppbarBorderWidth,
-            width: MediaQuery.of(context).size.width,
-            color: kColorsLightGrey,
-          ),
+          line(context),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22),
             child: Consumer<WardrobeProvider>(

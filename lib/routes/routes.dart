@@ -65,7 +65,8 @@ class Routes {
       case routeWardrobeInfo:
         return PageTransition(
           child: const WardrobeInfoScreen(), 
-          type: PageTransitionType.rightToLeft
+          type: PageTransitionType.rightToLeft,
+          settings: settings
         );
       case routeWardrobeCamera:
         return MaterialPageRoute(
@@ -73,7 +74,8 @@ class Routes {
         );
       case routeWardrobeCameraEdit:
         return MaterialPageRoute(
-          builder: (_) => const WardrobeCameraEditScreen()
+          builder: (_) => const WardrobeCameraEditScreen(),
+          settings: settings
         );
       case routeWardrobeEraser:
         return MaterialPageRoute(
@@ -87,7 +89,8 @@ class Routes {
       case routeWardrobeEditInfo:
         return PageTransition(
           child: const WardrobeEditInfoScreen(), 
-          type: PageTransitionType.rightToLeft
+          type: PageTransitionType.rightToLeft,
+          settings: settings
         );
         
       case routeOutfit:
@@ -166,7 +169,7 @@ class Routes {
       // Login
       default:
         return PageTransition(
-          child: const AdminUserScreen(),
+          child: const DashboardScreen(),
           type: PageTransitionType.rightToLeft
         );
     }

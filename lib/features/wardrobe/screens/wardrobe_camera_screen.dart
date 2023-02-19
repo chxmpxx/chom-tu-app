@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/wardrobe/providers/wardrobe_controller.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -55,7 +56,7 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () async {
+            onPressed: () {
               setState(() {
                 frontCam = !frontCam;
               });
@@ -137,30 +138,43 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
     );
   }
 
-  void openGallery(BuildContext context, wardrobeProvider) async {
+  void openGallery(BuildContext context, WardrobeProvider wardrobeProvider) async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if(pickedFile != null) {
+    if(pickedFile != null) {
+      Map<String, dynamic> data = await WardrobeController().wardrobeDetection(pickedFile.path);
+      setWardrobeData(wardrobeProvider, pickedFile.path, data);
+      setState(() {
         wardrobeProvider.setPath(pickedFile.path);
         wardrobeProvider.isGallery = true;
+        
         Navigator.pushNamed(context, '/wardrobe_edit_info');
-        // Navigator.push(context, MaterialPageRoute(builder: (_) => WardrobeCameraEditScreen()));
-      } else {
-        print('No Image selected');
-        Navigator.pushNamed(context, '/wardrobe_camera');
-      }
-    });
+      });
+    } else {
+      print('No Image selected');
+      Navigator.pushNamed(context, '/wardrobe_camera');
+    }
   }
 
-  void takePhoto(context, wardrobeProvider) async {
+  void takePhoto(context, WardrobeProvider wardrobeProvider) async {
     final path = join((await getTemporaryDirectory()).path, "${DateTime.now()}.png");
     XFile picture = await _cameraController!.takePicture();
     picture.saveTo(path);
+
+    await WardrobeController().wardrobeDetection(path);
+    Map<String, dynamic> data = await WardrobeController().wardrobeDetection(path);
+    setWardrobeData(wardrobeProvider, path, data);
 
     wardrobeProvider.setPath(path);
     wardrobeProvider.isGallery = false;
     Navigator.pushNamed(context, '/wardrobe_edit_info');
     // Navigator.push(context, MaterialPageRoute(builder: (_) => WardrobeCameraEditScreen()));
+  }
+
+  void setWardrobeData(WardrobeProvider wardrobeProvider, path, Map<String, dynamic> data) {
+    wardrobeProvider.setData('Category', data['category']);
+    wardrobeProvider.setData('Sub Category', data['subCategory']);
+    wardrobeProvider.setData('Color', data['color']);
+    wardrobeProvider.setData('Type', data['type']);
   }
 
 }
