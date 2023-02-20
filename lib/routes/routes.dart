@@ -1,5 +1,7 @@
 // import 'package:chom_tu/features/auth/screen/login_screen.dart';
+import 'package:chom_tu/features/admin/screen/admin_report_info_screen.dart';
 import 'package:chom_tu/features/admin/screen/admin_report_screen.dart';
+import 'package:chom_tu/features/admin/screen/admin_setting_screen.dart';
 import 'package:chom_tu/features/admin/screen/admin_user_screen.dart';
 import 'package:chom_tu/features/auth/screen/sign_up_screen.dart';
 import 'package:chom_tu/dashboard_screen.dart';
@@ -52,7 +54,9 @@ const routeProfileEdit = '/profile_edit';
 const routeProfileChangePassword = '/profile_change_password';
 
 const routeAdminUser = '/admin_user';
-const routeadminReport = '/admin_report';
+const routeAdminReport = '/admin_report';
+const routeAdminReportInfo = '/admin_report_info';
+const routeAdminSetting = '/admin_setting';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -161,9 +165,17 @@ class Routes {
         return MaterialPageRoute(
           builder: (_) => const AdminUserScreen()
         );
-      case routeadminReport:
+      case routeAdminReport:
         return MaterialPageRoute(
           builder: (_) => const AdminReportScreen()
+        );
+      case routeAdminReportInfo:
+        return MaterialPageRoute(
+          builder: (_) => const AdminReportInfoScreen()
+        );
+      case routeAdminSetting:
+        return MaterialPageRoute(
+          builder: (_) => const AdminSettingScreen()
         );
 
       // Login

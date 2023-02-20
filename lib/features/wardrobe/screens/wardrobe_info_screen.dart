@@ -1,4 +1,5 @@
 import 'package:chom_tu/common_widgets/line_widget.dart';
+import 'package:chom_tu/common_widgets/show_dialog_widget.dart';
 import 'package:chom_tu/constants/data_constant.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
@@ -39,10 +40,14 @@ class WardrobeInfoScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () async {
-              // todo: add AlertDialog
-              await WardrobeController().deleteWardrobe(wardrobeId);
-              Navigator.pushNamed(context, '/wardrobe');
+            onPressed: () {
+              showDialogWidget(
+                context, 'Delete Photo', 'This photo will be deleted from your wardrobe.', 'Delete',
+                () async {
+                  await WardrobeController().deleteWardrobe(wardrobeId);
+                  Navigator.pushNamed(context, '/wardrobe');
+                }
+              );
             },
             icon: SvgPicture.asset('assets/icons/o9_bin_2.svg', color: kColorsBlack)
           ),
