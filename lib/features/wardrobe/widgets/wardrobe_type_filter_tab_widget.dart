@@ -9,16 +9,9 @@ Widget wardrobeTypeFilterTab(context) {
   var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: false);
 
   List<String> types = [];
-  List<String> shortsTypes = [];
-  List<String> trousersTypes = [];
-  List<String> skirtsTypes = [];
 
   if (filterTab.category == 'Top') {
     types = topTypes;
-  } else if (filterTab.category == 'Bottom') {
-    skirtsTypes = bottomSkirtsTypes;
-    shortsTypes = bottomShortsTypes;
-    trousersTypes = bottomTrousersTypes;
   } else if (filterTab.category == 'Set') {
     types = setTypes;
   } else if (filterTab.category == 'Shoes') {
@@ -37,7 +30,30 @@ Widget wardrobeTypeFilterTab(context) {
           children: [
             Consumer<WardrobeFilterTabProvider>(
               builder: (_, value, __) {
-                return filterBtn(filterTab, types, context, '');
+                return  Wrap(
+                  runSpacing: 18,
+                  spacing: 18,
+                  children: [
+                    ...List.generate(types.length, (index) {
+                      return InkWell(
+                        onTap: (){
+                          if(filterTab.types.contains(types[index])) {
+                            filterTab.removeTypes(types[index]);
+                          } else {
+                            filterTab.addTypes(types[index]);
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            border: filterTab.types.contains(types[index]) ? Border.all(color: kColorsBlack) : Border.all(color: kColorsLightGrey)
+                          ),
+                          child: Text(types[index], style: filterTab.types.contains(types[index]) ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
+                        ),
+                      );
+                    }),
+                  ],
+                );
               }
             ),
             const SizedBox(height: 40)
@@ -57,17 +73,17 @@ Widget wardrobeTypeFilterTab(context) {
                   children: [
                     const Text('Skirts', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
                     const SizedBox(height: 18),
-                    filterBtn(filterTab, skirtsTypes, context, 'Skirts '),
+                    filterBtn(filterTab, bottomSkirtsTypes, context, 'skirts'),
                     const SizedBox(height: 18),
 
                     const Text('Shorts', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
                     const SizedBox(height: 18),
-                    filterBtn(filterTab, shortsTypes, context, 'Shorts '),
+                    filterBtn(filterTab, bottomShortsTypes, context, 'shorts'),
                     const SizedBox(height: 18),
 
                     const Text('Trousers', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
                     const SizedBox(height: 18),
-                    filterBtn(filterTab, trousersTypes, context, 'Trousers ')
+                    filterBtn(filterTab, bottomTrousersTypes, context, 'trousers')
                   ],
                 );
               }
@@ -88,7 +104,7 @@ Widget wardrobeTypeFilterTab(context) {
             color: kColorsWhite,
             child: InkWell(
               onTap: (){
-                filterTab.removeAllTypes();
+                filterTab.category != 'Bottom' ? filterTab.removeAllTypes() : filterTab.removeAllBottomTypes();
               },
               child: SvgPicture.asset('assets/icons/o9_bin_1.svg')
             ),
@@ -99,8 +115,7 @@ Widget wardrobeTypeFilterTab(context) {
   );
 }
 
-Widget filterBtn(WardrobeFilterTabProvider filterTab, List<String> list, context, String bottomName) {
-  //todo: concat bottom type
+Widget filterBtn(WardrobeFilterTabProvider filterTab, List<String> list, context, String key) {
   return Wrap(
     runSpacing: 18,
     spacing: 18,
@@ -108,18 +123,18 @@ Widget filterBtn(WardrobeFilterTabProvider filterTab, List<String> list, context
       ...List.generate(list.length, (index) {
         return InkWell(
           onTap: (){
-            if(filterTab.types.contains('$bottomName${list[index]}')) {
-              filterTab.removeTypes('$bottomName${list[index]}');
+            if(filterTab.bottomTypes[key]!.contains(list[index])) {
+              filterTab.removeBottomTypes(key, list[index]);
             } else {
-              filterTab.addTypes('$bottomName${list[index]}');
+              filterTab.addBottomTypes(key, list[index]);
             }
           },
           child: Container(
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              border: filterTab.types.contains('$bottomName${list[index]}') ? Border.all(color: kColorsBlack) : Border.all(color: kColorsLightGrey)
+              border: filterTab.bottomTypes[key]!.contains(list[index]) ? Border.all(color: kColorsBlack) : Border.all(color: kColorsLightGrey)
             ),
-            child: Text(list[index], style: filterTab.types.contains('$bottomName${list[index]}') ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
+            child: Text(list[index], style: filterTab.bottomTypes[key]!.contains(list[index]) ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
           ),
         );
       }),

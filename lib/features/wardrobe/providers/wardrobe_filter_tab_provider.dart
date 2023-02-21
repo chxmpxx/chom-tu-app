@@ -6,8 +6,9 @@ class WardrobeFilterTabProvider with ChangeNotifier {
   int indexTab = -1;
   String category = 'Top';
   String sort = 'Newest';
-  List<String> colors = ['None'];
-  List<String> types = ['None'];
+  List<String> colors = [];
+  List<String> types = [];
+  Map<String, List<String>> bottomTypes = {"skirts": [], "shorts": [], "trousers": []};
 
   filterTab(int index) {
     indexTab == index ? (tabStatus ? tabStatus = false : tabStatus = true) : tabStatus = true;
@@ -22,9 +23,6 @@ class WardrobeFilterTabProvider with ChangeNotifier {
 
   // color
   addColors(String color) {
-    if(colors.contains('None')) {
-      colors.remove('None');
-    }
     colors.add(color);
     notifyListeners();
   }
@@ -33,15 +31,12 @@ class WardrobeFilterTabProvider with ChangeNotifier {
     notifyListeners();
   }
   removeAllColors() {
-    colors = ['None'];
+    colors = [];
     notifyListeners();
   }
 
   // type
   addTypes(String type) {
-    if(types.contains('None')) {
-      types.remove('None');
-    }
     types.add(type);
     notifyListeners();
   }
@@ -50,7 +45,21 @@ class WardrobeFilterTabProvider with ChangeNotifier {
     notifyListeners();
   }
   removeAllTypes() {
-    types = ['None'];
+    types = [];
+    notifyListeners();
+  }
+
+  // bottom type
+  addBottomTypes(String key, String type) {
+    bottomTypes[key]!.add(type);
+    notifyListeners();
+  }
+  removeBottomTypes(String key,String type) {
+    bottomTypes[key]!.remove(type);
+    notifyListeners();
+  }
+  removeAllBottomTypes() {
+    bottomTypes = {};
     notifyListeners();
   }
 
@@ -61,16 +70,16 @@ class WardrobeFilterTabProvider with ChangeNotifier {
 
   removeAllFilterTab() {
     sort = 'Newest';
-    colors = ['None'];
-    types = ['None'];
+    colors = [];
+    types = [];
     notifyListeners();
   }
 
   removeAll() {
     category = 'Top';
     sort = 'Newest';
-    colors = ['None'];
-    types = ['None'];
+    colors = [];
+    types = [];
     notifyListeners();
   }
 }

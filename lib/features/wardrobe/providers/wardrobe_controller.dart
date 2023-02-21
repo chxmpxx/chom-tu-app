@@ -20,10 +20,12 @@ class WardrobeController {
     throw Exception('Fail');
   }
 
-  Future<List<WardrobeModel>> getAllWardrobe(category, colors, types) async {
-    String data = jsonEncode({"category": category, "color": colors, "type": types});
+  Future<List<WardrobeModel>> getAllWardrobes(category, colors, types, [isBottom = false]) async {
+    String data = jsonEncode({"category": category, "color": colors, "type": types, "isBottom": isBottom});
+    print(data);
     final response = await http.post(Uri.parse("$wardrobeURLAPI/all_wardrobe"), headers: setHeaders(), body: data);
     if (response.statusCode == 200) {
+      print(wardrobeListModelFromJson(response.body));
       return wardrobeListModelFromJson(response.body);
     }
     throw Exception('Fail');
