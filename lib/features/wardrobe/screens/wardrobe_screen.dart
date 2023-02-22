@@ -71,8 +71,8 @@ class WardrobeScreen extends StatelessWidget {
         children: [
           FutureBuilder(
             future: filterTab.category != 'Bottom' ? 
-              WardrobeController().getAllWardrobes(filterTab.category, filterTab.colors, filterTab.types)
-              : WardrobeController().getAllWardrobes(filterTab.category, filterTab.colors, filterTab.bottomTypes, true),
+              WardrobeController().getAllWardrobes(filterTab.category, filterTab.colors, filterTab.types, filterTab.sort)
+              : WardrobeController().getAllWardrobes(filterTab.category, filterTab.colors, filterTab.bottomTypes, filterTab.sort, true),
             builder: (BuildContext context, AsyncSnapshot<List<WardrobeModel>> snapshot) {
               if(snapshot.hasError) {
                 return Center(
@@ -81,7 +81,7 @@ class WardrobeScreen extends StatelessWidget {
               }
               else if(snapshot.connectionState == ConnectionState.done) {
                 List<WardrobeModel> wardrobeList = snapshot.data!;
-                return wardrobeBody(wardrobeList, wardrobeProvider);
+                return wardrobeBody(wardrobeList);
               }
               else {
                 return const Center(
@@ -216,7 +216,7 @@ class WardrobeScreen extends StatelessWidget {
     );
   }
 
-  Widget wardrobeBody(List<WardrobeModel> wardrobeList, WardrobeProvider wardrobeProvider) {
+  Widget wardrobeBody(List<WardrobeModel> wardrobeList) {
     return Padding(
       padding: const EdgeInsets.all(0),
       child: GridView.builder(
@@ -234,7 +234,7 @@ class WardrobeScreen extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, '/wardrobe_info', arguments: '${wardrobe.id}');
+                    Navigator.pushNamed(context, '/wardrobe_info', arguments: {"id": wardrobe.id, "route": '/wardrobe'});
                   },
                   child: Container(
                     height: double.infinity,
@@ -251,7 +251,9 @@ class WardrobeScreen extends StatelessWidget {
                   right: -10,
                   child: IconButton(
                     onPressed: (){},
-                    icon: SvgPicture.asset('assets/icons/o2_heart_1.svg')
+                    icon: wardrobe.isFavorite! ?
+                      SvgPicture.asset('assets/icons/o2_heart_2.svg')
+                      : SvgPicture.asset('assets/icons/o2_heart_1.svg')
                   ),
                 ),
               ],

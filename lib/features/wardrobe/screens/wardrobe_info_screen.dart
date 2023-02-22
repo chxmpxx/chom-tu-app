@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:chom_tu/common_widgets/line_widget.dart';
 import 'package:chom_tu/common_widgets/show_dialog_widget.dart';
 import 'package:chom_tu/constants/data_constant.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_controller.dart';
+import 'package:chom_tu/features/wardrobe/providers/wardrobe_fav_btn_provider.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,7 +18,9 @@ class WardrobeInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
-    final wardrobeId = ModalRoute.of(context)?.settings.arguments ?? '-1';
+    var wardrobeFavBtnProvider = Provider.of<WardrobeFavBtnProvider>(context, listen: false);
+    Map<String, dynamic> arg = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final wardrobeId = arg["id"];
     late WardrobeModel wardrobe;
 
     return Scaffold(
@@ -35,7 +40,7 @@ class WardrobeInfoScreen extends StatelessWidget {
         leading: IconButton(
           icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
           onPressed: (){
-            Navigator.pop(context);
+            Navigator.pushNamed(context, arg["route"]);
           },
         ),
         actions: [
@@ -45,7 +50,7 @@ class WardrobeInfoScreen extends StatelessWidget {
                 context, 'Delete Photo', 'This photo will be deleted from your wardrobe.', 'Delete',
                 () async {
                   await WardrobeController().deleteWardrobe(wardrobeId);
-                  Navigator.pushNamed(context, '/wardrobe');
+                  Navigator.pushNamed(context, arg["route"]);
                 }
               );
             },
@@ -75,8 +80,8 @@ class WardrobeInfoScreen extends StatelessWidget {
           else if(snapshot.connectionState == ConnectionState.done) {
             wardrobe = snapshot.data!;
             final colorCode = colorCodes[colors.indexWhere((element) => element == wardrobe.color)];
-
-            return wardrobeInfoBody(wardrobe, context, colorCode);
+            wardrobeFavBtnProvider.isFavBtn = wardrobe.isFavorite!;
+            return wardrobeInfoBody(wardrobeId, wardrobe, context, colorCode, wardrobeFavBtnProvider);
           }
           else {
             return const Center(
@@ -88,7 +93,7 @@ class WardrobeInfoScreen extends StatelessWidget {
     );
   }
 
-  Widget wardrobeInfoBody(WardrobeModel wardrobe, context, Color colorCode) {
+  Widget wardrobeInfoBody(wardrobeId, WardrobeModel wardrobe, context, Color colorCode, WardrobeFavBtnProvider wardrobeFavBtnProvider) {
     return ListView(
       children: [
         AspectRatio(
@@ -114,10 +119,20 @@ class WardrobeInfoScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(wardrobe.category, style: Theme.of(context).textTheme.headline1),
-                  IconButton(
-                    onPressed: (){},
-                    icon: SvgPicture.asset('assets/icons/a1_heart_2.svg', color: kColorsRed)
-                  ),
+                  Consumer<WardrobeFavBtnProvider>(
+                    builder: (_, value, __) {
+                      return IconButton(
+                        onPressed: () async {
+                          String data = jsonEncode({"userId": 2, "is_favorite": !wardrobeFavBtnProvider.isFavBtn});
+                          await WardrobeController().favWardrobe(wardrobeId, data);
+                          wardrobeFavBtnProvider.setIsFavBtn(!wardrobeFavBtnProvider.isFavBtn);
+                        },
+                        icon: wardrobeFavBtnProvider.isFavBtn ? 
+                          SvgPicture.asset('assets/icons/a1_heart_2.svg', color: kColorsRed)
+                          : SvgPicture.asset('assets/icons/a1_heart_1.svg', color: kColorsBlack)
+                      );
+                    }
+                  )
                 ],
               ),
               const SizedBox(height: 24),

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:chom_tu/constants/api_constant.dart';
 import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
-import 'package:chom_tu/features/wardrobe/providers/wardrobe_provider.dart';
 import 'package:http/http.dart' as http;
 
 class WardrobeController {
@@ -20,12 +19,29 @@ class WardrobeController {
     throw Exception('Fail');
   }
 
-  Future<List<WardrobeModel>> getAllWardrobes(category, colors, types, [isBottom = false]) async {
-    String data = jsonEncode({"category": category, "color": colors, "type": types, "isBottom": isBottom});
-    print(data);
+  Future<List<WardrobeModel>> getAllWardrobes(category, colors, types, sort, [isBottom = false]) async {
+    var order = [["updatedAt", "DESC"]];
+    if (sort == 'Oldest') {
+      order = [["updatedAt", "ASC"]];
+    }
+
+    String data = jsonEncode({"category": category, "color": colors, "type": types, "isBottom": isBottom, "order": order});
     final response = await http.post(Uri.parse("$wardrobeURLAPI/all_wardrobe"), headers: setHeaders(), body: data);
     if (response.statusCode == 200) {
-      print(wardrobeListModelFromJson(response.body));
+      return wardrobeListModelFromJson(response.body);
+    }
+    throw Exception('Fail');
+  }
+
+  Future<List<WardrobeModel>> getAllFavWardrobes(sort, colors) async {
+    var order = [["updatedAt", "DESC"]];
+    if (sort == 'Oldest') {
+      order = [["updatedAt", "ASC"]];
+    }
+
+    String data = jsonEncode({"order": order, "color": colors});
+    final response = await http.post(Uri.parse("$wardrobeURLAPI/all_fav_wardrobe"), headers: setHeaders(), body: data);
+    if (response.statusCode == 200) {
       return wardrobeListModelFromJson(response.body);
     }
     throw Exception('Fail');
@@ -52,6 +68,14 @@ class WardrobeController {
 
     if (response.statusCode == 200) {
       return response.toString();
+    }
+    throw Exception('Fail');
+  }
+
+  Future<String> favWardrobe(id, data) async {
+    final response = await http.post(Uri.parse("$wardrobeURLAPI/fav_wardrobe/$id"), headers: setHeaders(), body: data);
+    if (response.statusCode == 200) {
+      return response.body;
     }
     throw Exception('Fail');
   }
