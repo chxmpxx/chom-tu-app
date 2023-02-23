@@ -2,19 +2,11 @@ import 'package:flutter/material.dart';
 
 class WardrobeFilterTabProvider with ChangeNotifier {
 
-  bool tabStatus = false;
-  int indexTab = -1;
   String category = 'Top';
   String sort = 'Newest';
   List<String> colors = [];
   List<String> types = [];
   Map<String, List<String>> bottomTypes = {"skirts": [], "shorts": [], "trousers": []};
-
-  filterTab(int index) {
-    indexTab == index ? (tabStatus ? tabStatus = false : tabStatus = true) : tabStatus = true;
-    indexTab = index;
-    notifyListeners();
-  }
 
   setCategory(String value) {
     category = value;
@@ -59,7 +51,7 @@ class WardrobeFilterTabProvider with ChangeNotifier {
     notifyListeners();
   }
   removeAllBottomTypes() {
-    bottomTypes = {};
+    bottomTypes = {"skirts": [], "shorts": [], "trousers": []};
     notifyListeners();
   }
 

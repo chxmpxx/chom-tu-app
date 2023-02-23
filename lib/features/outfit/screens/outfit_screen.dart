@@ -1,5 +1,5 @@
 import 'package:chom_tu/constants/themes/colors.dart';
-import 'package:chom_tu/features/outfit/providers/outfit_filter_tab_provider.dart';
+import 'package:chom_tu/features/outfit/providers/outfit_tab_status_provider.dart';
 import 'package:chom_tu/features/outfit/widgets/outfit_sort_filter_tab.dart';
 import 'package:chom_tu/features/outfit/widgets/outfit_style_filter_tab.dart';
 import 'package:chom_tu/common_widgets/filter_bar_widget.dart';
@@ -12,7 +12,8 @@ class OutfitScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var filterTab = Provider.of<OutfitFilterTabProvider>(context, listen: false);
+    var tabStatus = Provider.of<OutfitTabStatusProvider>(context, listen: false);
+
     List<Widget> filterTabContent = [
       outfitSortFilterTab(context),
       outfitStyleFilterTab(context),
@@ -33,7 +34,7 @@ class OutfitScreen extends StatelessWidget {
         title: Text('Outfit', style: Theme.of(context).textTheme.headline1),
         iconTheme: Theme.of(context).iconTheme,
         backgroundColor: kColorsWhite,
-        bottom: filterBar(context, filterTab),
+        bottom: filterBar(context, tabStatus),
         actions: [
           IconButton(
             onPressed: (){
@@ -92,23 +93,23 @@ class OutfitScreen extends StatelessWidget {
             ),
           ),
 
-          Consumer<OutfitFilterTabProvider>(
+          Consumer<OutfitTabStatusProvider>(
             builder: (_, value, __) {
-              return filterTab.tabStatus ?
-                Container(
+              return tabStatus.status ?
+                SizedBox(
                   height: double.infinity,
                   child: Column(
                     children: [
                       // Create Filter Area
                       Container(
-                        height: filterTab.indexTab == 0 ? MediaQuery.of(context).size.width * 0.28 : MediaQuery.of(context).size.width * 0.47,
+                        height: tabStatus.indexTab == 0 ? MediaQuery.of(context).size.width * 0.28 : MediaQuery.of(context).size.width * 0.47,
                         color: kColorsWhite,
-                        child: filterTabContent[filterTab.indexTab],
+                        child: filterTabContent[tabStatus.indexTab],
                       ),
                       Expanded(
                         child: InkWell(
                           onTap: (){
-                            filterTab.filterTab(filterTab.indexTab);
+                            tabStatus.tab(tabStatus.indexTab);
                           },
                           child: Container(
                             color: Colors.black.withOpacity(0.5),
@@ -126,39 +127,35 @@ class OutfitScreen extends StatelessWidget {
     );
   }
 
-    // Create Filter Bar
-  PreferredSize filterBar(context, OutfitFilterTabProvider filterTab) {
+  // Create Filter Bar
+  PreferredSize filterBar(context, OutfitTabStatusProvider tabStatus) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(60),
       child: Container(
         height: 60,
         width: double.infinity,
         color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Consumer<OutfitFilterTabProvider>(
-              builder: (_, value, __) {
-                return InkWell(
+        child: Consumer<OutfitTabStatusProvider>(
+          builder: (_, value, __) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                InkWell(
                   onTap: () {
-                    filterTab.filterTab(0);
+                    tabStatus.tab(0);
                   },
-                  child: filterTab.indexTab == 0 && filterTab.tabStatus == true ? const FilterBarWidget(title: 'Sort', status: true) : const FilterBarWidget(title: 'Sort', status: false)
-                );
-              }
-            ),
-            Consumer<OutfitFilterTabProvider>(
-              builder: (_, value, __) {
-                return InkWell(
+                  child: tabStatus.indexTab == 0 && tabStatus.status == true ? const FilterBarWidget(title: 'Sort', status: true) : const FilterBarWidget(title: 'Sort', status: false)
+                ),
+                InkWell(
                   onTap: () {
-                    filterTab.filterTab(1);
+                    tabStatus.tab(1);
                   },
-                  child: filterTab.indexTab == 1 && filterTab.tabStatus == true ? const FilterBarWidget(title: 'Style', status: true) : const FilterBarWidget(title: 'Style', status: false)
-                );
-              }
-            ),
-          ],
-        ),
+                  child: tabStatus.indexTab == 1 && tabStatus.status == true ? const FilterBarWidget(title: 'Style', status: true) : const FilterBarWidget(title: 'Style', status: false)
+                )
+              ],
+            );
+          }
+        )
       ),
     );
   }

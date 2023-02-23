@@ -181,7 +181,7 @@ class Routes {
       // Login
       default:
         return PageTransition(
-          child: const DashboardScreen(),
+          child: const OutfitCreateScreen(),
           type: PageTransitionType.rightToLeft
         );
     }

@@ -9,9 +9,9 @@ List<String> category = ['Top', 'Bottom', 'Set', 'Shoes', 'Accessory'];
 List<String> topTypes = ['Bardot', 'Camisole', 'Cardigans', 'Coat', 'Crop', 'Hoodie', 'Jacket', 'Polo', 'Sleeveless', 'Suit', 'Shirt', 'Sweater', 'Transparent Top', 'T Shirt', 'Tube Top', 'Tunics', 'Turtleneck', 'Vest', 'Waistcoat', 'Wrap Top'];
 
 List<String> bottomTypes = ['Skirts', 'Shorts', 'Trousers'];
+List<String> bottomSkirtsTypes = ['A Line', 'Asymmetrical', 'Balloon', 'Denim', 'Draped', 'Godet', 'Gypsy', 'Layered', 'Leather', 'Mermaid', 'Pencil', 'Pleated', 'Slit', 'Tulip', 'Tulle', 'Wrap'];
 List<String> bottomShortsTypes = ['Biker Shorts', 'Cargo', 'Harem', 'Leather', 'Skinny', 'Skort', 'Straight Lag', 'Track Shorts', 'Wide Leg'];
 List<String> bottomTrousersTypes = ['Baggy', 'Cargo', 'Flare Leg', 'Harem', 'Jogger', 'Leather', 'Legging', 'Skinny', 'Skort', 'Straight Lag', 'Wide Leg'];
-List<String> bottomSkirtsTypes = ['A Line', 'Asymmetrical', 'Balloon', 'Denim', 'Draped', 'Godet', 'Gypsy', 'Layered', 'Leather', 'Mermaid', 'Pencil', 'Pleated', 'Slit', 'Tulip', 'Tulle', 'Wrap'];
 
 List<String> setTypes = ['Bathrobes', 'Beachwear', 'Bodysuit', 'Dungaree', 'Jumpsuits', 'Maxi Dress', 'Mini Dress', 'Pinafore', 'Playsuits', 'Pyjamas'];
 

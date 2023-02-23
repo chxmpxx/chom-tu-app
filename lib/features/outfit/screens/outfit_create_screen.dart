@@ -1,3 +1,4 @@
+import 'package:chom_tu/constants/data_constant.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/outfit/providers/delete_item_provider.dart';
 import 'package:chom_tu/features/outfit/providers/is_delete_btn_active_provider.dart';
@@ -6,6 +7,7 @@ import 'package:chom_tu/features/outfit/providers/show_delete_btn_provider.dart'
 import 'package:chom_tu/features/outfit/widgets/color_bar_widget.dart';
 import 'package:chom_tu/features/outfit/widgets/panel_widget.dart';
 import 'package:chom_tu/features/outfit/widgets/type_bar_widget.dart';
+import 'package:chom_tu/features/wardrobe/providers/wardrobe_filter_tab_provider.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,18 +30,19 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
     //   statusBarColor: Colors.transparent,
     // ));
 
+    var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: true);
     var provider = Provider.of<OutfitCreateProvider>(context, listen: false);
 
     return Material(
       child: SlidingUpPanel(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-        maxHeight: provider.tabStatus ? MediaQuery.of(context).size.height * 0.55 : 0,
-        minHeight: provider.tabStatus ? MediaQuery.of(context).size.height * 0.25 : 0,
-        header: buildHeader(context),
+        maxHeight: provider.tabStatus ? MediaQuery.of(context).size.height * (provider.outfitIndex != 0 ? 0.55 : 0.18) : 0,
+        minHeight: provider.tabStatus ? MediaQuery.of(context).size.height * (provider.outfitIndex != 0 ? 0.25 : 0.18) : 0,
+        header: buildHeader(context, provider, filterTab),
         panelBuilder: (controller) {
           return Padding(
             padding: const EdgeInsets.only(top: 135),
-            child: PanelWidget(controller: controller),
+            child: provider.outfitIndex != 0 ? PanelWidget(controller: controller) : Container(),
           );
         },
         body: SafeArea(
@@ -62,13 +65,16 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
                 },
               ),
               actions: [
-                IconButton(
-                  onPressed: (){},
-                  icon: SvgPicture.asset('assets/icons/o1_save_1.svg', color: kColorsBlack)
-                ),
-                IconButton(
-                  onPressed: (){},
-                  icon: SvgPicture.asset('assets/icons/o1_true_1.svg', color: kColorsBlack)
+                // IconButton(
+                //   onPressed: (){},
+                //   icon: SvgPicture.asset('assets/icons/o1_true_1.svg', color: kColorsBlack)
+                // )
+                Padding(
+                  padding: const EdgeInsets.only(right: 22, top: 22),
+                  child: InkWell(
+                    onTap: (){},
+                    child: Text('Save', style: Theme.of(context).textTheme.headline5)
+                  ),
                 )
               ],
             ),
@@ -87,17 +93,17 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
   }
 
   Widget bodyOutfitCreate(OutfitCreateProvider provider) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width,
-      decoration: const BoxDecoration(
-        color: kColorsGrey
-      ),
-      child: Consumer<DeleteItemProvider>(
-        builder: (_, value, __) {
-          return Consumer<OutfitCreateProvider>(
-            builder: (_, value, __) {
-              return provider.items.isNotEmpty ? Stack(
+    return Consumer<DeleteItemProvider>(
+      builder: (_, value, __) {
+        return Consumer<OutfitCreateProvider>(
+          builder: (_, value, __) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: provider.backgroundColor
+              ),
+              child: provider.items.isNotEmpty ? Stack(
                 alignment: Alignment.center,
                 children: [
                   SizedBox(
@@ -127,11 +133,11 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
                     }
                   )
                 ]
-              ) : Container();
-            }
-          );
-        }
-      )
+              ) : Container()
+            );
+          }
+        );
+      }
     );
   }
 
@@ -144,95 +150,150 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
         )
       ),
 
-      child: Container(
-        decoration: const BoxDecoration(
-          border: Border(top: BorderSide(color: kColorsLightGrey, width: kAppbarBorderWidth))
-        ),
-        child: NavigationBar(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
           height: 75,
-          backgroundColor: kColorsWhite,
-          onDestinationSelected: (index) {
-            setState(() {
-              provider.selectTab();
-            });
-          },
-          destinations: [
-            NavigationDestination(
-              icon: SvgPicture.asset('assets/icons/a2_top_1.svg', color: kColorsBlack),
-              label: 'Tops',
-            ),
-            NavigationDestination(
-              icon: SvgPicture.asset('assets/icons/a2_bottom_1.svg', color: kColorsBlack),
-              label: 'Bottoms',
-            ),
-            NavigationDestination(
-              icon: SvgPicture.asset('assets/icons/a2_set_1.svg', color: kColorsBlack),
-              label: 'Set',
-            ),
-            NavigationDestination(
-              icon: SvgPicture.asset('assets/icons/a2_shoes_1.svg', color: kColorsBlack),
-              label: 'Shoes',
-            ),
-            NavigationDestination(
-              icon: SvgPicture.asset('assets/icons/a2_bag_1.svg', color: kColorsBlack),
-              label: 'Accessory',
-            ),
-          ],
+          width: (MediaQuery.of(context).size.width / 5) * 6,
+          decoration: const BoxDecoration(
+            border: Border(top: BorderSide(color: kColorsLightGrey, width: kAppbarBorderWidth))
+          ),
+          child: NavigationBar(
+            height: 75,
+            backgroundColor: kColorsWhite,
+            onDestinationSelected: (index) {
+              setState(() {
+                provider.selectTab();
+                provider.setIndex(index);
+              });
+            },
+            destinations: [
+              NavigationDestination(
+                icon: SvgPicture.asset('assets/icons/a2_bg_1.svg', color: kColorsBlack),
+                label: 'Background',
+              ),
+              NavigationDestination(
+                icon: SvgPicture.asset('assets/icons/a2_top_1.svg', color: kColorsBlack),
+                label: 'Tops',
+              ),
+              NavigationDestination(
+                icon: SvgPicture.asset('assets/icons/a2_bottom_1.svg', color: kColorsBlack),
+                label: 'Bottoms',
+              ),
+              NavigationDestination(
+                icon: SvgPicture.asset('assets/icons/a2_set_1.svg', color: kColorsBlack),
+                label: 'Set',
+              ),
+              NavigationDestination(
+                icon: SvgPicture.asset('assets/icons/a2_shoes_1.svg', color: kColorsBlack),
+                label: 'Shoes',
+              ),
+              NavigationDestination(
+                icon: SvgPicture.asset('assets/icons/a2_bag_1.svg', color: kColorsBlack),
+                label: 'Accessory',
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget buildHeader(context) {
+  Widget buildHeader(context, outfitProvider, filterTab) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 135,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20),
-        child: Column(
-          children: [
-            buildMenu(context),
-            const SizedBox(height: 25),
-            const TypeBarWidget(),
-            const SizedBox(height: 5),
-            const ColorBarWidget(),
-            const SizedBox(height: 5),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildMenu(context) {
-    var provider = Provider.of<OutfitCreateProvider>(context, listen: false);
-
-    return Padding(
-      padding: const EdgeInsets.only(right: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      height: outfitProvider.outfitIndex != 0 ? 145 : 115,
+      child: Column(
         children: [
-          InkWell(
-            onTap: () {
-              setState(() {
-                // todo: create previous item
-                provider.items = [];
-                provider.selectTab();
-              });
-            },
-            child: SvgPicture.asset('assets/icons/o1_false_1.svg', color: kColorsBlack)
-          ),
-          Text('Top', style: Theme.of(context).textTheme.headline2),
-          InkWell(
-            onTap: () {
-              setState(() {
-                provider.selectTab();
-              });
-            },
-            child: SvgPicture.asset('assets/icons/o1_true_1.svg', color: kColorsBlack)
+          buildMenu(outfitProvider, filterTab),
+          Padding(
+            padding: EdgeInsets.only(top: outfitProvider.outfitIndex != 2 ? 10 : 20, left: 20),
+            child: Column(
+              children: [
+                outfitProvider.outfitIndex != 0 ? TypeBarWidget(outfitProvider: outfitProvider) : Container(),
+                const SizedBox(height: 5),
+                ColorBarWidget(outfitProvider: outfitProvider),
+                const SizedBox(height: 5),
+              ],
+            ),
           ),
         ],
       ),
     );
+  }
+
+  Widget buildMenu(OutfitCreateProvider outfitProvider, WardrobeFilterTabProvider filterTab) {
+    List<String> menu = ['Background', 'Top', 'Bottom', 'Set', 'Shoes', 'Accessory'];
+
+    return Container(
+      height: 56,
+      decoration: BoxDecoration(
+        color: outfitProvider.outfitIndex != 2 ? kColorsWhite : kColorsLightGrey,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: () {
+                setState(() {
+                  // todo: create previous item
+                  outfitProvider.items = [];
+                  outfitProvider.selectTab();
+                  resetFilterTab(filterTab);
+                });
+              },
+              child: SvgPicture.asset('assets/icons/o1_false_1.svg', color: kColorsBlack)
+            ),
+            outfitProvider.outfitIndex != 2 ? Text(menu[outfitProvider.outfitIndex], style: Theme.of(context).textTheme.headline2)
+            : Row(
+              children: [
+                ...List.generate(bottomTypes.length, (index) {
+                  return InkWell(
+                    onTap: (){
+                      setState(() {
+                        resetFilterTab(filterTab);
+                        outfitProvider.setBottomIndex(index);
+                      });
+                    },
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 52,
+                        width: 83,
+                        decoration: BoxDecoration(
+                          color: outfitProvider.bottomIndex == index ? kColorsWhite : kColorsLightGrey,
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                        ),
+                        child: Text(bottomTypes[index], style: outfitProvider.bottomIndex == index ? Theme.of(context).textTheme.headline2 : Theme.of(context).textTheme.headline6),
+                      ),
+                    ),
+                  );
+                })
+              ],
+            ),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  outfitProvider.selectTab();
+                  resetFilterTab(filterTab);
+                });
+              },
+              child: SvgPicture.asset('assets/icons/o1_true_1.svg', color: kColorsBlack)
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void resetFilterTab(filterTab) {
+    filterTab.removeAllTypes();
+    filterTab.removeAllBottomTypes();
+    filterTab.removeAllColors();
   }
 
 }

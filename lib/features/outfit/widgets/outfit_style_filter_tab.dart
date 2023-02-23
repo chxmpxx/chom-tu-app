@@ -23,18 +23,18 @@ Widget outfitStyleFilterTab(context) {
                     ...List.generate(styles.length, (index) {
                         return InkWell(
                           onTap: (){
-                            if(filterTab.style == styles[index]) {
-                              filterTab.selectStyle('None');
+                            if(filterTab.styles.contains(styles[index])) {
+                              filterTab.removeStyle(styles[index]);
                             } else {
-                              filterTab.selectStyle(styles[index]);   
-                            }          
+                              filterTab.addStyle(styles[index]);
+                            }        
                           },
                           child: Container(
                             padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                              border: filterTab.style == styles[index] ? Border.all(color: kColorsBlack) : Border.all(color: kColorsLightGrey)
+                              border: filterTab.styles.contains(styles[index]) ? Border.all(color: kColorsBlack) : Border.all(color: kColorsLightGrey)
                             ),
-                            child: Text(styles[index], style: filterTab.style == styles[index] ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
+                            child: Text(styles[index], style: filterTab.styles.contains(styles[index]) ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
                           ),
                         );
                       }
@@ -58,7 +58,7 @@ Widget outfitStyleFilterTab(context) {
             color: kColorsWhite,
             child: InkWell(
               onTap: (){
-                filterTab.selectStyle('None');
+                filterTab.removeAllStyle();
               },
               child: SvgPicture.asset('assets/icons/o9_bin_1.svg')
             ),

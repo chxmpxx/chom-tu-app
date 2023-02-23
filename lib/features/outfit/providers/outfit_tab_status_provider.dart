@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class WardrobeTabStatusProvider with ChangeNotifier {
+class OutfitTabStatusProvider with ChangeNotifier {
   bool status = false;
   int indexTab = -1;
 

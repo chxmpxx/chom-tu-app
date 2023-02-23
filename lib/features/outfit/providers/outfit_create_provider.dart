@@ -1,3 +1,4 @@
+import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/outfit/providers/delete_item_provider.dart';
 import 'package:chom_tu/features/outfit/providers/is_delete_btn_active_provider.dart';
 import 'package:chom_tu/features/outfit/providers/show_delete_btn_provider.dart';
@@ -8,6 +9,10 @@ import 'package:provider/provider.dart';
 class OutfitCreateProvider with ChangeNotifier {
 
   bool tabStatus = false;
+  int outfitIndex = 0;
+  int bottomIndex = 0;
+
+  Color backgroundColor = kColorsGrey;
   String? top, bottom, set, shoes, accessory;
   Widget? topW;
   bool showDeleteBtn = false;
@@ -16,6 +21,21 @@ class OutfitCreateProvider with ChangeNotifier {
 
   selectTab() {
     tabStatus == true ? tabStatus = false : tabStatus = true;
+    notifyListeners();
+  }
+
+  setIndex(data) {
+    outfitIndex = data;
+    notifyListeners();
+  }
+
+  setBottomIndex(data) {
+    bottomIndex = data;
+    notifyListeners();
+  }
+
+  selectBackgroundColor(color) {
+    backgroundColor = color;
     notifyListeners();
   }
 

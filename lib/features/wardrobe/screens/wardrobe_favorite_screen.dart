@@ -3,6 +3,7 @@ import 'package:chom_tu/common_widgets/filter_bar_widget.dart';
 import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_controller.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_filter_tab_provider.dart';
+import 'package:chom_tu/features/wardrobe/providers/wardrobe_tab_status_provider.dart';
 import 'package:chom_tu/features/wardrobe/widgets/wardrobe_color_filter_tab_widget.dart';
 import 'package:chom_tu/features/wardrobe/widgets/wardrobe_sort_filter_tab_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class WardrobeFavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: true);
+    var tabStatus = Provider.of<WardrobeTabStatusProvider>(context, listen: false);
     
     List<Widget> filterTabContent = [
       wardrobSortFilterTab(context),
@@ -36,7 +38,7 @@ class WardrobeFavoriteScreen extends StatelessWidget {
         title: Text('Favorite', style: Theme.of(context).textTheme.headline1),
         iconTheme: Theme.of(context).iconTheme,
         backgroundColor: kColorsWhite,
-        bottom: filterBar(context, filterTab),
+        bottom: filterBar(context, tabStatus),
         leading: IconButton(
           icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
           onPressed: (){
@@ -67,38 +69,42 @@ class WardrobeFavoriteScreen extends StatelessWidget {
             },
           ),
     
-          filterTab.tabStatus ?
-            SizedBox(
-              height: double.infinity,
-              child: Column(
-                children: [
-                  // Create Filter Area
-                  Container(
-                    height: filterTab.indexTab == 0 ? MediaQuery.of(context).size.width * 0.28 : MediaQuery.of(context).size.width * 0.47,
-                    color: kColorsWhite,
-                    child: filterTabContent[filterTab.indexTab],
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: (){
-                        filterTab.filterTab(filterTab.indexTab);
-                      },
-                      child: Container(
-                        color: Colors.black.withOpacity(0.5),
+          Consumer<WardrobeTabStatusProvider>(
+            builder: (_, value, __) {
+              return tabStatus.status ?
+                SizedBox(
+                  height: double.infinity,
+                  child: Column(
+                    children: [
+                      // Create Filter Area
+                      Container(
+                        height: tabStatus.indexTab == 0 ? MediaQuery.of(context).size.width * 0.28 : MediaQuery.of(context).size.width * 0.47,
+                        color: kColorsWhite,
+                        child: filterTabContent[tabStatus.indexTab],
                       ),
-                    )
-                  )
-                ],
-              ),
-            )
-          : Container()
+                      Expanded(
+                        child: InkWell(
+                          onTap: (){
+                            tabStatus.tab(tabStatus.indexTab);
+                          },
+                          child: Container(
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        )
+                      )
+                    ],
+                  ),
+                )
+              : Container();
+            }
+          )
         ],
       )
     );
   }
 
   // Create Filter Bar
-  PreferredSize filterBar(context, WardrobeFilterTabProvider filterTab) {
+  PreferredSize filterBar(context, WardrobeTabStatusProvider tabStatus) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(60),
       child: Container(
@@ -110,15 +116,15 @@ class WardrobeFavoriteScreen extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                filterTab.filterTab(0);
+                tabStatus.tab(0);
               },
-              child: filterTab.indexTab == 0 && filterTab.tabStatus == true ? const FilterBarWidget(title: 'Sort', status: true) : const FilterBarWidget(title: 'Sort', status: false)
+              child: tabStatus.indexTab == 0 && tabStatus.status == true ? const FilterBarWidget(title: 'Sort', status: true) : const FilterBarWidget(title: 'Sort', status: false)
             ),
             InkWell(
               onTap: () {
-                filterTab.filterTab(1);
+                tabStatus.tab(1);
               },
-              child: filterTab.indexTab == 1 && filterTab.tabStatus == true ? const FilterBarWidget(title: 'Color', status: true) : const FilterBarWidget(title: 'Color', status: false)
+              child: tabStatus.indexTab == 1 && tabStatus.status == true ? const FilterBarWidget(title: 'Color', status: true) : const FilterBarWidget(title: 'Color', status: false)
             )
           ],
         ),
