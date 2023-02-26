@@ -7,6 +7,7 @@ class WardrobeFilterTabProvider with ChangeNotifier {
   List<String> colors = [];
   List<String> types = [];
   Map<String, List<String>> bottomTypes = {"skirts": [], "shorts": [], "trousers": []};
+  String bottom = 'Skirts';
 
   setCategory(String value) {
     category = value;
@@ -24,6 +25,11 @@ class WardrobeFilterTabProvider with ChangeNotifier {
   }
   removeAllColors() {
     colors = [];
+    notifyListeners();
+  }
+
+  setBottom(String data) {
+    bottom = data;
     notifyListeners();
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
 
-typedef PointMoveCallback = void Function(Offset offset, Key? key);
+typedef PointMoveCallback = void Function(Offset offset, Key? key, BuildContext context);
 
 class OverlayedWidget extends StatelessWidget {
   final Widget child;
@@ -19,7 +19,7 @@ class OverlayedWidget extends StatelessWidget {
     return Listener(
       onPointerMove: (event) {
         offset = event.position;
-        onDragUpdate(offset, key);
+        onDragUpdate(offset, key, context);
       },
       child: MatrixGestureDetector(
         onMatrixUpdate: (m, tm, sm, rm) {
@@ -29,7 +29,7 @@ class OverlayedWidget extends StatelessWidget {
           onDragStart();
         },
         onScaleEnd: () {
-          onDragEnd(offset, key);
+          onDragEnd(offset, key, context);
         },
         child: AnimatedBuilder(
           animation: notifier,

@@ -19,14 +19,15 @@ class WardrobeController {
     throw Exception('Fail');
   }
 
-  Future<List<WardrobeModel>> getAllWardrobes(category, colors, types, sort, [isBottom = false]) async {
+  Future<List<WardrobeModel>> getAllWardrobes(category, colors, types, sort, wardrobeIdList, bottom, [isOutfit = false]) async {
     var order = [["updatedAt", "DESC"]];
     if (sort == 'Oldest') {
       order = [["updatedAt", "ASC"]];
     }
 
-    String data = jsonEncode({"category": category, "color": colors, "type": types, "isBottom": isBottom, "order": order});
+    String data = jsonEncode({"category": category, "color": colors, "type": types, "wardrobeIdList": wardrobeIdList, "bottom": bottom, "isOutfit": isOutfit, "order": order});
     final response = await http.post(Uri.parse("$wardrobeURLAPI/all_wardrobe"), headers: setHeaders(), body: data);
+
     if (response.statusCode == 200) {
       return wardrobeListModelFromJson(response.body);
     }

@@ -23,12 +23,17 @@ class ColorBarWidget extends StatelessWidget {
           ...List.generate(colors.length, (index) {
             return InkWell(
               onTap: (){
-                if(filterTab.colors.contains(colors[index])) {
-                  filterTab.removeColors(colors[index]);
+                if (outfitProvider.outfitIndex != 0) {
+                  if (filterTab.colors.contains(colors[index])) {
+                    filterTab.removeColors(colors[index]);
+                  } else {
+                    filterTab.addColors(colors[index]);
+                  }
                 } else {
-                  filterTab.addColors(colors[index]);
+                  outfitProvider.selectBackgroundColor(colorCodes[index]);
                 }
-                print('>>>>>> ${filterTab.colors}');
+                print(filterTab.colors.contains(colors[index]) || outfitProvider.backgroundColor == colorCodes[index]);
+                
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
@@ -37,11 +42,11 @@ class ColorBarWidget extends StatelessWidget {
                   height: 24,
                   width: 24,
                   decoration: BoxDecoration(
-                    color: filterTab.colors.contains(colors[index]) ? colorCodes[index].withOpacity(0) : colorCodes[index],
+                    color: (filterTab.colors.contains(colors[index]) || (outfitProvider.backgroundColor == colorCodes[index] && outfitProvider.outfitIndex == 0)) ? colorCodes[index].withOpacity(0) : colorCodes[index],
                     borderRadius: const BorderRadius.all(Radius.circular(24)),
-                    border: Border.all(color: filterTab.colors.contains(colors[index]) ? kColorsBlack : kColorsLightGrey)
+                    border: Border.all(color: (filterTab.colors.contains(colors[index]) || (outfitProvider.backgroundColor == colorCodes[index] && outfitProvider.outfitIndex == 0)) ? kColorsBlack : kColorsLightGrey)
                   ),
-                  child: filterTab.colors.contains(colors[index]) ? Container(
+                  child: (filterTab.colors.contains(colors[index]) || (outfitProvider.backgroundColor == colorCodes[index] && outfitProvider.outfitIndex == 0)) ? Container(
                     height: 16,
                     width: 16,
                     decoration: BoxDecoration(
@@ -54,6 +59,7 @@ class ColorBarWidget extends StatelessWidget {
               ),
             );
           }),
+          outfitProvider.outfitIndex != 0 ?
           InkWell(
             onTap: (){
               if(filterTab.colors.contains('Multi')) {
@@ -74,7 +80,7 @@ class ColorBarWidget extends StatelessWidget {
                 child: filterTab.colors.contains('Multi') ? SvgPicture.asset('assets/icons/o9_multi_3.svg') : SvgPicture.asset('assets/icons/o9_multi_2.svg'),
               ),
             )
-          )
+          ) : Container()
         ]
       )
     );

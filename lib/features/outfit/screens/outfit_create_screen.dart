@@ -9,7 +9,7 @@ import 'package:chom_tu/features/outfit/widgets/panel_widget.dart';
 import 'package:chom_tu/features/outfit/widgets/type_bar_widget.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_filter_tab_provider.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -24,14 +24,23 @@ class OutfitCreateScreen extends StatefulWidget {
 class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //   statusBarBrightness: Brightness.dark,
-    //   statusBarIconBrightness: Brightness.light,
-    //   statusBarColor: Colors.transparent,
-    // ));
 
     var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: true);
     var provider = Provider.of<OutfitCreateProvider>(context, listen: false);
+
+    if (provider.tabStatus) {
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light,
+        statusBarColor: kColorsBlack,
+      ));
+    } else {
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.transparent,
+      ));
+    }
 
     return Material(
       child: SlidingUpPanel(
@@ -65,10 +74,6 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
                 },
               ),
               actions: [
-                // IconButton(
-                //   onPressed: (){},
-                //   icon: SvgPicture.asset('assets/icons/o1_true_1.svg', color: kColorsBlack)
-                // )
                 Padding(
                   padding: const EdgeInsets.only(right: 22, top: 22),
                   child: InkWell(
@@ -78,7 +83,7 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
                 )
               ],
             ),
-            bottomNavigationBar: provider.tabStatus ? null : outfitNavigationBar(context, provider),
+            bottomNavigationBar: provider.tabStatus ? null : outfitNavigationBar(context, provider, filterTab),
             body: Padding(
               padding: provider.tabStatus ? const EdgeInsets.only(top: 60) : const EdgeInsets.only(top: 0),
               child: Align(
@@ -141,7 +146,7 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
     );
   }
 
-  Widget outfitNavigationBar(context, OutfitCreateProvider provider) {
+  Widget outfitNavigationBar(context, OutfitCreateProvider provider, WardrobeFilterTabProvider filterTab) {
     return NavigationBarTheme(
       data: NavigationBarThemeData(
         indicatorColor: kColorsWhite,
@@ -163,6 +168,9 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
             backgroundColor: kColorsWhite,
             onDestinationSelected: (index) {
               setState(() {
+                if (index != 0) {
+                  filterTab.setCategory(category[index-1]);
+                }
                 provider.selectTab();
                 provider.setIndex(index);
               });
@@ -212,7 +220,11 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
               children: [
                 outfitProvider.outfitIndex != 0 ? TypeBarWidget(outfitProvider: outfitProvider) : Container(),
                 const SizedBox(height: 5),
-                ColorBarWidget(outfitProvider: outfitProvider),
+                Consumer<OutfitCreateProvider>(
+                  builder: (_, value, __) {
+                    return ColorBarWidget(outfitProvider: outfitProvider);
+                  }
+                ),
                 const SizedBox(height: 5),
               ],
             ),
@@ -239,8 +251,12 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
             InkWell(
               onTap: () {
                 setState(() {
-                  // todo: create previous item
-                  outfitProvider.items = [];
+                  if (outfitProvider.outfitIndex != 0) {
+                    outfitProvider.notConfirmWardrobe(context);
+                  }else {
+                    outfitProvider.notConfirmBackground();
+                  }
+                  
                   outfitProvider.selectTab();
                   resetFilterTab(filterTab);
                 });
@@ -255,6 +271,7 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
                     onTap: (){
                       setState(() {
                         resetFilterTab(filterTab);
+                        filterTab.setBottom(bottomTypes[index]);
                         outfitProvider.setBottomIndex(index);
                       });
                     },
@@ -278,6 +295,12 @@ class _OutfitCreateScreenState extends State<OutfitCreateScreen> {
             InkWell(
               onTap: () {
                 setState(() {
+                  if (outfitProvider.outfitIndex != 0) {
+                    outfitProvider.confirmWardrobe();
+                  }else {
+                    outfitProvider.confirmBackground();
+                  }
+
                   outfitProvider.selectTab();
                   resetFilterTab(filterTab);
                 });

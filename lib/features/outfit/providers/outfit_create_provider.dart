@@ -3,6 +3,7 @@ import 'package:chom_tu/features/outfit/providers/delete_item_provider.dart';
 import 'package:chom_tu/features/outfit/providers/is_delete_btn_active_provider.dart';
 import 'package:chom_tu/features/outfit/providers/show_delete_btn_provider.dart';
 import 'package:chom_tu/features/outfit/widgets/overlayed_widget.dart';
+import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,11 +14,16 @@ class OutfitCreateProvider with ChangeNotifier {
   int bottomIndex = 0;
 
   Color backgroundColor = kColorsGrey;
-  String? top, bottom, set, shoes, accessory;
-  Widget? topW;
+  Color notConfirmBackgroundColor = kColorsGrey;
   bool showDeleteBtn = false;
   bool isDeleteBtnActive = false;
+
+  Widget? item;
   List<Widget> items = [];
+
+  List<String> notConfirmList = [];
+  // collect Strings for filters wardrobe
+  List<String> confirmList = [];
 
   selectTab() {
     tabStatus == true ? tabStatus = false : tabStatus = true;
@@ -39,43 +45,54 @@ class OutfitCreateProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  selectTop(top, context, key) {
+  selectWardrobe(WardrobeModel wardrobe, context) async {
     var providerShowDeleteBtn = Provider.of<ShowDeleteBtnProvider>(context, listen: false);
     var providerIsDeleteBtnActive = Provider.of<IsDeleteBtnActiveProvider>(context, listen: false);
     var providerDeleteItem = Provider.of<DeleteItemProvider>(context, listen: false);
 
-    this.top = top;
-    topW = SizedBox(
-      width: 150,
+    notConfirmList.add(wardrobe.id.toString());
+    confirmList.add(wardrobe.id.toString());
+
+    item = Container(
       height: 150,
-      child: Image.asset(top, fit: BoxFit.cover,),
+      width: 150,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(wardrobe.wardrobeImg!),
+          fit: BoxFit.cover,
+        ),
+      ),
     );
 
     items.add(OverlayedWidget(
-      key: Key(key.toString()),
-      child: topW!,
+      key: Key(wardrobe.id.toString()),
+      child: item!,
       onDragStart: (){
         if(!showDeleteBtn) {
           showDeleteBtn = true;
           providerShowDeleteBtn.setShowDeleteBtn(true);
         }  
       },
-      onDragEnd: (offset, key){
+      onDragEnd: (offset, key, context){
         if(showDeleteBtn) {
           showDeleteBtn = false;
           providerShowDeleteBtn.setShowDeleteBtn(false);
         }
 
+        // Delete Item
         if(offset.dy > MediaQuery.of(context).size.width - 33 && 
           offset.dx > (MediaQuery.of(context).size.width/2) - 18 && offset.dx < (MediaQuery.of(context).size.width/2) + 18) {
+          confirmList.remove((key.toString())[3]);
           items.removeWhere((widget) => widget.key == key);
+
+          if(notConfirmList.contains((key.toString())[3])) {
+            notConfirmList.remove((key.toString())[3]);
+          }
           providerDeleteItem.setDeleteItem();
+          notifyListeners();
         }
       },
-      onDragUpdate: (offset, key){
-        // List<Map<String, String>> outfitDetail = [{'key': key.toString(), 'cat': 'Top', 'color': 'Pink', 'position': offset.toString()}];
-        // print(outfitDetail);
-
+      onDragUpdate: (offset, key, context){
         if(offset.dy > MediaQuery.of(context).size.width - 33 && 
           offset.dx > (MediaQuery.of(context).size.width/2) - 18 && offset.dx < (MediaQuery.of(context).size.width/2) + 18) {
           if(!isDeleteBtnActive) {
@@ -93,25 +110,29 @@ class OutfitCreateProvider with ChangeNotifier {
     ));
     notifyListeners();
   }
-  
-  // SelectBottom(bottom) {
-  //   this.bottom = bottom;
-  //   notifyListeners();
-  // }
 
-  // SelectSet(set) {
-  //   this.set = set;
-  //   notifyListeners();
-  // }
+  confirmWardrobe() {
+    notConfirmList = [];
+  }
 
-  // Selectshoes(shoes) {
-  //   this.shoes = shoes;
-  //   notifyListeners();
-  // }
+  notConfirmWardrobe(context) {
+    var providerDeleteItem = Provider.of<DeleteItemProvider>(context, listen: false);
 
-  // SelectAccessory(accessory) {
-  //   this.accessory = accessory;
-  //   notifyListeners();
-  // }
+    for (var key in notConfirmList) {
+      confirmList.remove(key);
+      items.removeWhere((widget) => widget.key == Key(key));
+    }
+    
+    providerDeleteItem.setDeleteItem();
+  }
 
+  confirmBackground() {
+    notConfirmBackgroundColor = backgroundColor;
+    notifyListeners();
+  }
+
+  notConfirmBackground() {
+    backgroundColor = notConfirmBackgroundColor;
+    notifyListeners();
+  }
 }

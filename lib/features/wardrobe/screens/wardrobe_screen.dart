@@ -69,8 +69,8 @@ class WardrobeScreen extends StatelessWidget {
         children: [
           FutureBuilder(
             future: filterTab.category != 'Bottom' ? 
-              WardrobeController().getAllWardrobes(filterTab.category, filterTab.colors, filterTab.types, filterTab.sort)
-              : WardrobeController().getAllWardrobes(filterTab.category, filterTab.colors, filterTab.bottomTypes, filterTab.sort, true),
+              WardrobeController().getAllWardrobes(filterTab.category, filterTab.colors, filterTab.types, filterTab.sort, [], filterTab.bottom)
+              : WardrobeController().getAllWardrobes(filterTab.category, filterTab.colors, filterTab.bottomTypes, filterTab.sort, [], filterTab.bottom),
             builder: (BuildContext context, AsyncSnapshot<List<WardrobeModel>> snapshot) {
               if(snapshot.hasError) {
                 return Center(
