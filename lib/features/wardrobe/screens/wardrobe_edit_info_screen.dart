@@ -67,7 +67,7 @@ class WardrobeEditInfoScreen extends StatelessWidget {
               );
             }
           ),
-          line(context),
+          line(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22),
             child: Consumer<WardrobeProvider>(

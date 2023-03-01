@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-Widget outfitStyleFilterTab(context) {
+Widget outfitStyleFilterTab(context, styles) {
   var filterTab = Provider.of<OutfitFilterTabProvider>(context, listen: false);
-  List<String> styles = ['Y2K', 'Cute', 'Decora', 'E-girl', 'Fairy', 'Party', 'Sexy', 'Vintage', 'Punk', 'Sporty', 'Winter', 'Minimal'];
 
   return Stack(
     children: [
@@ -68,3 +67,23 @@ Widget outfitStyleFilterTab(context) {
     ],
   );
 }
+
+  // FutureBuilder(
+  //   future: OutfitController().getStyle(2),
+  //   builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+  //     if(snapshot.hasError) {
+  //       return Center(
+  //         child: Text(snapshot.error.toString()),
+  //       );
+  //     }
+  //     else if(snapshot.connectionState == ConnectionState.done) {
+  //       List<String> styles = snapshot.data!;
+  //       return body(styles, context);
+  //     }
+  //     else {
+  //       return const Center(
+  //         child: CircularProgressIndicator(),
+  //       );
+  //     }
+  //   },
+  // );

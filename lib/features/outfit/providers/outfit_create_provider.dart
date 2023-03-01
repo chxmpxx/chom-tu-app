@@ -4,17 +4,20 @@ import 'package:chom_tu/features/outfit/providers/is_delete_btn_active_provider.
 import 'package:chom_tu/features/outfit/providers/show_delete_btn_provider.dart';
 import 'package:chom_tu/features/outfit/widgets/overlayed_widget.dart';
 import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
+import 'package:chom_tu/utils/get_value_from_key_type.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OutfitCreateProvider with ChangeNotifier {
 
+  String? imagePath;
+
   bool tabStatus = false;
   int outfitIndex = 0;
   int bottomIndex = 0;
 
-  Color backgroundColor = kColorsGrey;
-  Color notConfirmBackgroundColor = kColorsGrey;
+  Color backgroundColor = kColorsCream;
+  Color notConfirmBackgroundColor = kColorsCream;
   bool showDeleteBtn = false;
   bool isDeleteBtnActive = false;
 
@@ -24,6 +27,9 @@ class OutfitCreateProvider with ChangeNotifier {
   List<String> notConfirmList = [];
   // collect Strings for filters wardrobe
   List<String> confirmList = [];
+
+  Map<String, double> offsets = {'dx': 0, 'dy': 0};
+  Map<Key, Map<String, double>> itemsOffsets = {};
 
   selectTab() {
     tabStatus == true ? tabStatus = false : tabStatus = true;
@@ -52,6 +58,7 @@ class OutfitCreateProvider with ChangeNotifier {
 
     notConfirmList.add(wardrobe.id.toString());
     confirmList.add(wardrobe.id.toString());
+    itemsOffsets[Key(wardrobe.id.toString())] = offsets;
 
     item = Container(
       height: 150,
@@ -74,6 +81,10 @@ class OutfitCreateProvider with ChangeNotifier {
         }  
       },
       onDragEnd: (offset, key, context){
+        offsets["dx"] = offset.dx;
+        offsets["dy"] = offset.dy;
+        itemsOffsets[key!] = offsets;
+
         if(showDeleteBtn) {
           showDeleteBtn = false;
           providerShowDeleteBtn.setShowDeleteBtn(false);
@@ -82,11 +93,11 @@ class OutfitCreateProvider with ChangeNotifier {
         // Delete Item
         if(offset.dy > MediaQuery.of(context).size.width - 33 && 
           offset.dx > (MediaQuery.of(context).size.width/2) - 18 && offset.dx < (MediaQuery.of(context).size.width/2) + 18) {
-          confirmList.remove((key.toString())[3]);
+          confirmList.remove(getValueFromKeyType(key));
           items.removeWhere((widget) => widget.key == key);
 
-          if(notConfirmList.contains((key.toString())[3])) {
-            notConfirmList.remove((key.toString())[3]);
+          if(notConfirmList.contains(getValueFromKeyType(key))) {
+            notConfirmList.remove(getValueFromKeyType(key));
           }
           providerDeleteItem.setDeleteItem();
           notifyListeners();

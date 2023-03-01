@@ -6,6 +6,7 @@ import 'package:chom_tu/features/admin/screen/admin_user_screen.dart';
 import 'package:chom_tu/features/auth/screen/sign_up_screen.dart';
 import 'package:chom_tu/dashboard_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_create_screen.dart';
+import 'package:chom_tu/features/outfit/screens/outfit_edit_info_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_favorite_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_info_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_screen.dart';
@@ -41,6 +42,7 @@ const routeWardrobeEditInfo = '/wardrobe_edit_info';
 
 const routeOutfit = '/outfit';
 const routeOutfitInfo = '/outfit_info';
+const routeOutfitEditInfo = '/outfit_edit_info';
 const routeOutfitCreate = '/outfit_create';
 const routeOutfitFavorite = '/outfit_favorite';
 
@@ -105,7 +107,14 @@ class Routes {
       case routeOutfitInfo:
         return PageTransition(
           child: const OutfitInfoScreen(), 
-          type: PageTransitionType.rightToLeft
+          type: PageTransitionType.rightToLeft,
+          settings: settings
+        );
+      case routeOutfitEditInfo:
+        return PageTransition(
+          child: const OutfitEditInfoScreen(), 
+          type: PageTransitionType.rightToLeft,
+          settings: settings
         );
       case routeOutfitCreate:
         return PageTransition(
@@ -181,7 +190,7 @@ class Routes {
       // Login
       default:
         return PageTransition(
-          child: const OutfitCreateScreen(),
+          child: const DashboardScreen(),
           type: PageTransitionType.rightToLeft
         );
     }

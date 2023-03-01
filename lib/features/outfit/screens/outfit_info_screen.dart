@@ -1,12 +1,24 @@
+import 'dart:convert';
+
+import 'package:chom_tu/common_widgets/line_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/outfit/models/outfit_model.dart';
+import 'package:chom_tu/features/outfit/providers/outfit_controller.dart';
+import 'package:chom_tu/features/outfit/providers/outfit_fav_btn_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class OutfitInfoScreen extends StatelessWidget {
   const OutfitInfoScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var outfitFavBtnProvider = Provider.of<OutfitFavBtnProvider>(context, listen: false);
+    Map<String, dynamic> arg = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final outfitId = arg["id"];
+    late OutfitModel outfit;
+
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
@@ -24,7 +36,7 @@ class OutfitInfoScreen extends StatelessWidget {
         leading: IconButton(
           icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
           onPressed: (){
-            Navigator.pop(context);
+            Navigator.pushNamed(context, arg["route"]);
           },
         ),
         actions: [
@@ -34,46 +46,84 @@ class OutfitInfoScreen extends StatelessWidget {
           )
         ],
       ),
-      body: ListView(
-        children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: kColorsGrey
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Cute', style: Theme.of(context).textTheme.headline1),
-                    IconButton(
-                      onPressed: (){},
-                      icon: SvgPicture.asset('assets/icons/a1_heart_2.svg', color: kColorsRed)
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  children: [
-                    Text('Detail', style: Theme.of(context).textTheme.headline2),
-                    const SizedBox(width: 48),
-                    Text('Cafe outfit 🍭🍭', style: Theme.of(context).textTheme.headline5),
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
+      body: FutureBuilder(
+        future: OutfitController().getOneOutfit(outfitId),
+        builder: (BuildContext context, AsyncSnapshot<OutfitModel> snapshot) {
+          if(snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
+          else if(snapshot.connectionState == ConnectionState.done) {
+            outfit = snapshot.data!;
+            outfitFavBtnProvider.isFavBtn = outfit.isFavorite!;
+            return outfitInfoBody(outfitId, outfit, context, outfitFavBtnProvider);
+          }
+          else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       )
     );
   }
+
+  Widget outfitInfoBody(outfitId, OutfitModel outfit, context, OutfitFavBtnProvider outfitFavBtnProvider) {
+    return ListView(
+      children: [
+        AspectRatio(
+          aspectRatio: 1,
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(outfit.outfitImg!),
+                fit: BoxFit.cover,
+              ),
+            ),
+          )
+        ),
+        line(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 22),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(outfit.style, style: Theme.of(context).textTheme.headline1),
+                  Consumer<OutfitFavBtnProvider>(
+                    builder: (_, value, __) {
+                      return IconButton(
+                        onPressed: () async {
+                          String data = jsonEncode({"userId": 2, "is_favorite": !outfitFavBtnProvider.isFavBtn});
+                          await OutfitController().favOutfit(outfitId, data);
+                          outfitFavBtnProvider.setIsFavBtn(!outfitFavBtnProvider.isFavBtn);
+                        },
+                        icon: outfitFavBtnProvider.isFavBtn ? 
+                          SvgPicture.asset('assets/icons/a1_heart_2.svg', color: kColorsRed)
+                          : SvgPicture.asset('assets/icons/a1_heart_1.svg', color: kColorsBlack)
+                      );
+                    }
+                  )
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Text('Detail', style: Theme.of(context).textTheme.headline2),
+                  const SizedBox(width: 48),
+                  Text(outfit.detail ?? 'None', style: Theme.of(context).textTheme.headline5),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
 }

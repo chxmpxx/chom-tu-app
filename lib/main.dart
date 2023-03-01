@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:chom_tu/features/admin/providers/admin_controller.dart';
 import 'package:chom_tu/features/admin/providers/admin_report_filter_tab_provider.dart';
 import 'package:chom_tu/features/admin/providers/admin_user_filter_tab_provider.dart';
+import 'package:chom_tu/features/outfit/providers/outfit_fav_btn_provider.dart';
 import 'package:chom_tu/features/outfit/providers/outfit_tab_status_provider.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_fav_btn_provider.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_tab_status_provider.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => DeleteItemProvider()),
         ChangeNotifierProvider(create: (context) => OutfitFilterTabProvider()),
         ChangeNotifierProvider(create: (context) => OutfitTabStatusProvider()),
+        ChangeNotifierProvider(create: (context) => OutfitFavBtnProvider()),
 
         ChangeNotifierProvider(create: (context) => AdminUserFilterTabProvider()),
         ChangeNotifierProvider(create: (context) => AdminReportFilterTabProvider()),

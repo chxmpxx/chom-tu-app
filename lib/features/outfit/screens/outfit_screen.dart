@@ -1,4 +1,7 @@
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/outfit/models/outfit_model.dart';
+import 'package:chom_tu/features/outfit/providers/outfit_controller.dart';
+import 'package:chom_tu/features/outfit/providers/outfit_filter_tab_provider.dart';
 import 'package:chom_tu/features/outfit/providers/outfit_tab_status_provider.dart';
 import 'package:chom_tu/features/outfit/widgets/outfit_sort_filter_tab.dart';
 import 'package:chom_tu/features/outfit/widgets/outfit_style_filter_tab.dart';
@@ -12,13 +15,9 @@ class OutfitScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var filterTab = Provider.of<OutfitFilterTabProvider>(context, listen: true);
     var tabStatus = Provider.of<OutfitTabStatusProvider>(context, listen: false);
-
-    List<Widget> filterTabContent = [
-      outfitSortFilterTab(context),
-      outfitStyleFilterTab(context),
-    ];
-
+    
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
@@ -52,45 +51,24 @@ class OutfitScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(0),
-            child: Material(
-              child: GridView.builder(
-                itemCount: 20,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
-                    child: Stack(
-                      children: [
-                        InkWell(
-                          onTap: (){
-                            Navigator.pushNamed(context, '/outfit_info');
-                          },
-                          child: Container(
-                            height: double.infinity,
-                            decoration: const BoxDecoration(
-                              color: kColorsGrey
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: -10,
-                          right: -10,
-                          child: IconButton(
-                            onPressed: (){},
-                            icon: SvgPicture.asset('assets/icons/o2_heart_1.svg')
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-              ),
-            ),
+          FutureBuilder(
+            future: OutfitController().getAllOutfits(filterTab.sort, filterTab.styles),
+            builder: (BuildContext context, AsyncSnapshot<List<OutfitModel>> snapshot) {
+              if(snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              }
+              else if(snapshot.connectionState == ConnectionState.done) {
+                List<OutfitModel> outfitList = snapshot.data!;
+                return outfitBody(outfitList);
+              }
+              else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
           ),
 
           Consumer<OutfitTabStatusProvider>(
@@ -101,10 +79,34 @@ class OutfitScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       // Create Filter Area
-                      Container(
-                        height: tabStatus.indexTab == 0 ? MediaQuery.of(context).size.width * 0.28 : MediaQuery.of(context).size.width * 0.47,
+                      tabStatus.indexTab == 0 ? Container(
+                        height: MediaQuery.of(context).size.width * 0.28,
                         color: kColorsWhite,
-                        child: filterTabContent[tabStatus.indexTab],
+                        child: filterTabContent([], context)[0],
+                      )
+                      : FutureBuilder(
+                        future: OutfitController().getStyle(2),
+                        builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+                          if(snapshot.hasError) {
+                            return Center(
+                              child: Text(snapshot.error.toString()),
+                            );
+                          }
+                          else if(snapshot.connectionState == ConnectionState.done) {
+                            List<String> styles = snapshot.data!;
+                            return Container(
+                              height: MediaQuery.of(context).size.width * 0.47,
+                              color: kColorsWhite,
+                              child: filterTabContent(styles, context)[1],
+                            );
+                          }
+                          else {
+                            return Container(
+                              height: MediaQuery.of(context).size.width * 0.47,
+                              color: kColorsWhite
+                            );
+                          }
+                        },
                       ),
                       Expanded(
                         child: InkWell(
@@ -158,5 +160,61 @@ class OutfitScreen extends StatelessWidget {
         )
       ),
     );
+  }
+
+  Widget outfitBody(List<OutfitModel> outfitList) {
+    return Padding(
+      padding: const EdgeInsets.all(0),
+      child: GridView.builder(
+        itemCount: outfitList.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          OutfitModel outfit = outfitList[index];
+
+          return Padding(
+            padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
+            child: Stack(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/outfit_info', arguments: {"id": outfit.id, "route": '/outfit'});
+                  },
+                  child: Container(
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(outfit.outfitImg!),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                ),
+                Positioned(
+                  top: -10,
+                  right: -10,
+                  child: IconButton(
+                    onPressed: (){},
+                    icon: outfit.isFavorite! ?
+                      SvgPicture.asset('assets/icons/o2_heart_2.svg')
+                      : SvgPicture.asset('assets/icons/o2_heart_1.svg')
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      ),
+    );
+  }
+
+  List<Widget> filterTabContent(styles, context) {
+    List<Widget> filterTabContent = [
+      outfitSortFilterTab(context),
+      outfitStyleFilterTab(context, styles),
+    ];
+    return filterTabContent;
   }
 }

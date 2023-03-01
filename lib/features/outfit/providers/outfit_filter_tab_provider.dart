@@ -24,4 +24,10 @@ class OutfitFilterTabProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  removeAll() {
+    sort = 'Newest';
+    styles = [];
+    notifyListeners();
+  }
+
 }

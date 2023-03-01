@@ -32,8 +32,6 @@ class ColorBarWidget extends StatelessWidget {
                 } else {
                   outfitProvider.selectBackgroundColor(colorCodes[index]);
                 }
-                print(filterTab.colors.contains(colors[index]) || outfitProvider.backgroundColor == colorCodes[index]);
-                
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
