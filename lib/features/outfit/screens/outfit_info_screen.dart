@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:chom_tu/common_widgets/line_widget.dart';
+import 'package:chom_tu/common_widgets/show_dialog_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/outfit/models/outfit_model.dart';
 import 'package:chom_tu/features/outfit/providers/outfit_controller.dart';
+import 'package:chom_tu/features/outfit/providers/outfit_create_provider.dart';
 import 'package:chom_tu/features/outfit/providers/outfit_fav_btn_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,7 +17,10 @@ class OutfitInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    dashboardProvider.setCurrentIndex(1);
     var outfitFavBtnProvider = Provider.of<OutfitFavBtnProvider>(context, listen: false);
+    var outfitProvider = Provider.of<OutfitCreateProvider>(context, listen: false);
     Map<String, dynamic> arg = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final outfitId = arg["id"];
     late OutfitModel outfit;
@@ -36,12 +42,33 @@ class OutfitInfoScreen extends StatelessWidget {
         leading: IconButton(
           icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
           onPressed: (){
-            Navigator.pushNamed(context, arg["route"]);
+            arg["route"] == '/outfit_favorite' ? 
+            Navigator.pushNamedAndRemoveUntil(context, '/outfit_favorite', (route) => true)
+            : Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
           },
         ),
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: () {
+              showDialogWidget(
+                context, 'Delete Photo', 'This photo will be deleted from your outfit.', 'Delete',
+                () async {
+                  await OutfitController().deleteOutfit(outfitId);
+                  arg["route"] == '/outfit_favorite' ? 
+                  Navigator.pushNamedAndRemoveUntil(context, '/outfit_favorite', (route) => true)
+                  : Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
+                }
+              );
+            },
+            icon: SvgPicture.asset('assets/icons/o9_bin_2.svg', color: kColorsBlack)
+          ),
+          IconButton(
+            onPressed: (){
+              outfitProvider.style = outfit.style;
+              outfitProvider.detail = outfit.detail;
+              outfitProvider.image = outfit.outfitImg!;
+              Navigator.pushNamed(context, '/outfit_edit_info', arguments: {"id": outfit.id, "route": arg["route"]});
+            },
             icon: SvgPicture.asset('assets/icons/a3_edit_1.svg', color: kColorsBlack)
           )
         ],

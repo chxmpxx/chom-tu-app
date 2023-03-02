@@ -20,7 +20,7 @@ Map<String, String> outfitModelToMap(OutfitModel data) {
     "user_id": data.userId.toString(),
     "style": data.style,
     "detail": data.detail!,
-    "bg_color": data.bgColor,
+    "bg_color": data.bgColor!,
   };
 }
 
@@ -31,7 +31,7 @@ class OutfitModel {
     required this.style,
     this.detail,
     this.isFavorite,
-    required this.bgColor,
+    this.bgColor,
     this.outfitImg,
     this.createdAt,
     this.updatedAt,
@@ -42,7 +42,7 @@ class OutfitModel {
   String style;
   String? detail;
   bool? isFavorite;
-  String bgColor;
+  String? bgColor;
   String? outfitImg;
   DateTime? createdAt;
   DateTime? updatedAt;

@@ -8,7 +8,8 @@ class TextFormFieldWidget extends StatelessWidget {
   final bool isPassword;
   final bool isAutofocus;
   final bool isCaption;
-  const TextFormFieldWidget({Key? key, required this.controller, required this.hintText, required this.validator, this.isPassword = false, this.isAutofocus = false, this.isCaption = false}) : super(key: key);
+  final bool isDetail;
+  const TextFormFieldWidget({Key? key, required this.controller, required this.hintText, required this.validator, this.isPassword = false, this.isAutofocus = false, this.isCaption = false, this.isDetail = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +45,12 @@ class TextFormFieldWidget extends StatelessWidget {
       ),
 
       validator: (value) {
-        if(value!.isEmpty) {
-          return isCaption ? null : validator;
+        if (value!.isEmpty) {
+          if (isDetail || isCaption) {
+            controller.text = 'None';
+            return null;
+          }
+          return validator;
         } return null;
       },
     );

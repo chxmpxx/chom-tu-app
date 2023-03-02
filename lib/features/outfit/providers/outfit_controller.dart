@@ -81,9 +81,29 @@ class OutfitController {
     throw Exception('Fail');
   }
 
+  Future<String> updateOutfit(id, Map<String, String> data) async {
+    final response = await http.put(Uri.parse("$outfitURLAPI/$id"), headers: setHeaders(), body: json.encode(data));
+    if (response.statusCode == 200) {
+      return response.body;
+    }
+    throw Exception('Fail');
+  }
+
   Future<String> favOutfit(id, data) async {
     final response = await http.post(Uri.parse("$outfitURLAPI/fav_outfit/$id"), headers: setHeaders(), body: data);
     if (response.statusCode == 200) {
+      return response.body;
+    }
+    throw Exception('Fail');
+  }
+
+  Future<String> deleteOutfit(id) async {
+    final response = await http.delete(Uri.parse("$outfitURLAPI/$id"), headers: setHeaders());
+    if (response.statusCode == 200) {
+      final resCom = await http.delete(Uri.parse("$componentURLAPI/$id"), headers: setHeaders());
+      if (resCom.statusCode != 200) {
+        throw Exception('Fail');
+      }
       return response.body;
     }
     throw Exception('Fail');

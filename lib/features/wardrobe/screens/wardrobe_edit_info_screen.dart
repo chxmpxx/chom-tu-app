@@ -16,7 +16,8 @@ class WardrobeEditInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wardrobeId = ModalRoute.of(context)?.settings.arguments ?? '-1';
+    var arg = (ModalRoute.of(context)?.settings.arguments ?? {"id" : '-1'}) as Map<String, dynamic>;
+    final wardrobeId = arg["id"];
     var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
 
     return Scaffold(
@@ -45,7 +46,7 @@ class WardrobeEditInfoScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 22, top: 22),
             child: InkWell(
               onTap: (){
-                Navigator.pushNamed(context, '/wardrobe_camera_edit', arguments: wardrobeId);
+                Navigator.pushNamed(context, '/wardrobe_camera_edit', arguments: {'id': wardrobeId, 'route': arg["route"]});
               },
               child: Text('Next', style: Theme.of(context).textTheme.headline5)
             ),

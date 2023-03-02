@@ -21,6 +21,7 @@ class OutfitScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         shape: const Border(
           bottom: BorderSide(
             color: kColorsLightGrey,

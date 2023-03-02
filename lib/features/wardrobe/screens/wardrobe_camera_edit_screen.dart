@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_controller.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_provider.dart';
-import 'package:chom_tu/features/wardrobe/screens/wardrobe_screen.dart';
 import 'package:chom_tu/utils/create_file_from_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,8 +16,11 @@ class WardrobeCameraEditScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wardrobeId = ModalRoute.of(context)?.settings.arguments ?? '-1';
+    var arg = (ModalRoute.of(context)?.settings.arguments ?? {"id" : '-1'}) as Map<String, dynamic>;
+    final wardrobeId = arg["id"];
+
     var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
+    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
     WardrobeModel data;
 
     return Scaffold(
@@ -51,6 +54,8 @@ class WardrobeCameraEditScreen extends StatelessWidget {
                 if (wardrobeId == '-1') {
                   // new wardrobe (add)
                   await WardrobeController().addWardrobe(data, wardrobeProvider.currentPath);
+                  dashboardProvider.setCurrentIndex(0);
+                  Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
                 } else {
                   // edit wardrobe (update)
                   if (wardrobeProvider.isEditImage == false) {
@@ -60,16 +65,15 @@ class WardrobeCameraEditScreen extends StatelessWidget {
                     await WardrobeController().updateWardrobe(wardrobeId, data, wardrobeProvider.currentPath);
                   }
                   wardrobeProvider.isEditImage = false;
+                  Navigator.pushNamedAndRemoveUntil(context, '/wardrobe_info', (route) => true, arguments: {"id": wardrobeId, "route": arg["route"]});
                 }
-
-                Navigator.pushNamed(context, '/wardrobe');
               },
               child: Text('Save', style: Theme.of(context).textTheme.headline5)
             ),
           ),
         ],
       ),
-      bottomNavigationBar: cameraEditNavigationBar(context, wardrobeProvider, wardrobeId),
+      bottomNavigationBar: cameraEditNavigationBar(context, wardrobeProvider, wardrobeId, arg),
       body: Center(
         child: Consumer<WardrobeProvider>(
           builder: (_, value, __) {
@@ -88,7 +92,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
     );
   }
 
-  Widget cameraEditNavigationBar(context, wardrobeProvider, wardrobeId) {
+  Widget cameraEditNavigationBar(context, wardrobeProvider, wardrobeId, arg) {
     return Container(
       decoration: const BoxDecoration(
         color: kColorsWhite,
@@ -102,7 +106,7 @@ class WardrobeCameraEditScreen extends StatelessWidget {
         children: [
           InkWell(
             onTap: () async {
-              Navigator.pushNamed(context, '/wardrobe_edit_info', arguments: wardrobeId);
+              Navigator.pushNamed(context, '/wardrobe_edit_info', arguments: {'id': wardrobeId, 'route': arg["route"]});
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

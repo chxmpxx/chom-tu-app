@@ -1,9 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:chom_tu/common_widgets/line_widget.dart';
 import 'package:chom_tu/common_widgets/show_dialog_widget.dart';
 import 'package:chom_tu/constants/data_constant.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_controller.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_fav_btn_provider.dart';
@@ -17,6 +20,8 @@ class WardrobeInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    dashboardProvider.setCurrentIndex(0);
     var wardrobeProvider = Provider.of<WardrobeProvider>(context, listen: false);
     var wardrobeFavBtnProvider = Provider.of<WardrobeFavBtnProvider>(context, listen: false);
     Map<String, dynamic> arg = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
@@ -40,17 +45,22 @@ class WardrobeInfoScreen extends StatelessWidget {
         leading: IconButton(
           icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
           onPressed: (){
-            Navigator.pushNamed(context, arg["route"]);
+            arg["route"] == '/wardrobe_favorite' ? 
+            Navigator.pushNamedAndRemoveUntil(context, '/wardrobe_favorite', (route) => true)
+            : Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
           },
         ),
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async {
+              List<int> outfitIdList = await WardrobeController().getOutfitIdFromWardrobe(wardrobeId);
               showDialogWidget(
-                context, 'Delete Photo', 'This photo will be deleted from your wardrobe.', 'Delete',
+                context, 'Delete Photo', 'This photo and outfit photo (${outfitIdList.length}) will be deleted from your wardrobe.', 'Delete',
                 () async {
-                  await WardrobeController().deleteWardrobe(wardrobeId);
-                  Navigator.pushNamed(context, arg["route"]);
+                  await WardrobeController().deleteWardrobe(wardrobeId, outfitIdList);
+                  arg["route"] == '/wardrobe_favorite' ? 
+                  Navigator.pushNamedAndRemoveUntil(context, '/wardrobe_favorite', (route) => true)
+                  : Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
                 }
               );
             },
@@ -63,7 +73,7 @@ class WardrobeInfoScreen extends StatelessWidget {
               wardrobeProvider.setData('Color', wardrobe.color);
               wardrobeProvider.setData('Type', wardrobe.type);
               wardrobeProvider.setImage(wardrobe.wardrobeImg!);
-              Navigator.pushNamed(context, '/wardrobe_edit_info', arguments: wardrobe.id);
+              Navigator.pushNamed(context, '/wardrobe_camera_edit', arguments: {'id': wardrobe.id, 'route': arg["route"]});
             },
             icon: SvgPicture.asset('assets/icons/a3_edit_1.svg', color: kColorsBlack)
           )

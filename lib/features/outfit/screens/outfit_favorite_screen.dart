@@ -1,5 +1,6 @@
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/common_widgets/filter_bar_widget.dart';
+import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/outfit/models/outfit_model.dart';
 import 'package:chom_tu/features/outfit/providers/outfit_controller.dart';
 import 'package:chom_tu/features/outfit/providers/outfit_filter_tab_provider.dart';
@@ -15,6 +16,7 @@ class OutfitFavoriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
     var filterTab = Provider.of<OutfitFilterTabProvider>(context, listen: true);
     var tabStatus = Provider.of<OutfitTabStatusProvider>(context, listen: false);
 
@@ -38,7 +40,8 @@ class OutfitFavoriteScreen extends StatelessWidget {
           icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
           onPressed: (){
             filterTab.removeAll();
-            Navigator.pushNamed(context, '/outfit');
+            dashboardProvider.setCurrentIndex(1);
+            Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
           },
         ),
       ),
@@ -169,7 +172,7 @@ class OutfitFavoriteScreen extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, '/outfit_info', arguments: {"id": outfit.id, "route": '/outfit'});
+                    Navigator.pushNamed(context, '/outfit_info', arguments: {"id": outfit.id, "route": '/outfit_favorite'});
                   },
                   child: Container(
                     height: double.infinity,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chom_tu/constants/api_constant.dart';
+import 'package:chom_tu/features/outfit/providers/outfit_controller.dart';
 import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -56,6 +57,14 @@ class WardrobeController {
     throw Exception('Fail');
   }
 
+  Future<List<int>> getOutfitIdFromWardrobe(id) async {
+    final response = await http.get(Uri.parse("$wardrobeURLAPI/outfit_id_from_wardrobe/$id"), headers: setHeaders());
+    if (response.statusCode == 200) {
+      return List<int>.from(jsonDecode(response.body));
+    }
+    throw Exception('Fail');
+  }
+
   Future<String> updateWardrobe(wardrobeId, WardrobeModel data, [path = '-1']) async {
     var request = http.MultipartRequest('PUT', Uri.parse("$wardrobeURLAPI/$wardrobeId"));
     request.fields.addAll(wardrobeModelToMap(data));
@@ -81,9 +90,14 @@ class WardrobeController {
     throw Exception('Fail');
   }
 
-  Future<String> deleteWardrobe(id) async {
+  Future<String> deleteWardrobe(id, List<int> outfitIdList) async {
     final response = await http.delete(Uri.parse("$wardrobeURLAPI/$id"), headers: setHeaders());
     if (response.statusCode == 200) {
+
+      // Delete Outfit and Components
+      outfitIdList.forEach((outfitId) async {
+        await OutfitController().deleteOutfit(outfitId);
+      });
       return response.body;
     }
     throw Exception('Fail');

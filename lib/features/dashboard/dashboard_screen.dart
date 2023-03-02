@@ -1,4 +1,5 @@
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_screen.dart';
 import 'package:chom_tu/features/profile/screens/profile_screen.dart';
 import 'package:chom_tu/features/social/screens/social_screen.dart';
@@ -17,8 +18,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
-  int _currentIndex = 0;
+  int currentIndex = 0;
 
   final screens = [
     const WardrobeScreen(),
@@ -30,9 +30,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     var wardrobeFilterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: true);
+    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: true);
+    currentIndex = dashboardProvider.currentIndex;
 
     return Scaffold(
-      body: screens[_currentIndex],
+      body: screens[currentIndex],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           indicatorColor: kColorsWhite,
@@ -45,11 +47,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           height: 60,
           backgroundColor: kColorsWhite,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-          selectedIndex: _currentIndex,
+          selectedIndex: currentIndex,
           onDestinationSelected: (index) {
             setState(() {
               wardrobeFilterTab.removeAll();
-              _currentIndex = index;
+              dashboardProvider.setCurrentIndex(index);
             });
           },
           destinations: [

@@ -11,6 +11,9 @@ import 'package:provider/provider.dart';
 class OutfitCreateProvider with ChangeNotifier {
 
   String? imagePath;
+  String? image;
+  String? style;
+  String? detail;
 
   bool tabStatus = false;
   int outfitIndex = 0;
@@ -48,6 +51,15 @@ class OutfitCreateProvider with ChangeNotifier {
 
   selectBackgroundColor(color) {
     backgroundColor = color;
+    notifyListeners();
+  }
+
+  removeAllWardrobe() {
+    items = [];
+    notConfirmList = [];
+    confirmList = [];
+    offsets = {'dx': 0, 'dy': 0};
+    itemsOffsets = {};
     notifyListeners();
   }
 

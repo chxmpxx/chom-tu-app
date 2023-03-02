@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chom_tu/common_widgets/line_widget.dart';
 import 'package:chom_tu/common_widgets/text_form_field_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/outfit/models/outfit_model.dart';
 import 'package:chom_tu/features/outfit/providers/outfit_controller.dart';
 import 'package:chom_tu/features/outfit/providers/outfit_create_provider.dart';
@@ -15,10 +16,20 @@ class OutfitEditInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var outfitProvider = Provider.of<OutfitCreateProvider>(context, listen: false);
     final formKey = GlobalKey<FormState>();
+    var arg = (ModalRoute.of(context)?.settings.arguments ?? {"id" : '-1'}) as Map<String, dynamic>;
+    final outfitId = arg["id"];
+
+    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    var outfitProvider = Provider.of<OutfitCreateProvider>(context, listen: false);
+
     TextEditingController style = TextEditingController();
     TextEditingController detail = TextEditingController();
+
+    if (outfitId != '-1') {
+      style.text = outfitProvider.style!;
+      detail.text = outfitProvider.detail!;
+    }
 
     return GestureDetector(
       onTap: () {
@@ -50,12 +61,25 @@ class OutfitEditInfoScreen extends StatelessWidget {
               padding: const EdgeInsets.only(right: 22, top: 22),
               child: InkWell(
                 onTap: () async {
-                  OutfitModel data = OutfitModel(userId: 2, style: style.value.text, detail: detail.value.text, bgColor: outfitProvider.backgroundColor.toString());
                   if(formKey.currentState!.validate()) {
                     formKey.currentState!.save();
-
-                    await OutfitController().addOutfit(data, outfitProvider.imagePath, outfitProvider.itemsOffsets);
-                    Navigator.pushNamedAndRemoveUntil(context, '/outfit', (route) => false);
+                    if (outfitId == '-1') {
+                      // new outfit (add)
+                      OutfitModel data = OutfitModel(userId: 2, style: style.value.text, detail: detail.value.text, bgColor: outfitProvider.backgroundColor.toString());
+                      await OutfitController().addOutfit(data, outfitProvider.imagePath, outfitProvider.itemsOffsets);
+                      outfitProvider.removeAllWardrobe();
+                      dashboardProvider.setCurrentIndex(1);
+                      Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
+                    } else {
+                      // edit outfit (update)
+                      Map<String, String> data = {
+                        "style": style.text,
+                        "detail": detail.text
+                      };
+                      await OutfitController().updateOutfit(outfitId, data);
+                      outfitProvider.removeAllWardrobe();
+                      Navigator.pushNamedAndRemoveUntil(context, '/outfit_info', (route) => true, arguments: {"id": outfitId, "route": arg["route"]});
+                    }
                   }
                 },
                 child: Text('Save', style: Theme.of(context).textTheme.headline5)
@@ -71,7 +95,9 @@ class OutfitEditInfoScreen extends StatelessWidget {
                 aspectRatio: 1,
                 child: SizedBox(
                   width: double.infinity,
-                  child: Image.file(File(outfitProvider.imagePath!), fit: BoxFit.fill)
+                  child: outfitId == '-1' ?
+                    Image.file(File(outfitProvider.imagePath!), fit: BoxFit.fill)
+                    : Image.network(outfitProvider.image!, fit: BoxFit.cover)
                 )
               ),
               line(),
@@ -89,7 +115,7 @@ class OutfitEditInfoScreen extends StatelessWidget {
                     Row(
                       children: [
                         SizedBox(width: 93, child: Text("Detail", style: Theme.of(context).textTheme.headline2)),
-                        Expanded(child: TextFormFieldWidget(controller: detail, hintText: "Detail", validator: "Please enter detail")),
+                        Expanded(child: TextFormFieldWidget(controller: detail, hintText: "Detail", validator: "Please enter detail", isDetail: true,)),
                       ],
                     ),
                     const SizedBox(height: 10)

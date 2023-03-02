@@ -4,7 +4,7 @@ import 'package:chom_tu/features/admin/screen/admin_report_screen.dart';
 import 'package:chom_tu/features/admin/screen/admin_setting_screen.dart';
 import 'package:chom_tu/features/admin/screen/admin_user_screen.dart';
 import 'package:chom_tu/features/auth/screen/sign_up_screen.dart';
-import 'package:chom_tu/dashboard_screen.dart';
+import 'package:chom_tu/features/dashboard/dashboard_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_create_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_edit_info_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_favorite_screen.dart';
@@ -31,6 +31,8 @@ import 'package:page_transition/page_transition.dart';
 
 const routeLogin = '/login';
 const routeSignUp = '/sign_up';
+
+const routeDashboard = '/dashboard';
 
 const routeWardrobe = '/wardrobe';
 const routeWardrobeInfo = '/wardrobe_info';
@@ -63,6 +65,12 @@ const routeAdminSetting = '/admin_setting';
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case routeDashboard:
+        return PageTransition(
+          child: const DashboardScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+
       case routeWardrobe:
         return PageTransition(
           child: const WardrobeScreen(), 

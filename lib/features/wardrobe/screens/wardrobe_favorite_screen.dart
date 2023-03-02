@@ -1,5 +1,6 @@
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/common_widgets/filter_bar_widget.dart';
+import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_controller.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_filter_tab_provider.dart';
@@ -15,6 +16,7 @@ class WardrobeFavoriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
     var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: true);
     var tabStatus = Provider.of<WardrobeTabStatusProvider>(context, listen: false);
     
@@ -43,7 +45,8 @@ class WardrobeFavoriteScreen extends StatelessWidget {
           icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
           onPressed: (){
             filterTab.removeAll();
-            Navigator.pushNamed(context, '/wardrobe');
+            dashboardProvider.setCurrentIndex(0);
+            Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
           },
         ),
       ),
