@@ -47,6 +47,7 @@ class OutfitCreateScreen extends StatelessWidget {
             backgroundColor: kColorsBlack,
             elevation: 0,
             toolbarHeight: 60,
+            automaticallyImplyLeading: false
           ) : 
           AppBar(
             shape: const Border(

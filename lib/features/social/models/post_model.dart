@@ -1,0 +1,62 @@
+import 'dart:convert';
+
+List<PostModel> postListModelFromJson(String jsonData) {
+  final data = json.decode(jsonData);
+  return List<PostModel>.from(data.map((element) => PostModel.fromJson(element)));
+}
+
+PostModel postModelFromJson(String jsonData) {
+  final data = json.decode(jsonData);
+  return PostModel.fromJson(data);
+}
+
+String postModelToJson(PostModel data) {
+  final jsonData = data.toJson();
+  return json.encode(jsonData);
+}
+
+Map<String, String> postModelToMap(PostModel data) {
+  return {
+    "user_id": data.userId.toString(),
+    "img_detail": data.imgDetail,
+    "caption": data.caption ?? '',
+  };
+}
+
+class PostModel {
+  PostModel({
+    this.id,
+    required this.userId,
+    this.postImg,
+    required this.imgDetail,
+    this.caption,
+    this.updatedAt,
+    this.createdAt,
+  });
+
+  int? id;
+  int userId;
+  String? postImg;
+  String imgDetail;
+  String? caption;
+  DateTime? updatedAt;
+  DateTime? createdAt;
+
+  factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
+    id: json["id"],
+    userId: json["user_id"],
+    postImg: json["post_img"],
+    imgDetail: json["img_detail"],
+    caption: json["caption"],
+    updatedAt: DateTime.parse(json["updatedAt"]),
+    createdAt: DateTime.parse(json["createdAt"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "user_id": userId,
+    "post_img": postImg,
+    "img_detail": imgDetail,
+    "caption": caption,
+  };
+}

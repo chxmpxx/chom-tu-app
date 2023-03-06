@@ -1,4 +1,6 @@
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/social/models/post_model.dart';
+import 'package:chom_tu/features/social/provider/post_controller.dart';
 import 'package:chom_tu/features/social/widgets/post_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,6 +24,7 @@ class SocialScreen extends StatelessWidget {
         title: Text('ChomTu', style: Theme.of(context).textTheme.headline1),
         iconTheme: Theme.of(context).iconTheme,
         backgroundColor: kColorsWhite,
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: (){
@@ -41,11 +44,30 @@ class SocialScreen extends StatelessWidget {
           )
         ],
       ),
-      body: ListView(
-        children: const [
-          PostWidget(),
-          PostWidget()
-        ],
+      body: FutureBuilder(
+        future: PostController().getAllPosts(),
+        builder: (BuildContext context, AsyncSnapshot<List<PostModel>> snapshot) {
+          if(snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
+          else if(snapshot.connectionState == ConnectionState.done) {
+            List<PostModel> postList = snapshot.data!;
+            return ListView.builder(
+              itemCount: postList.length,
+              itemBuilder: (BuildContext context, int index) {
+                PostModel post = postList[index];
+                return PostWidget(post: post, userId: 2, route: '/dashboard');
+              }
+            );
+          }
+          else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       )
     );
   }

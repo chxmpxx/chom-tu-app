@@ -1,13 +1,28 @@
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/social/models/post_model.dart';
+import 'package:chom_tu/features/social/provider/post_provider.dart';
 import 'package:chom_tu/features/social/widgets/post_bottom_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class PostWidget extends StatelessWidget {
-  const PostWidget({Key? key}) : super(key: key);
+  final PostModel post;
+  final int userId;
+  final String route;
+  bool isMyPost;
+  PostWidget({Key? key, required this.post, required this.userId, required this.route, this.isMyPost = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var postProvider = Provider.of<PostProvider>(context, listen: false);
+    
+    if(post.userId == userId) {
+      isMyPost = true;
+    } else {
+      isMyPost = false;
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -32,7 +47,11 @@ class PostWidget extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: InkWell(
                         onTap: (){
-                          postBottomSheetWidget(context);
+                          if (isMyPost) {
+                            postProvider.setPostImage(post.postImg);
+                            postProvider.setCaption(post.caption);
+                          }
+                          postBottomSheetWidget(context, post.id!, route, isMyPost);
                         },
                         child: SvgPicture.asset('assets/icons/o6_more_1.svg')
                       )
@@ -43,15 +62,22 @@ class PostWidget extends StatelessWidget {
               const SizedBox(height: 11),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text('My outfit for christmas party 💅💅 ', style: Theme.of(context).textTheme.bodyText1)
+                child: Text(post.caption ?? '', style: Theme.of(context).textTheme.bodyText1)
               ),
             ],
           ),
         ),
-        Container(
-          color: kColorsGrey,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.width,
+        AspectRatio(
+          aspectRatio: 1,
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(post.postImg!),
+                fit: BoxFit.cover,
+              ),
+            ),
+          )
         ),
         Padding(
           padding: const EdgeInsets.only(left: 22, bottom: 11),

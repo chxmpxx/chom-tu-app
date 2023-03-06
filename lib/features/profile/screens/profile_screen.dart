@@ -1,5 +1,7 @@
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/profile/widgets/setting_bottom_sheet_widget.dart';
+import 'package:chom_tu/features/social/models/post_model.dart';
+import 'package:chom_tu/features/social/provider/post_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -22,10 +24,11 @@ class ProfileScreen extends StatelessWidget {
         title: Text('Arreeya', style: Theme.of(context).textTheme.headline1),
         iconTheme: Theme.of(context).iconTheme,
         backgroundColor: kColorsWhite,
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: (){},
-            icon: SvgPicture.asset('assets/icons/a1_add_1.svg', color: kColorsBlack)
+            icon: SvgPicture.asset('assets/icons/a3_edit_1.svg', color: kColorsBlack)
           ),
           IconButton(
             onPressed: (){
@@ -85,31 +88,60 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 22),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 20,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
-                child: InkWell(
-                  onTap: (){},
-                  child: Container(
-                    height: 50,
-                    decoration: const BoxDecoration(
-                      color: kColorsGrey
-                    ),
-                  ),
-                ),
-              );
-            }
-          ),
+          FutureBuilder(
+            future: PostController().getAllProfilePosts(2),
+            builder: (BuildContext context, AsyncSnapshot<List<PostModel>> snapshot) {
+              if(snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              }
+              else if(snapshot.connectionState == ConnectionState.done) {
+                List<PostModel> postList = snapshot.data!;
+                return allMyPostBody(postList);
+              }
+              else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          )
         ],
       ),
+    );
+  }
+
+  Widget allMyPostBody(List<PostModel> postList) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: postList.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 1
+      ),
+      itemBuilder: (BuildContext context, int index) {
+        PostModel post = postList[index];
+
+        return Padding(
+          padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
+          child: InkWell(
+            onTap: (){
+              Navigator.pushNamed(context, '/social_post_info', arguments: post.id);
+            },
+            child: Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(post.postImg!),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            )
+          ),
+        );
+      }
     );
   }
 }
