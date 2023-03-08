@@ -3,6 +3,7 @@ import 'package:chom_tu/features/admin/screen/admin_report_info_screen.dart';
 import 'package:chom_tu/features/admin/screen/admin_report_screen.dart';
 import 'package:chom_tu/features/admin/screen/admin_setting_screen.dart';
 import 'package:chom_tu/features/admin/screen/admin_user_screen.dart';
+import 'package:chom_tu/features/auth/screen/login_screen.dart';
 import 'package:chom_tu/features/auth/screen/sign_up_screen.dart';
 import 'package:chom_tu/features/dashboard/dashboard_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_create_screen.dart';
@@ -207,7 +208,7 @@ class Routes {
       // Login
       default:
         return PageTransition(
-          child: const DashboardScreen(),
+          child: const LoginScreen(),
           type: PageTransitionType.rightToLeft
         );
     }

@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:chom_tu/features/admin/providers/admin_controller.dart';
 import 'package:chom_tu/features/admin/providers/admin_report_filter_tab_provider.dart';
 import 'package:chom_tu/features/admin/providers/admin_user_filter_tab_provider.dart';
+import 'package:chom_tu/features/auth/providers/user_provider.dart';
 import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/outfit/providers/outfit_fav_btn_provider.dart';
 import 'package:chom_tu/features/outfit/providers/outfit_tab_status_provider.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => DashboardProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
 
         ChangeNotifierProvider(create: (context) => WardrobeProvider()),
         ChangeNotifierProvider(create: (context) => WardrobeFilterTabProvider()),

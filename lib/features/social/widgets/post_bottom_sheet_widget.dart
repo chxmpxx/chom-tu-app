@@ -1,8 +1,10 @@
+import 'package:chom_tu/common_widgets/line_sheet_widget.dart';
 import 'package:chom_tu/common_widgets/show_dialog_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/common_widgets/bottom_sheet_menu_widget.dart';
 import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/social/provider/post_controller.dart';
+import 'package:chom_tu/features/social/widgets/post_report_bottom_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,18 +32,11 @@ Future<void> postBottomSheetWidget(BuildContext context, int postId, String rout
               Navigator.pushNamed(context, '/social_post_caption', arguments: {"id": postId, "route": route});
             },
           ),
-          Center(
-            child: Container(
-              height: 1,
-              width: MediaQuery.of(context).size.width - 44,
-              color: kColorsLightGrey
-            ),
-          ),
+          lineSheetWidget(context),
           BottomSheetMenuWidget(
             icon: 'assets/icons/o9_bin_3.svg',
             title: 'Delete Post',
             onTap: (){
-              // Navigator.pop(context);
               showDialogWidget(
                 context, 'Delete Post', 'This post will be deleted.', 'Delete',
                 () async {
@@ -60,29 +55,20 @@ Future<void> postBottomSheetWidget(BuildContext context, int postId, String rout
             title: 'Save Post',
             onTap: (){},
           ),
-          Center(
-            child: Container(
-              height: 1,
-              width: MediaQuery.of(context).size.width - 44,
-              color: kColorsLightGrey
-            ),
-          ),
+          lineSheetWidget(context),
           BottomSheetMenuWidget(
             icon: 'assets/icons/b1_hanger_1.svg',
             title: 'Copy Outfit',
             onTap: (){},
           ),
-          Center(
-            child: Container(
-              height: 1,
-              width: MediaQuery.of(context).size.width - 44,
-              color: kColorsLightGrey
-            ),
-          ),
+          lineSheetWidget(context),
           BottomSheetMenuWidget(
             icon: 'assets/icons/o8_report_1.svg',
             title: 'Repost',
-            onTap: (){},
+            onTap: (){
+              Navigator.pop(context);
+              postReportBottomSheetWidget(context);
+            },
           )
         ],
       );

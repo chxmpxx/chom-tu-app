@@ -20,3 +20,4 @@ List<String> shoesTypes = ['Ballerinas', 'Boots', 'Crocs', 'Espadrilles', 'Flip 
 List<String> accessoryTypes = ['Bag', 'Belt', 'Bracelets', 'Brooches', 'Cufflinks', 'Earrings', 'Glasses', 'Gloves', 'Hat', 'Headband', 'Necklaces', 'Ring', 'Scarf', 'Sock', 'Stockings', 'Tie', 'Watch'];
 
 List<String> reportDetail = ['Spam', 'Pornography', 'Graphic violence', 'Harassment', 'Hateful activities', 'Privacy violation', 'My Intellectual property'];
+List<String> reportSubDetail = ['Misleading or repetitive posts', 'Sexually explicit content', 'Violent images or promotion of violence', 'Insults, threats, non-consensual nude images', 'Prejudice, stereotypes, slurs', 'Private photos, personal information', 'Copyright or trademark infringement'];

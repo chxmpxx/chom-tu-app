@@ -58,7 +58,7 @@ class SocialScreen extends StatelessWidget {
               itemCount: postList.length,
               itemBuilder: (BuildContext context, int index) {
                 PostModel post = postList[index];
-                return PostWidget(post: post, userId: 2, route: '/dashboard');
+                return PostWidget(post: post, userId: 1, route: '/dashboard');
               }
             );
           }

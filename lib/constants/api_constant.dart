@@ -5,10 +5,12 @@ const wardrobeURLAPI = "$protocol://$domain/api/wardrobe";
 const outfitURLAPI = "$protocol://$domain/api/outfit";
 const componentURLAPI = "$protocol://$domain/api/component";
 const postURLAPI = "$protocol://$domain/api/post";
+const userURLAPI = "$protocol://$domain/api/user";
 
 Map<String, String> setHeaders() {
   return {
     'Content-Type':'application/json',
-    'Accept':'application/json'
+    'Accept':'application/json',
+    // 'Authorization':'Bearer $token'
   };
 }

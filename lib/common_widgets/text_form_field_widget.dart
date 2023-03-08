@@ -1,5 +1,7 @@
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/auth/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TextFormFieldWidget extends StatelessWidget {
   final TextEditingController controller;
@@ -9,10 +11,12 @@ class TextFormFieldWidget extends StatelessWidget {
   final bool isAutofocus;
   final bool isCaption;
   final bool isDetail;
-  const TextFormFieldWidget({Key? key, required this.controller, required this.hintText, required this.validator, this.isPassword = false, this.isAutofocus = false, this.isCaption = false, this.isDetail = false}) : super(key: key);
+  final String name;
+  const TextFormFieldWidget({Key? key, required this.controller, required this.hintText, required this.validator, this.isPassword = false, this.isAutofocus = false, this.isCaption = false, this.isDetail = false, this.name = 'None'}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
     bool passwordVisible = false;
 
     return TextFormField(
@@ -51,7 +55,21 @@ class TextFormFieldWidget extends StatelessWidget {
             return null;
           }
           return validator;
-        } return null;
+        } else if (name == 'email' && userProvider.existingEmail) {
+          return 'Another account is using the same email.';
+        } else if (name == 'username' && userProvider.existingUsername) {
+          return 'This username isn\'t available. Please try another.';
+        } else if (name == 'password' && userProvider.passwordNotMatch) {
+          return 'Password not match.';
+        } else if (name == 'usernameLogin' && userProvider.noAccount) {
+          return 'No account with this username has been registered.';
+        } else if (name == 'passwordLogin' && userProvider.passwordIncorrect) {
+          return 'The password that you\'ve entered is incorrect.';
+        } else if (name == 'passwordLogin' && userProvider.banned) {
+          return 'You have been banned!';
+        } else {
+          return null;
+        }
       },
     );
   }

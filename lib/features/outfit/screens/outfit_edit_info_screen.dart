@@ -100,7 +100,7 @@ class OutfitEditInfoScreen extends StatelessWidget {
                     : Image.network(outfitProvider.image!, fit: BoxFit.cover)
                 )
               ),
-              line(),
+              lineWidget(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 22),
                 child: Column(
