@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class PostProvider with ChangeNotifier {
   String imagePath = '';
   String caption = '';
+  int postId = 0;
 
   setPostImage(img) {
     imagePath = img;
@@ -15,6 +16,11 @@ class PostProvider with ChangeNotifier {
 
   removePostImage() {
     imagePath = '';
+  }
+
+  setPostId(id) {
+    postId = id;
+    notifyListeners();
   }
 
 }

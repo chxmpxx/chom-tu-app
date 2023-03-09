@@ -27,8 +27,16 @@ class ProfileScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.pushNamed(context, '/profile_edit');
+            },
             icon: SvgPicture.asset('assets/icons/a3_edit_1.svg', color: kColorsBlack)
+          ),
+          IconButton(
+            onPressed: (){
+              Navigator.pushNamed(context, '/social_saved');
+            },
+            icon: SvgPicture.asset('assets/icons/a5_bookmark_1.svg', color: kColorsBlack)
           ),
           IconButton(
             onPressed: (){
@@ -128,7 +136,8 @@ class ProfileScreen extends StatelessWidget {
           padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
           child: InkWell(
             onTap: (){
-              Navigator.pushNamed(context, '/social_post_info', arguments: post.id);
+              // Navigator.pushNamed(context, '/social_post_info', arguments: post.id);
+              Navigator.pushNamed(context, '/social_post_info', arguments: {"id": post.id, "route": '/profile'});
             },
             child: Container(
               height: double.infinity,

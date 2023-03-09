@@ -1,5 +1,7 @@
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/social/models/post_model.dart';
+import 'package:chom_tu/features/social/provider/like_controller.dart';
+import 'package:chom_tu/features/social/provider/post_controller.dart';
 import 'package:chom_tu/features/social/provider/post_provider.dart';
 import 'package:chom_tu/features/social/widgets/post_bottom_sheet_widget.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class PostWidget extends StatelessWidget {
-  final PostModel post;
+  PostModel post;
   final int userId;
   final String route;
   bool isMyPost;
@@ -46,12 +48,14 @@ class PostWidget extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: InkWell(
-                        onTap: (){
+                        onTap: () async {
+                          post = await PostController().getOnePost(post.id);
                           if (isMyPost) {
+                            // set for edit post
                             postProvider.setPostImage(post.postImg);
                             postProvider.setCaption(post.caption);
                           }
-                          postBottomSheetWidget(context, post.id!, route, isMyPost);
+                          postBottomSheetWidget(context, post, route, isMyPost);
                         },
                         child: SvgPicture.asset('assets/icons/o6_more_1.svg')
                       )
@@ -81,18 +85,36 @@ class PostWidget extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 22, bottom: 11),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 11),
-                child: SvgPicture.asset('assets/icons/o6_like_1.svg'),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 17),
-                child: Text('  901 Likes', style: Theme.of(context).textTheme.bodyText1),
-              )
-            ],
-          ),
+          child: Consumer<PostProvider>(
+            builder: (_, value, __) {
+              return Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 11),
+                    child: InkWell(
+                      onTap: () async {
+                        if (post.isLike!) {
+                          // Unlike
+                          await LikeController().unlike(post.id);
+                        } else {
+                          // Like
+                          var data = {"user_id": 12, "post_id": post.id};
+                          await LikeController().addLike(data);
+                        }
+                        post = await PostController().getOnePost(post.id);
+                        postProvider.setPostId(post.id);
+                      },
+                      child: post.isLike! ? SvgPicture.asset('assets/icons/o6_like_2.svg') : SvgPicture.asset('assets/icons/o6_like_1.svg')
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 17),
+                    child: Text('  ${post.likes} Likes', style: Theme.of(context).textTheme.bodyText1),
+                  )
+                ],
+              );
+            }
+          )
         ),
         Container(
           height: 1,

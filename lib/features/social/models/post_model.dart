@@ -30,6 +30,9 @@ class PostModel {
     this.postImg,
     required this.imgDetail,
     this.caption,
+    this.likes,
+    this.isLike,
+    this.isSaved,
     this.updatedAt,
     this.createdAt,
   });
@@ -39,6 +42,9 @@ class PostModel {
   String? postImg;
   String imgDetail;
   String? caption;
+  int? likes;
+  bool? isLike;
+  bool? isSaved;
   DateTime? updatedAt;
   DateTime? createdAt;
 
@@ -48,6 +54,9 @@ class PostModel {
     postImg: json["post_img"],
     imgDetail: json["img_detail"],
     caption: json["caption"],
+    likes: json["likes"],
+    isLike: json["is_like"],
+    isSaved: json["is_saved"],
     updatedAt: DateTime.parse(json["updatedAt"]),
     createdAt: DateTime.parse(json["createdAt"]),
   );

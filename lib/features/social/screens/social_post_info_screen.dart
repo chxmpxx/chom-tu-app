@@ -12,7 +12,8 @@ class SocialPostInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int postId = ModalRoute.of(context)!.settings.arguments as int;
+    Map<String, dynamic> arg = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    int postId = arg["id"] as int;
     var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
     dashboardProvider.setCurrentIndex(3);
 
@@ -32,7 +33,11 @@ class SocialPostInfoScreen extends StatelessWidget {
         leading: IconButton(
           icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
           onPressed: (){
-            Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
+            if (arg["route"] == '/profile') {
+              Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
+            } else {
+              Navigator.pushNamedAndRemoveUntil(context, arg["route"], (route) => true);
+            }
           },
         ),
       ),

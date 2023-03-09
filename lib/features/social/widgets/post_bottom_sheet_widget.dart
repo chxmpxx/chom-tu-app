@@ -1,15 +1,19 @@
 import 'package:chom_tu/common_widgets/line_sheet_widget.dart';
 import 'package:chom_tu/common_widgets/show_dialog_widget.dart';
-import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/common_widgets/bottom_sheet_menu_widget.dart';
 import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
+import 'package:chom_tu/features/social/models/post_model.dart';
 import 'package:chom_tu/features/social/provider/post_controller.dart';
+import 'package:chom_tu/features/social/provider/post_provider.dart';
+import 'package:chom_tu/features/social/provider/saved_post_controller.dart';
 import 'package:chom_tu/features/social/widgets/post_report_bottom_sheet_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-Future<void> postBottomSheetWidget(BuildContext context, int postId, String route, [isMyPost = false]) {
+Future<void> postBottomSheetWidget(BuildContext context, PostModel post, String route, [isMyPost = false]) {
+  var postProvider = Provider.of<PostProvider>(context, listen: false);
   var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+  
   if (route == '/social_post_info') {
     dashboardProvider.setCurrentIndex(3);
   } else {
@@ -29,7 +33,7 @@ Future<void> postBottomSheetWidget(BuildContext context, int postId, String rout
             title: 'Edit Post',
             onTap: (){
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/social_post_caption', arguments: {"id": postId, "route": route});
+              Navigator.pushNamed(context, '/social_post_caption', arguments: {"id": post.id, "route": route});
             },
           ),
           lineSheetWidget(context),
@@ -40,7 +44,7 @@ Future<void> postBottomSheetWidget(BuildContext context, int postId, String rout
               showDialogWidget(
                 context, 'Delete Post', 'This post will be deleted.', 'Delete',
                 () async {
-                  await PostController().deletePost(postId);
+                  await PostController().deletePost(post.id);
                   Navigator.pushNamed(context, '/dashboard');
                 }
               );
@@ -50,10 +54,26 @@ Future<void> postBottomSheetWidget(BuildContext context, int postId, String rout
       ) : 
       Wrap(
         children: [
-          BottomSheetMenuWidget(
-            icon: 'assets/icons/a5_bookmark_1.svg',
-            title: 'Save Post',
-            onTap: (){},
+          Consumer<PostProvider>(
+            builder: (_, value, __) {
+              return BottomSheetMenuWidget(
+                icon: post.isSaved! ? 'assets/icons/a5_bookmark_2.svg' : 'assets/icons/a5_bookmark_1.svg',
+                title: post.isSaved! ? 'Unsave Post' : 'Save Post',
+                onTap: () async {
+                  if (post.isSaved!) {
+                    // Unsaved
+                    await SavedPostController().unsavedPost(post.id);
+                  } else {
+                    // Saved
+                    var data = {"user_id": 12, "post_id": post.id};
+                    await SavedPostController().addSavedPost(data);
+                  }
+                  post = await PostController().getOnePost(post.id);
+                  postProvider.setPostId(post.id);
+                  Navigator.pop(context);
+                },
+              );
+            }
           ),
           lineSheetWidget(context),
           BottomSheetMenuWidget(
