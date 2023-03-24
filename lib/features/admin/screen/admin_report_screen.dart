@@ -1,6 +1,9 @@
 import 'package:chom_tu/common_widgets/filter_bar_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/admin/models/report_model.dart';
 import 'package:chom_tu/features/admin/providers/admin_report_filter_tab_provider.dart';
+import 'package:chom_tu/features/admin/providers/admin_tab_status_provider.dart';
+import 'package:chom_tu/features/admin/providers/report_controller.dart';
 import 'package:chom_tu/features/admin/widgets/admin_drawer_widget.dart';
 import 'package:chom_tu/features/admin/widgets/report_bottom_sheet_widget.dart';
 import 'package:chom_tu/features/admin/widgets/report_detail_filter_tab_widget.dart';
@@ -15,10 +18,12 @@ class AdminReportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var filterTab = Provider.of<AdminReportFilterTabProvider>(context, listen: true);
+    var tabStatus = Provider.of<AdminTabStatusProvider>(context, listen: false);
     
     List<Widget> filterTabContent = [
       reportSortFilterTab(context),
-      reportDetailFilterTab(context)
+      reportDetailFilterTab(context),
+      Container()
     ];
 
     return Scaffold(
@@ -39,16 +44,15 @@ class AdminReportScreen extends StatelessWidget {
         leading: Builder(
           builder: (context) => IconButton(
             icon: SvgPicture.asset('assets/icons/a1_hamburger_1.svg', color: kColorsBlack),
-            onPressed: () => Scaffold.of(context).openDrawer(),
+            onPressed: () {
+              if (tabStatus.status) {
+                tabStatus.tab(tabStatus.indexTab);
+              }
+              Scaffold.of(context).openDrawer();
+            }
           ),
         ),
-        bottom: filterBar(context, filterTab),
-        actions: [
-          IconButton(
-            onPressed: () async {},
-            icon: SvgPicture.asset('assets/icons/a5_seach_1.svg')
-          )
-        ],
+        bottom: filterBar(context, tabStatus),
       ),
       drawer: adminDrawer(context),
       body: Stack(
@@ -61,14 +65,9 @@ class AdminReportScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      alignment: Alignment.centerLeft,
-                      width: 94,
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 34),
-                          Text('Owner', style: Theme.of(context).textTheme.subtitle2),
-                        ],
-                      ),
+                      alignment: Alignment.center,
+                      width: 60,
+                      child: Text('Owner', style: Theme.of(context).textTheme.subtitle2)
                     ),
                     Container(
                       alignment: Alignment.center,
@@ -84,145 +83,133 @@ class AdminReportScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 22),
                 Expanded(
-                  child: ListView(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 24,
-                                height: 24,
-                                decoration: const BoxDecoration(
-                                  color: kColorsGrey
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                width: 60,
-                                child: Text('Nong._', style: Theme.of(context).textTheme.bodyText1, overflow: TextOverflow.ellipsis)
-                              ),
-                            ],
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            width: 135,
-                            child: Text('My Intellectual property', style: Theme.of(context).textTheme.bodyText1)
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            width: 60,
-                            child: InkWell(
-                              onTap: (){
-                                reportBottomSheetWidget(context);
-                              },
-                              child: SvgPicture.asset('assets/icons/o6_more_1.svg')
-                            )
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 11),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 24,
-                                height: 24,
-                                decoration: const BoxDecoration(
-                                  color: kColorsGrey
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                width: 60,
-                                child: Text('Miso.love', style: Theme.of(context).textTheme.bodyText1, overflow: TextOverflow.ellipsis)
-                              ),
-                            ],
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            width: 60,
-                            child: Text('Spam', style: Theme.of(context).textTheme.bodyText1)
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            width: 60,
-                            child: InkWell(
-                              onTap: (){
-                                reportBottomSheetWidget(context);
-                              },
-                              child: SvgPicture.asset('assets/icons/o6_more_1.svg')
-                            )
-                          )
-                        ],
-                      ),
-                    ],
+                  child: FutureBuilder(
+                    future: ReportController().getAllReports(filterTab.sort, filterTab.details, 'None'),
+                    builder: (BuildContext context, AsyncSnapshot<List<ReportModel>> snapshot) {
+                      if(snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      }
+                      else if(snapshot.connectionState == ConnectionState.done) {
+                        List<ReportModel> reportList = snapshot.data!;
+                        return reportBody(reportList);
+                      }
+                      else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
                   ),
                 )
               ],
             ),
           ),
-          filterTab.tabStatus ?
-            SizedBox(
-              height: double.infinity,
-              child: Column(
-                children: [
-                  // Create Filter Area
-                  Container(
-                    height: filterTab.indexTab == 0 ? MediaQuery.of(context).size.width * 0.28 : MediaQuery.of(context).size.width * 0.47,
-                    color: kColorsWhite,
-                    child: filterTabContent[filterTab.indexTab],
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: (){
-                        filterTab.filterTab(filterTab.indexTab);
-                      },
-                      child: Container(
-                        color: Colors.black.withOpacity(0.5),
+
+          Consumer<AdminTabStatusProvider>(
+            builder: (_, value, __) {
+              return tabStatus.status ?
+                SizedBox(
+                  height: double.infinity,
+                  child: Column(
+                    children: [
+                      // Create Filter Area
+                      Container(
+                        height: tabStatus.indexTab == 0 ? MediaQuery.of(context).size.width * 0.29 : MediaQuery.of(context).size.width * 0.5,
+                        color: kColorsWhite,
+                        child: filterTabContent[tabStatus.indexTab],
                       ),
-                    )
-                  )
-                ],
-              ),
-            )
-          : Container()
+                      Expanded(
+                        child: InkWell(
+                          onTap: (){
+                            tabStatus.tab(tabStatus.indexTab);
+                          },
+                          child: Container(
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        )
+                      )
+                    ],
+                  ),
+                )
+              : Container();
+            }
+          )
         ],
       ),
     );
   }
 
   // Create Filter Bar
-  PreferredSize filterBar(context, AdminReportFilterTabProvider filterTab) {
+  PreferredSize filterBar(context, AdminTabStatusProvider tabStatus) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(60),
       child: Container(
         height: 60,
         width: double.infinity,
         color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            InkWell(
-              onTap: () {
-                filterTab.filterTab(0);
-              },
-              child: filterTab.indexTab == 0 && filterTab.tabStatus == true ? const FilterBarWidget(title: 'Sort', status: true) : const FilterBarWidget(title: 'Sort', status: false)
-            ),
-            InkWell(
-              onTap: () {
-                filterTab.filterTab(1);
-              },
-              child: filterTab.indexTab == 1 && filterTab.tabStatus == true ? const FilterBarWidget(title: 'Detail', status: true) : const FilterBarWidget(title: 'Detail', status: false)
-            )
-          ],
-        ),
+        child: Consumer<AdminTabStatusProvider>(
+          builder: (_, value, __) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                InkWell(
+                  onTap: () {
+                    tabStatus.tab(0);
+                  },
+                  child: tabStatus.indexTab == 0 && tabStatus.status == true ? const FilterBarWidget(title: 'Sort', status: true) : const FilterBarWidget(title: 'Sort', status: false)
+                ),
+                InkWell(
+                  onTap: () {
+                    tabStatus.tab(1);
+                  },
+                  child: tabStatus.indexTab == 1 && tabStatus.status == true ? const FilterBarWidget(title: 'Detail', status: true) : const FilterBarWidget(title: 'Detail', status: false)
+                )
+              ],
+            );
+          }
+        )
       ),
     );
   }
+
+  Widget reportBody(List<ReportModel> reportList) {
+    return ListView.builder(
+      itemCount: reportList.length,
+      itemBuilder: (BuildContext context, int index) {
+        ReportModel report = reportList[index];
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 11),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 60,
+                child: Text(report.postOwnerName!, style: Theme.of(context).textTheme.bodyText1, overflow: TextOverflow.ellipsis)
+              ),
+              Container(
+                alignment: Alignment.center,
+                width: 135,
+                child: Text(report.detail, style: Theme.of(context).textTheme.bodyText1)
+              ),
+              Container(
+                alignment: Alignment.center,
+                width: 60,
+                child: InkWell(
+                  onTap: (){
+                    reportBottomSheetWidget(context, report.id!, report.postId);
+                  },
+                  child: SvgPicture.asset('assets/icons/o6_more_1.svg')
+                )
+              )
+            ],
+          ),
+        );
+      }
+    );
+  }
+
 }

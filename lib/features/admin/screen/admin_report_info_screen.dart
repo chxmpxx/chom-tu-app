@@ -1,5 +1,7 @@
 import 'package:chom_tu/common_widgets/show_dialog_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/admin/models/report_model.dart';
+import 'package:chom_tu/features/admin/providers/report_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -8,6 +10,8 @@ class AdminReportInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var reportId = ModalRoute.of(context)?.settings.arguments;
+
     return Scaffold(
       backgroundColor: kColorsWhite,
       appBar: AppBar(
@@ -49,16 +53,42 @@ class AdminReportInfoScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
+      body: FutureBuilder(
+        future: ReportController().getOneReport(reportId),
+        builder: (BuildContext context, AsyncSnapshot<ReportModel> snapshot) {
+          if(snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
+          else if(snapshot.connectionState == ConnectionState.done) {
+            ReportModel report = snapshot.data!;
+            return reportInfoBody(context, report);
+          }
+          else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget reportInfoBody(context, ReportModel report) {
+    return ListView(
         children: [
           AspectRatio(
             aspectRatio: 1,
             child: Container(
               width: double.infinity,
-              decoration: const BoxDecoration(
-                color: kColorsGrey
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(report.postImg!),
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
+            )
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -73,7 +103,7 @@ class AdminReportInfoScreen extends StatelessWidget {
                       child: Text('Owner', style: Theme.of(context).textTheme.headline2)
                     ),
                     const SizedBox(width: 15),
-                    Text('Nong._', style: Theme.of(context).textTheme.headline5),
+                    Text(report.postOwnerName!, style: Theme.of(context).textTheme.headline5),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -84,7 +114,7 @@ class AdminReportInfoScreen extends StatelessWidget {
                       child: Text('Caption', style: Theme.of(context).textTheme.headline2)
                     ),
                     const SizedBox(width: 15),
-                    Text('>> Link: www.haha.xxx', style: Theme.of(context).textTheme.headline5),
+                    Text(report.caption!, style: Theme.of(context).textTheme.headline5),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -95,7 +125,7 @@ class AdminReportInfoScreen extends StatelessWidget {
                       child: Text('Reported By', style: Theme.of(context).textTheme.headline2)
                     ),
                     const SizedBox(width: 15),
-                    Text('Suki.Desu', style: Theme.of(context).textTheme.headline5),
+                    Text(report.reportedByName!, style: Theme.of(context).textTheme.headline5),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -106,14 +136,14 @@ class AdminReportInfoScreen extends StatelessWidget {
                       child: Text('Detail', style: Theme.of(context).textTheme.headline2)
                     ),
                     const SizedBox(width: 15),
-                    Text('Spam', style: Theme.of(context).textTheme.headline5),
+                    Text(report.detail, style: Theme.of(context).textTheme.headline5),
                   ],
                 ),
                 const SizedBox(height: 5),
                 Row(
                   children: [
                     const SizedBox(width: 111),
-                    Text('(Misleading or repetitive posts)', style: Theme.of(context).textTheme.bodyText1),
+                    Text('(${report.subDetail})', style: Theme.of(context).textTheme.bodyText1),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -121,7 +151,7 @@ class AdminReportInfoScreen extends StatelessWidget {
             ),
           )
         ],
-      )
     );
   }
+
 }

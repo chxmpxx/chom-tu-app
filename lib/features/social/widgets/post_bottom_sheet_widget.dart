@@ -87,7 +87,7 @@ Future<void> postBottomSheetWidget(BuildContext context, PostModel post, String 
             title: 'Repost',
             onTap: (){
               Navigator.pop(context);
-              postReportBottomSheetWidget(context);
+              postReportBottomSheetWidget(context, post.id!);
             },
           )
         ],

@@ -81,7 +81,7 @@ class OutfitScreen extends StatelessWidget {
                     children: [
                       // Create Filter Area
                       tabStatus.indexTab == 0 ? Container(
-                        height: MediaQuery.of(context).size.width * 0.28,
+                        height: MediaQuery.of(context).size.width * 0.29,
                         color: kColorsWhite,
                         child: filterTabContent([], context)[0],
                       )
@@ -96,14 +96,14 @@ class OutfitScreen extends StatelessWidget {
                           else if(snapshot.connectionState == ConnectionState.done) {
                             List<String> styles = snapshot.data!;
                             return Container(
-                              height: MediaQuery.of(context).size.width * 0.47,
+                              height: MediaQuery.of(context).size.width * 0.5,
                               color: kColorsWhite,
                               child: filterTabContent(styles, context)[1],
                             );
                           }
                           else {
                             return Container(
-                              height: MediaQuery.of(context).size.width * 0.47,
+                              height: MediaQuery.of(context).size.width * 0.5,
                               color: kColorsWhite
                             );
                           }

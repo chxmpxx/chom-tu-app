@@ -1,4 +1,5 @@
 // import 'package:chom_tu/features/auth/screen/login_screen.dart';
+import 'package:chom_tu/features/admin/screen/admin_history_screen.dart';
 import 'package:chom_tu/features/admin/screen/admin_report_info_screen.dart';
 import 'package:chom_tu/features/admin/screen/admin_report_screen.dart';
 import 'package:chom_tu/features/admin/screen/admin_setting_screen.dart';
@@ -63,6 +64,7 @@ const routeProfileChangePassword = '/profile_change_password';
 const routeAdminUser = '/admin_user';
 const routeAdminReport = '/admin_report';
 const routeAdminReportInfo = '/admin_report_info';
+const routeAdminHistory = '/admin_history';
 const routeAdminSetting = '/admin_setting';
 
 class Routes {
@@ -198,7 +200,12 @@ class Routes {
         );
       case routeAdminReportInfo:
         return MaterialPageRoute(
-          builder: (_) => const AdminReportInfoScreen()
+          builder: (_) => const AdminReportInfoScreen(),
+          settings: settings
+        );
+      case routeAdminHistory:
+        return MaterialPageRoute(
+          builder: (_) => const AdminHistoryScreen()
         );
       case routeAdminSetting:
         return MaterialPageRoute(
@@ -208,7 +215,7 @@ class Routes {
       // Login
       default:
         return PageTransition(
-          child: const LoginScreen(),
+          child: const AdminUserScreen(),
           type: PageTransitionType.rightToLeft
         );
     }

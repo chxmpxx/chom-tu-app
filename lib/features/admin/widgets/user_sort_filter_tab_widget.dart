@@ -1,10 +1,12 @@
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/admin/providers/admin_tab_status_provider.dart';
 import 'package:chom_tu/features/admin/providers/admin_user_filter_tab_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 Widget userSortFilterTab(context) {
   var filterTab = Provider.of<AdminUserFilterTabProvider>(context, listen: false);
+  var tabStatus = Provider.of<AdminTabStatusProvider>(context, listen: false);
 
   return Consumer<AdminUserFilterTabProvider>(
     builder: (_, value, __) {
@@ -14,6 +16,7 @@ Widget userSortFilterTab(context) {
           InkWell(
             onTap: (){
               filterTab.selectSort('Newest');
+              tabStatus.tab(tabStatus.indexTab);
             },
             child: Padding(
               padding: const EdgeInsets.all(18),
@@ -30,6 +33,7 @@ Widget userSortFilterTab(context) {
           InkWell(
             onTap: (){
               filterTab.selectSort('Oldest');
+              tabStatus.tab(tabStatus.indexTab);
             },
             child: Padding(
               padding: const EdgeInsets.all(18),

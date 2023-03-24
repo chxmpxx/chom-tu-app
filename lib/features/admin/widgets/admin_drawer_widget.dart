@@ -1,5 +1,5 @@
 import 'package:chom_tu/constants/themes/colors.dart';
-import 'package:chom_tu/features/admin/providers/admin_controller.dart';
+import 'package:chom_tu/features/admin/providers/admin_provider.dart';
 import 'package:chom_tu/features/admin/providers/admin_report_filter_tab_provider.dart';
 import 'package:chom_tu/features/admin/providers/admin_user_filter_tab_provider.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +7,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 Widget adminDrawer(context) {
-  var adminController = Provider.of<AdminControllerProvider>(context, listen: false);
+  var adminController = Provider.of<AdminProvider>(context, listen: false);
   var adminUserFilterTab = Provider.of<AdminUserFilterTabProvider>(context, listen: false);
   var adminReportFilterTab = Provider.of<AdminReportFilterTabProvider>(context, listen: false);
 
   List<String> list = ['User', 'Report', 'History', 'Setting', 'Log Out'];
   List<String> iconList = ['b1_profile_1.svg', 'o8_report_1.svg', 'o8_history_1.svg', 'a5_setting_1.svg', 'o8_logout_1.svg'];
-  List<String> screens = ['/admin_user', '/admin_report', '/admin_report', '/admin_setting', '/admin_report'];
+  List<String> screens = ['/admin_user', '/admin_report', '/admin_history', '/admin_setting', '/admin_report'];
 
   return Drawer(
     width: MediaQuery.of(context).size.width * 0.67,

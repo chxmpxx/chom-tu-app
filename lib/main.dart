@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
-import 'package:chom_tu/features/admin/providers/admin_controller.dart';
+import 'package:chom_tu/features/admin/providers/admin_provider.dart';
 import 'package:chom_tu/features/admin/providers/admin_report_filter_tab_provider.dart';
+import 'package:chom_tu/features/admin/providers/admin_tab_status_provider.dart';
 import 'package:chom_tu/features/admin/providers/admin_user_filter_tab_provider.dart';
 import 'package:chom_tu/features/auth/providers/user_provider.dart';
 import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
@@ -62,9 +63,10 @@ class MyApp extends StatelessWidget {
 
         ChangeNotifierProvider(create: (context) => PostProvider()),
 
+        ChangeNotifierProvider(create: (context) => AdminTabStatusProvider()),
         ChangeNotifierProvider(create: (context) => AdminUserFilterTabProvider()),
         ChangeNotifierProvider(create: (context) => AdminReportFilterTabProvider()),
-        ChangeNotifierProvider(create: (context) => AdminControllerProvider()),
+        ChangeNotifierProvider(create: (context) => AdminProvider()),
       ],
       child: MaterialApp(
         theme: appTheme(),

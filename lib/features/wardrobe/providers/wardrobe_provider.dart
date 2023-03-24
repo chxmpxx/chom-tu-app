@@ -26,6 +26,11 @@ class WardrobeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  setImage(String data) {
+    image = data;
+    notifyListeners();
+  }
+
   setData(String name, String data) {
     if (name == 'Category') {
       category = data;
@@ -36,11 +41,6 @@ class WardrobeProvider with ChangeNotifier {
     } else {
       subCategory = data;
     }
-    notifyListeners();
-  }
-
-  setImage(String data) {
-    image = data;
     notifyListeners();
   }
 }

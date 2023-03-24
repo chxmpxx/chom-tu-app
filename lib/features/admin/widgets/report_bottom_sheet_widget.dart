@@ -1,9 +1,10 @@
 import 'package:chom_tu/common_widgets/show_dialog_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/common_widgets/bottom_sheet_menu_widget.dart';
+import 'package:chom_tu/features/admin/providers/report_controller.dart';
 import 'package:flutter/material.dart';
 
-Future<void> reportBottomSheetWidget(BuildContext context) {
+Future<void> reportBottomSheetWidget(BuildContext context, int reportId, int postId) {
   return showModalBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
@@ -16,7 +17,8 @@ Future<void> reportBottomSheetWidget(BuildContext context) {
             icon: 'assets/icons/a3_info_1.svg',
             title: 'Information',
             onTap: (){
-              Navigator.pushNamed(context, '/admin_report_info');
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/admin_report_info', arguments: reportId);
             },
           ),
           Center(
@@ -30,10 +32,13 @@ Future<void> reportBottomSheetWidget(BuildContext context) {
             icon: 'assets/icons/o8_report_1.svg',
             title: 'Discard Report',
             onTap: (){
-              Navigator.pop(context);
+              Map<String, String> data = { "status": 'Discard Report' };
               showDialogWidget(
                 context, 'Discard Report', 'This post\'s report will be discarded.', 'Discard',
-                (){}
+                () async {
+                  await ReportController().updateReport(reportId, data);
+                  Navigator.pushNamedAndRemoveUntil(context, '/admin_report', (route) => true);
+                }
               );
             },
           ),
@@ -48,10 +53,13 @@ Future<void> reportBottomSheetWidget(BuildContext context) {
             icon: 'assets/icons/o9_bin_2.svg',
             title: 'Delete Post',
             onTap: (){
-              Navigator.pop(context);
+              Map<String, String> data = { "status": 'Delete Post', "post_id": postId.toString() };
               showDialogWidget(
                 context, 'Delete Post', 'This post\'s report will be deleted.', 'Delete',
-                (){}
+                () async {
+                  await ReportController().updateReport(reportId, data);
+                  Navigator.pushNamedAndRemoveUntil(context, '/admin_report', (route) => true);
+                }
               );
             },
             color: 'red'

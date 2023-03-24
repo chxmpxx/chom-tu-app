@@ -1,9 +1,11 @@
 import 'package:chom_tu/common_widgets/line_sheet_widget.dart';
 import 'package:chom_tu/common_widgets/show_dialog_widget.dart';
 import 'package:chom_tu/constants/data_constant.dart';
+import 'package:chom_tu/features/admin/models/report_model.dart';
+import 'package:chom_tu/features/admin/providers/report_controller.dart';
 import 'package:flutter/material.dart';
 
-Future<void> postReportBottomSheetWidget(BuildContext context) {
+Future<void> postReportBottomSheetWidget(BuildContext context, int postId) {
   return showModalBottomSheet(
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
@@ -28,12 +30,13 @@ Future<void> postReportBottomSheetWidget(BuildContext context) {
                   lineSheetWidget(context),
                   InkWell(
                     onTap: (){
-                      // todo: report api
                       showDialogWidget(
                         context, 'Report Post', 'This post will be reported.', 'Report',
                         () async {
-                          // await PostController().deletePost(postId);
-                          // Navigator.pushNamed(context, '/dashboard');
+                          ReportModel data = ReportModel(postId: postId, reportedBy: 1, detail: reportDetail[index], subDetail: reportSubDetail[index]);
+                          await ReportController().addReport(data);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
                         }
                       );
                     },

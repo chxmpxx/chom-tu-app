@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AdminControllerProvider with ChangeNotifier {
+class AdminProvider with ChangeNotifier {
 
   String menu = 'User';
 

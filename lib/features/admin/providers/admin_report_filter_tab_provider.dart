@@ -5,7 +5,7 @@ class AdminReportFilterTabProvider with ChangeNotifier {
   bool tabStatus = false;
   int indexTab = -1;
   String sort = 'Newest';
-  List<String> details = ['None'];
+  List<String> details = [];
 
   filterTab(int index) {
     indexTab == index ? (tabStatus ? tabStatus = false : tabStatus = true) : tabStatus = true;
@@ -19,9 +19,6 @@ class AdminReportFilterTabProvider with ChangeNotifier {
   }
 
   addDetails(String detail) {
-    if(details.contains('None')) {
-      details.remove('None');
-    }
     details.add(detail);
     notifyListeners();
   }
@@ -30,13 +27,13 @@ class AdminReportFilterTabProvider with ChangeNotifier {
     notifyListeners();
   }
   removeAllDetails() {
-    details = ['None'];
+    details = [];
     notifyListeners();
   }
 
   removeAllFilterTab() {
     sort = 'Newest';
-    details = ['None'];
+    details = [];
     notifyListeners();
   }
 }

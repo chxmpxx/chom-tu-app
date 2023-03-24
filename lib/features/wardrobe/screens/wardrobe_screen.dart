@@ -98,7 +98,7 @@ class WardrobeScreen extends StatelessWidget {
                     children: [
                       // Create Filter Area
                       Container(
-                        height: tabStatus.indexTab == 0 ? MediaQuery.of(context).size.width * 0.28 : MediaQuery.of(context).size.width * 0.47,
+                        height: tabStatus.indexTab == 0 ? MediaQuery.of(context).size.width * 0.29 : MediaQuery.of(context).size.width * 0.5,
                         color: kColorsWhite,
                         child: filterTabContent[tabStatus.indexTab],
                       ),
