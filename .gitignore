@@ -48,3 +48,4 @@ app.*.map.json
 
 # Other
 assets/data
+lib/constants/api_constant.dart

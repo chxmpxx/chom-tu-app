@@ -71,4 +71,14 @@ class UserController {
     } 
     throw Exception('Fail');
   }
+
+  Future<List<UserModel>> getAllWardrobes(String username) async {
+    String data = jsonEncode({"username": username});
+    final response = await http.post(Uri.parse("$userURLAPI/search_user"), headers: setHeaders(), body: data);
+
+    if (response.statusCode == 200) {
+      return userListModelFromJson(response.body);
+    }
+    throw Exception('Fail');
+  }
 }

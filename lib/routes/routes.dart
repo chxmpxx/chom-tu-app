@@ -20,6 +20,7 @@ import 'package:chom_tu/features/social/screens/social_post_info_screen.dart';
 import 'package:chom_tu/features/social/screens/social_post_screen.dart';
 import 'package:chom_tu/features/social/screens/social_saved_screen.dart';
 import 'package:chom_tu/features/social/screens/social_screen.dart';
+import 'package:chom_tu/features/social/screens/social_search_screen.dart';
 import 'package:chom_tu/features/wardrobe/screens/wardrobe_camera_edit_screen.dart';
 // import 'package:chom_tu/features/wardrobe/screens/wardrobe_camera_edit_screen.dart';
 import 'package:chom_tu/features/wardrobe/screens/wardrobe_camera_screen.dart';
@@ -52,6 +53,7 @@ const routeOutfitCreate = '/outfit_create';
 const routeOutfitFavorite = '/outfit_favorite';
 
 const routeSocial = '/social';
+const routeSocialSearch = '/social_search';
 const routeSocialPostInfo = '/social_post_info';
 const routeSocialPost = '/social_post';
 const routeSocialPostCaption = '/social_post_caption';
@@ -145,6 +147,11 @@ class Routes {
           child: const SocialScreen(), 
           type: PageTransitionType.rightToLeft
         );
+      case routeSocialSearch:
+        return PageTransition(
+          child: SocialSearch(), 
+          type: PageTransitionType.rightToLeft
+        );
       case routeSocialPostInfo:
         return PageTransition(
           child: const SocialPostInfoScreen(), 
@@ -215,7 +222,7 @@ class Routes {
       // Login
       default:
         return PageTransition(
-          child: const AdminUserScreen(),
+          child: const SocialScreen(),
           type: PageTransitionType.rightToLeft
         );
     }

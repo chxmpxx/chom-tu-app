@@ -33,8 +33,10 @@ class SocialScreen extends StatelessWidget {
             icon: SvgPicture.asset('assets/icons/a1_add_1.svg', color: kColorsBlack)
           ),
           IconButton(
-            onPressed: (){},
-            icon: SvgPicture.asset('assets/icons/a5_seach_1.svg')
+            onPressed: (){
+              Navigator.pushNamed(context, '/social_search');
+            },
+            icon: SvgPicture.asset('assets/icons/a5_search_1.svg')
           )
         ],
       ),

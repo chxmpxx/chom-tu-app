@@ -121,11 +121,11 @@ class SocialPostScreen extends StatelessWidget {
                       child: Container(
                         height: double.infinity,
                         decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(outfit.outfitImg!),
-                              fit: BoxFit.cover,
-                            ),
+                          image: DecorationImage(
+                            image: NetworkImage(outfit.outfitImg!),
+                            fit: BoxFit.cover,
                           ),
+                        ),
                         child: Container(
                           color: kColorsWhite.withOpacity(postProvider.imagePath == outfit.outfitImg! || (postProvider.imagePath == '' && index == 0) ? 0.7 : 0),
                         ),
