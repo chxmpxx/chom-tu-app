@@ -65,7 +65,7 @@ Future<void> postBottomSheetWidget(BuildContext context, PostModel post, String 
                     await SavedPostController().unsavedPost(post.id);
                   } else {
                     // Saved
-                    var data = {"user_id": 12, "post_id": post.id};
+                    var data = {"post_id": post.id};
                     await SavedPostController().addSavedPost(data);
                   }
                   post = await PostController().getOnePost(post.id);

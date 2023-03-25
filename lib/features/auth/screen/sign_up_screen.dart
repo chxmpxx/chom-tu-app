@@ -1,7 +1,7 @@
 import 'package:chom_tu/features/auth/models/user_model.dart';
 import 'package:chom_tu/features/auth/providers/user_controller.dart';
 import 'package:chom_tu/features/auth/providers/user_provider.dart';
-import 'package:chom_tu/features/auth/widgets/button_widget.dart';
+import 'package:chom_tu/common_widgets/button_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/common_widgets/text_form_field_widget.dart';
 import 'package:chom_tu/features/dashboard/dashboard_provider.dart';

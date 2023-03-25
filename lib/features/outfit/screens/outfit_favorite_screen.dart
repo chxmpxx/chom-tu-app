@@ -81,7 +81,7 @@ class OutfitFavoriteScreen extends StatelessWidget {
                         child: filterTabContent([], context)[0],
                       )
                       : FutureBuilder(
-                        future: OutfitController().getStyle(2),
+                        future: OutfitController().getStyle(),
                         builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
                           if(snapshot.hasError) {
                             return Center(
@@ -133,23 +133,27 @@ class OutfitFavoriteScreen extends StatelessWidget {
         height: 60,
         width: double.infinity,
         color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            InkWell(
-              onTap: () {
-                tabStatus.tab(0);
-              },
-              child: tabStatus.indexTab == 0 && tabStatus.status == true ? const FilterBarWidget(title: 'Sort', status: true) : const FilterBarWidget(title: 'Sort', status: false)
-            ),
-            InkWell(
-              onTap: () {
-                tabStatus.tab(1);
-              },
-              child: tabStatus.indexTab == 1 && tabStatus.status == true ? const FilterBarWidget(title: 'Color', status: true) : const FilterBarWidget(title: 'Color', status: false)
-            )
-          ],
-        ),
+        child: Consumer<OutfitTabStatusProvider>(
+            builder: (_, value, __) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                InkWell(
+                  onTap: () {
+                    tabStatus.tab(0);
+                  },
+                  child: tabStatus.indexTab == 0 && tabStatus.status == true ? const FilterBarWidget(title: 'Sort', status: true) : const FilterBarWidget(title: 'Sort', status: false)
+                ),
+                InkWell(
+                  onTap: () {
+                    tabStatus.tab(1);
+                  },
+                  child: tabStatus.indexTab == 1 && tabStatus.status == true ? const FilterBarWidget(title: 'Style', status: true) : const FilterBarWidget(title: 'Style', status: false)
+                )
+              ],
+            );
+          }
+        )
       ),
     );
   }

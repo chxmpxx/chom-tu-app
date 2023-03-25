@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class ReportController {
 
   Future<String> addReport(data) async {
-    final response = await http.post(Uri.parse("$reportURLAPI/add_report"), headers: setHeaders(), body: json.encode(data));
+    final response = await http.post(Uri.parse("$reportURLAPI/add_report"), headers: await setHeaders(), body: json.encode(data));
     if (response.statusCode == 200) {
       return response.body;
     }
@@ -21,7 +21,7 @@ class ReportController {
     }
 
     String data = jsonEncode({"order": order, "detail": details, "status": status});
-    final response = await http.post(Uri.parse("$reportURLAPI/all_report"), headers: setHeaders(), body: data);
+    final response = await http.post(Uri.parse("$reportURLAPI/all_report"), headers: await setHeaders(), body: data);
 
     if (response.statusCode == 200) {
       return reportListModelFromJson(response.body);
@@ -30,7 +30,7 @@ class ReportController {
   }
 
   Future<ReportModel> getOneReport(id) async {
-    final response = await http.get(Uri.parse("$reportURLAPI/$id"), headers: setHeaders());
+    final response = await http.get(Uri.parse("$reportURLAPI/$id"), headers: await setHeaders());
     if (response.statusCode == 200) {
       return reportModelFromJson(response.body);
     }
@@ -38,7 +38,7 @@ class ReportController {
   }
 
   Future<String> updateReport(id, Map<String, String> data) async {
-    final response = await http.put(Uri.parse("$reportURLAPI/$id"), headers: setHeaders(), body: json.encode(data));
+    final response = await http.put(Uri.parse("$reportURLAPI/$id"), headers: await setHeaders(), body: json.encode(data));
     if (response.statusCode == 200) {
       return response.body;
     }
@@ -46,7 +46,7 @@ class ReportController {
   }
 
   Future<String> deleteReport(id) async {
-    final response = await http.delete(Uri.parse("$reportURLAPI/$id"), headers: setHeaders());
+    final response = await http.delete(Uri.parse("$reportURLAPI/$id"), headers: await setHeaders());
     if (response.statusCode == 200) {
       return response.body;
     }

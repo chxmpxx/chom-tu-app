@@ -86,7 +86,7 @@ class OutfitScreen extends StatelessWidget {
                         child: filterTabContent([], context)[0],
                       )
                       : FutureBuilder(
-                        future: OutfitController().getStyle(2),
+                        future: OutfitController().getStyle(),
                         builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
                           if(snapshot.hasError) {
                             return Center(

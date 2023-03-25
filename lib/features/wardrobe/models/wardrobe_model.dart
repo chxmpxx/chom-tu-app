@@ -28,7 +28,7 @@ Map<String, String> wardrobeModelToMap(WardrobeModel data) {
 class WardrobeModel {
   WardrobeModel({
     this.id,
-    required this.userId,
+    this.userId,
     required this.category,
     required this.subCategory,
     required this.color,
@@ -40,7 +40,7 @@ class WardrobeModel {
   });
 
   int? id;
-  int userId;
+  int? userId;
   String category;
   String subCategory;
   String color;

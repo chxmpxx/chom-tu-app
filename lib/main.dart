@@ -22,6 +22,7 @@ import 'package:chom_tu/features/wardrobe/providers/wardrobe_filter_tab_provider
 import 'package:chom_tu/features/wardrobe/screens/wardrobe_camera_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async{
@@ -40,6 +41,7 @@ Future<void> main() async{
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  static const storage = FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {

@@ -49,7 +49,11 @@ class WardrobeCameraEditScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 22, top: 22),
             child: InkWell(
               onTap: () async {
-                data = WardrobeModel(userId: 2, category: wardrobeProvider.category, subCategory: wardrobeProvider.subCategory, color: wardrobeProvider.color, type: wardrobeProvider.type);
+                if (wardrobeProvider.category != 'Bottom' && wardrobeProvider.subCategory != 'None') {
+                  wardrobeProvider.setData('Sub Category', 'None');
+                }
+
+                data = WardrobeModel(category: wardrobeProvider.category, subCategory: wardrobeProvider.subCategory, color: wardrobeProvider.color, type: wardrobeProvider.type);
 
                 if (wardrobeId == '-1') {
                   // new wardrobe (add)

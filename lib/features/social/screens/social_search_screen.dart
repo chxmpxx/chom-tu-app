@@ -2,8 +2,10 @@ import 'package:chom_tu/common_widgets/line_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/auth/models/user_model.dart';
 import 'package:chom_tu/features/auth/providers/user_controller.dart';
+import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class SocialSearch extends StatefulWidget {
   List<UserModel> users = [];
@@ -18,6 +20,9 @@ class SocialSearch extends StatefulWidget {
 class _SocialSearchState extends State<SocialSearch> {
   @override
   Widget build(BuildContext context) {
+    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    dashboardProvider.setCurrentIndex(2);
+
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -38,7 +43,7 @@ class _SocialSearchState extends State<SocialSearch> {
                       IconButton(
                         icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
                         onPressed: (){
-                          Navigator.pushNamedAndRemoveUntil(context, '/social', (route) => true);
+                          Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
                         },
                       ),
                       Expanded(
@@ -70,25 +75,31 @@ class _SocialSearchState extends State<SocialSearch> {
                 
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 9),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 32,
-                                height: 32,
-                                decoration: BoxDecoration(
-                                  image: user.userImg != null ? DecorationImage(
-                                    image: NetworkImage(user.userImg!),
-                                    fit: BoxFit.cover,
-                                  ) 
-                                  : const DecorationImage(
-                                    image: AssetImage('assets/user_chomtu_profile.png'),
-                                    fit: BoxFit.cover,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/profile', arguments: user.id);
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(Radius.circular(32)),
+                                    image: user.userImg != null ? DecorationImage(
+                                      image: NetworkImage(user.userImg!),
+                                      fit: BoxFit.cover,
+                                    )
+                                    : const DecorationImage(
+                                      image: AssetImage('assets/user_chomtu_profile.png'),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(user.username, style: Theme.of(context).textTheme.subtitle2)
-                            ],
+                                const SizedBox(width: 10),
+                                Text(user.username, style: Theme.of(context).textTheme.subtitle2)
+                              ],
+                            ),
                           ),
                         );
                       }
@@ -111,7 +122,7 @@ class _SocialSearchState extends State<SocialSearch> {
         child: TextFormField(
           onChanged: (value) async {
             if (value.isNotEmpty) {
-              widget.users = await UserController().getAllWardrobes(value);
+              widget.users = await UserController().getAllUsers(value);
             } else {
               widget.users = [];
             }

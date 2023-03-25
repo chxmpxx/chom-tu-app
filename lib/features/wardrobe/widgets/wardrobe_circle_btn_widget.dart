@@ -16,7 +16,7 @@ class WardrobeCircleBtnWidget extends StatelessWidget {
       children: [
         ...List.generate(list.length, (index) {
             return SizedBox(
-              width: 87,
+              width: 85,
               child: Row(
                 children: [
                   InkWell(
@@ -45,7 +45,7 @@ class WardrobeCircleBtnWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 5),
-                  Text(list[index], style: wardrobeProvider.subCategory == list[index] ? Theme.of(context).textTheme.headline5 : Theme.of(context).textTheme.headline6)
+                  Text(list[index], style: wardrobeProvider.subCategory == list[index] ? Theme.of(context).textTheme.bodyText1 : Theme.of(context).textTheme.caption)
                 ],
               ),
             );

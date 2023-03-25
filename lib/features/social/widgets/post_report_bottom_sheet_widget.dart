@@ -33,7 +33,7 @@ Future<void> postReportBottomSheetWidget(BuildContext context, int postId) {
                       showDialogWidget(
                         context, 'Report Post', 'This post will be reported.', 'Report',
                         () async {
-                          ReportModel data = ReportModel(postId: postId, reportedBy: 1, detail: reportDetail[index], subDetail: reportSubDetail[index]);
+                          ReportModel data = ReportModel(postId: postId, detail: reportDetail[index], subDetail: reportSubDetail[index]);
                           await ReportController().addReport(data);
                           Navigator.pop(context);
                           Navigator.pop(context);

@@ -178,7 +178,8 @@ class Routes {
       case routeProfile:
         return PageTransition(
           child: const ProfileScreen(), 
-          type: PageTransitionType.rightToLeft
+          type: PageTransitionType.rightToLeft,
+          settings: settings
         );
       case routeProfileEdit:
         return PageTransition(
@@ -222,7 +223,7 @@ class Routes {
       // Login
       default:
         return PageTransition(
-          child: const SocialScreen(),
+          child: const LoginScreen(),
           type: PageTransitionType.rightToLeft
         );
     }

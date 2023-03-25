@@ -98,7 +98,7 @@ class PostWidget extends StatelessWidget {
                           await LikeController().unlike(post.id);
                         } else {
                           // Like
-                          var data = {"user_id": 12, "post_id": post.id};
+                          var data = {"post_id": post.id};
                           await LikeController().addLike(data);
                         }
                         post = await PostController().getOnePost(post.id);

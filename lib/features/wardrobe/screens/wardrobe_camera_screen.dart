@@ -160,7 +160,6 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
     XFile picture = await _cameraController!.takePicture();
     picture.saveTo(path);
 
-    await WardrobeController().wardrobeDetection(path);
     Map<String, dynamic> data = await WardrobeController().wardrobeDetection(path);
     setWardrobeData(wardrobeProvider, path, data);
 

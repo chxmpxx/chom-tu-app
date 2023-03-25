@@ -64,7 +64,7 @@ class SocialPostCaptionScreen extends StatelessWidget {
                 onTap: () async {
                   if (postId == '-1') {
                     // new post (add)
-                    PostModel data = PostModel(userId: 2, imgDetail: 'imgDetail', caption: caption.value.text);
+                    PostModel data = PostModel(imgDetail: 'imgDetail', caption: caption.value.text);
                     String path = await createFileFromUrl(postProvider.imagePath);
                     await PostController().addPost(data, path);
                     postProvider.removePostImage();

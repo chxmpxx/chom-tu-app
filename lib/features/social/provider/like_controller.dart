@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class LikeController {
 
   Future<String> addLike(data) async {
-    final response = await http.post(Uri.parse("$likeURLAPI/add_like"), headers: setHeaders(), body: json.encode(data));
+    final response = await http.post(Uri.parse("$likeURLAPI/add_like"), headers: await setHeaders(), body: json.encode(data));
 
     if (response.statusCode == 200) {
       return response.body;
@@ -15,7 +15,7 @@ class LikeController {
   }
 
   Future<String> unlike(id) async {
-    final response = await http.delete(Uri.parse("$likeURLAPI/$id"), headers: setHeaders());
+    final response = await http.delete(Uri.parse("$likeURLAPI/$id"), headers: await setHeaders());
     if (response.statusCode == 200) {
       return response.body;
     }

@@ -11,6 +11,7 @@ class OutfitController {
 
   Future<String> addOutfit(OutfitModel data, path, Map<Key, Map<String, double>> offset) async {
     var request = http.MultipartRequest('POST', Uri.parse("$outfitURLAPI/add_outfit"));
+    request.headers.addAll(await setHeaders());
     request.fields.addAll(outfitModelToMap(data));
     request.files.add(await http.MultipartFile.fromPath('file', path));
 
@@ -24,7 +25,7 @@ class OutfitController {
       offset.forEach((k, v) async {
         ComponentModel dataComp = ComponentModel(wardrobeId: int.parse(getValueFromKeyType(k)), outfitId: outfitId, position: v.toString());
 
-        final resComp = await http.post(Uri.parse("$componentURLAPI/add_component"), headers: setHeaders(), body: componentModelToJson(dataComp));
+        final resComp = await http.post(Uri.parse("$componentURLAPI/add_component"), headers: await setHeaders(), body: componentModelToJson(dataComp));
         if (resComp.statusCode != 200) {
           throw Exception('Fail');
         }
@@ -42,7 +43,7 @@ class OutfitController {
     }
 
     String data = jsonEncode({"order": order, "style": style});
-    final response = await http.post(Uri.parse("$outfitURLAPI/all_outfit"), headers: setHeaders(), body: data);
+    final response = await http.post(Uri.parse("$outfitURLAPI/all_outfit"), headers: await setHeaders(), body: data);
 
     if (response.statusCode == 200) {
       return outfitListModelFromJson(response.body);
@@ -57,7 +58,7 @@ class OutfitController {
     }
 
     String data = jsonEncode({"order": order, "style": style});
-    final response = await http.post(Uri.parse("$outfitURLAPI/all_fav_outfit"), headers: setHeaders(), body: data);
+    final response = await http.post(Uri.parse("$outfitURLAPI/all_fav_outfit"), headers: await setHeaders(), body: data);
     
     if (response.statusCode == 200) {
       return outfitListModelFromJson(response.body);
@@ -66,15 +67,15 @@ class OutfitController {
   }
 
   Future<OutfitModel> getOneOutfit(id) async {
-    final response = await http.get(Uri.parse("$outfitURLAPI/$id"), headers: setHeaders());
+    final response = await http.get(Uri.parse("$outfitURLAPI/$id"), headers: await setHeaders());
     if (response.statusCode == 200) {
       return outfitModelFromJson(response.body);
     }
     throw Exception('Fail');
   }
 
-  Future<List<String>> getStyle(id) async {
-    final response = await http.get(Uri.parse("$outfitURLAPI/get_style/$id"), headers: setHeaders());
+  Future<List<String>> getStyle() async {
+    final response = await http.get(Uri.parse("$outfitURLAPI/get_style"), headers: await setHeaders());
     if (response.statusCode == 200) {
       return List<String>.from(jsonDecode(response.body));
     }
@@ -82,7 +83,7 @@ class OutfitController {
   }
 
   Future<String> updateOutfit(id, Map<String, String> data) async {
-    final response = await http.put(Uri.parse("$outfitURLAPI/$id"), headers: setHeaders(), body: json.encode(data));
+    final response = await http.put(Uri.parse("$outfitURLAPI/$id"), headers: await setHeaders(), body: json.encode(data));
     if (response.statusCode == 200) {
       return response.body;
     }
@@ -90,7 +91,7 @@ class OutfitController {
   }
 
   Future<String> favOutfit(id, data) async {
-    final response = await http.post(Uri.parse("$outfitURLAPI/fav_outfit/$id"), headers: setHeaders(), body: data);
+    final response = await http.post(Uri.parse("$outfitURLAPI/fav_outfit/$id"), headers: await setHeaders(), body: data);
     if (response.statusCode == 200) {
       return response.body;
     }
@@ -98,9 +99,9 @@ class OutfitController {
   }
 
   Future<String> deleteOutfit(id) async {
-    final response = await http.delete(Uri.parse("$outfitURLAPI/$id"), headers: setHeaders());
+    final response = await http.delete(Uri.parse("$outfitURLAPI/$id"), headers: await setHeaders());
     if (response.statusCode == 200) {
-      final resCom = await http.delete(Uri.parse("$componentURLAPI/$id"), headers: setHeaders());
+      final resCom = await http.delete(Uri.parse("$componentURLAPI/$id"), headers: await setHeaders());
       if (resCom.statusCode != 200) {
         throw Exception('Fail');
       }

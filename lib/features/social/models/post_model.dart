@@ -17,7 +17,6 @@ String postModelToJson(PostModel data) {
 
 Map<String, String> postModelToMap(PostModel data) {
   return {
-    "user_id": data.userId.toString(),
     "img_detail": data.imgDetail,
     "caption": data.caption ?? '',
   };
@@ -26,7 +25,7 @@ Map<String, String> postModelToMap(PostModel data) {
 class PostModel {
   PostModel({
     this.id,
-    required this.userId,
+    this.userId,
     this.postImg,
     required this.imgDetail,
     this.caption,
@@ -38,7 +37,7 @@ class PostModel {
   });
 
   int? id;
-  int userId;
+  int? userId;
   String? postImg;
   String imgDetail;
   String? caption;
@@ -63,7 +62,6 @@ class PostModel {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "user_id": userId,
     "post_img": postImg,
     "img_detail": imgDetail,
     "caption": caption,

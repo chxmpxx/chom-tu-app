@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class SavedPostController {
 
   Future<String> addSavedPost(data) async {
-    final response = await http.post(Uri.parse("$savedPostURLAPI/add_saved_post"), headers: setHeaders(), body: json.encode(data));
+    final response = await http.post(Uri.parse("$savedPostURLAPI/add_saved_post"), headers: await setHeaders(), body: json.encode(data));
 
     if (response.statusCode == 200) {
       return response.body;
@@ -15,9 +15,8 @@ class SavedPostController {
     throw Exception('Fail');
   }
 
-  Future<List<PostModel>> getAllSavedPosts(id) async {
-    // todo: delete id
-    final response = await http.get(Uri.parse("$savedPostURLAPI/all_saved_posts/$id"), headers: setHeaders());
+  Future<List<PostModel>> getAllSavedPosts() async {
+    final response = await http.get(Uri.parse("$savedPostURLAPI/all_saved_posts"), headers: await setHeaders());
 
     if (response.statusCode == 200) {
       return postListModelFromJson(response.body);
@@ -26,7 +25,7 @@ class SavedPostController {
   }
 
   Future<String> unsavedPost(id) async {
-    final response = await http.delete(Uri.parse("$savedPostURLAPI/$id"), headers: setHeaders());
+    final response = await http.delete(Uri.parse("$savedPostURLAPI/$id"), headers: await setHeaders());
     if (response.statusCode == 200) {
       return response.body;
     }

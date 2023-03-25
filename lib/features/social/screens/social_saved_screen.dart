@@ -37,7 +37,7 @@ class SocialSavedScreen extends StatelessWidget {
         ),
       ),
       body: FutureBuilder(
-        future: SavedPostController().getAllSavedPosts(12),
+        future: SavedPostController().getAllSavedPosts(),
         builder: (BuildContext context, AsyncSnapshot<List<PostModel>> snapshot) {
           if(snapshot.hasError) {
             return Center(

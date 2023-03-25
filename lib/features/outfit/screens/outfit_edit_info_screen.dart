@@ -65,7 +65,7 @@ class OutfitEditInfoScreen extends StatelessWidget {
                     formKey.currentState!.save();
                     if (outfitId == '-1') {
                       // new outfit (add)
-                      OutfitModel data = OutfitModel(userId: 2, style: style.value.text, detail: detail.value.text, bgColor: outfitProvider.backgroundColor.toString());
+                      OutfitModel data = OutfitModel(style: style.value.text, detail: detail.value.text, bgColor: outfitProvider.backgroundColor.toString());
                       await OutfitController().addOutfit(data, outfitProvider.imagePath, outfitProvider.itemsOffsets);
                       outfitProvider.removeAllWardrobe();
                       dashboardProvider.setCurrentIndex(1);

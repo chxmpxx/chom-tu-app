@@ -54,7 +54,7 @@ class WardrobeDropDownField extends StatelessWidget {
                         child: name == 'Color' ? 
                           Row(
                             children: [
-                              Container(
+                              value != 'Multi' ? Container(
                                 width: 16,
                                 height: 16,
                                 decoration: BoxDecoration(
@@ -62,7 +62,7 @@ class WardrobeDropDownField extends StatelessWidget {
                                   borderRadius: const BorderRadius.all(Radius.circular(16)),
                                   border: Border.all(color: kColorsLightGrey)
                                 ),
-                              ),
+                              ) : SvgPicture.asset('assets/icons/o9_multi_1.svg'),
                               const SizedBox(width: 7),
                               Text(value, style:Theme.of(context).textTheme.headline5),
                             ],

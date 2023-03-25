@@ -67,23 +67,3 @@ Widget outfitStyleFilterTab(context, styles) {
     ],
   );
 }
-
-  // FutureBuilder(
-  //   future: OutfitController().getStyle(2),
-  //   builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-  //     if(snapshot.hasError) {
-  //       return Center(
-  //         child: Text(snapshot.error.toString()),
-  //       );
-  //     }
-  //     else if(snapshot.connectionState == ConnectionState.done) {
-  //       List<String> styles = snapshot.data!;
-  //       return body(styles, context);
-  //     }
-  //     else {
-  //       return const Center(
-  //         child: CircularProgressIndicator(),
-  //       );
-  //     }
-  //   },
-  // );

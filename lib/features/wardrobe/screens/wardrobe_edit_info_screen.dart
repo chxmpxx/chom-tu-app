@@ -90,7 +90,7 @@ class WardrobeEditInfoScreen extends StatelessWidget {
                         ),
                       ],
                     ) : Container(),
-                    WardrobeDropDownField(list: colors, name: 'Color', wardrobeValue: wardrobeProvider.color),
+                    WardrobeDropDownField(list: allColor, name: 'Color', wardrobeValue: wardrobeProvider.color),
                     WardrobeDropDownField(list: types(wardrobeProvider.category, wardrobeProvider.subCategory), name: 'Type', wardrobeValue: wardrobeProvider.type),
                     const SizedBox(height: 10)
                   ],

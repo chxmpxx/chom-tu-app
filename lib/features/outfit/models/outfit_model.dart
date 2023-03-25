@@ -17,7 +17,6 @@ String outfitModelToJson(OutfitModel data) {
 
 Map<String, String> outfitModelToMap(OutfitModel data) {
   return {
-    "user_id": data.userId.toString(),
     "style": data.style,
     "detail": data.detail!,
     "bg_color": data.bgColor!,
@@ -27,7 +26,7 @@ Map<String, String> outfitModelToMap(OutfitModel data) {
 class OutfitModel {
   OutfitModel({
     this.id,
-    required this.userId,
+    this.userId,
     required this.style,
     this.detail,
     this.isFavorite,
@@ -38,7 +37,7 @@ class OutfitModel {
   });
 
   int? id;
-  int userId;
+  int? userId;
   String style;
   String? detail;
   bool? isFavorite;
@@ -61,7 +60,6 @@ class OutfitModel {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "user_id": userId,
     "style": style,
     "detail": detail,
     "is_favorite": isFavorite,

@@ -22,7 +22,7 @@ class ReportModel {
     this.postOwnerName,
     this.postImg,
     this.caption,
-    required this.reportedBy,
+    this.reportedBy,
     this.reportedByName,
     required this.detail,
     required this.subDetail,
@@ -36,7 +36,7 @@ class ReportModel {
   String? postOwnerName;
   String? postImg;
   String? caption;
-  int reportedBy;
+  int? reportedBy;
   String? reportedByName;
   String detail;
   String subDetail;
@@ -61,7 +61,6 @@ class ReportModel {
 
   Map<String, dynamic> toJson() => {
     "post_id": postId,
-    "reported_by": reportedBy,
     "detail": detail,
     "sub_detail": subDetail
   };
