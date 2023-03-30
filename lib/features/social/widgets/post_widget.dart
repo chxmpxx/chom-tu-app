@@ -10,20 +10,13 @@ import 'package:provider/provider.dart';
 
 class PostWidget extends StatelessWidget {
   PostModel post;
-  final int userId;
   final String route;
-  bool isMyPost;
-  PostWidget({Key? key, required this.post, required this.userId, required this.route, this.isMyPost = false}) : super(key: key);
+  bool isCurrentUser;
+  PostWidget({Key? key, required this.post, required this.route, this.isCurrentUser = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var postProvider = Provider.of<PostProvider>(context, listen: false);
-    
-    if(post.userId == userId) {
-      isMyPost = true;
-    } else {
-      isMyPost = false;
-    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -50,12 +43,12 @@ class PostWidget extends StatelessWidget {
                       child: InkWell(
                         onTap: () async {
                           post = await PostController().getOnePost(post.id);
-                          if (isMyPost) {
+                          if (isCurrentUser) {
                             // set for edit post
                             postProvider.setPostImage(post.postImg);
                             postProvider.setCaption(post.caption);
                           }
-                          postBottomSheetWidget(context, post, route, isMyPost);
+                          postBottomSheetWidget(context, post, route, isCurrentUser);
                         },
                         child: SvgPicture.asset('assets/icons/o6_more_1.svg')
                       )

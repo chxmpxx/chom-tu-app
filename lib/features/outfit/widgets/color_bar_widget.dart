@@ -13,6 +13,7 @@ class ColorBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: false);
+    List<Color> colorList = outfitProvider.outfitIndex != 0 ? colorCodes : colorBgCodes;
 
     return SizedBox(
       width: MediaQuery.of(context).size.width,
@@ -30,7 +31,7 @@ class ColorBarWidget extends StatelessWidget {
                     filterTab.addColors(colors[index]);
                   }
                 } else {
-                  outfitProvider.selectBackgroundColor(colorCodes[index]);
+                  outfitProvider.selectBackgroundColor(colorList[index]);
                 }
               },
               child: Padding(
@@ -40,15 +41,15 @@ class ColorBarWidget extends StatelessWidget {
                   height: 24,
                   width: 24,
                   decoration: BoxDecoration(
-                    color: (filterTab.colors.contains(colors[index]) || (outfitProvider.backgroundColor == colorCodes[index] && outfitProvider.outfitIndex == 0)) ? colorCodes[index].withOpacity(0) : colorCodes[index],
+                    color: (filterTab.colors.contains(colors[index]) || (outfitProvider.backgroundColor == colorList[index] && outfitProvider.outfitIndex == 0)) ? colorList[index].withOpacity(0) : colorList[index],
                     borderRadius: const BorderRadius.all(Radius.circular(24)),
-                    border: Border.all(color: (filterTab.colors.contains(colors[index]) || (outfitProvider.backgroundColor == colorCodes[index] && outfitProvider.outfitIndex == 0)) ? kColorsBlack : kColorsLightGrey)
+                    border: Border.all(color: (filterTab.colors.contains(colors[index]) || (outfitProvider.backgroundColor == colorList[index] && outfitProvider.outfitIndex == 0)) ? kColorsBlack : kColorsLightGrey)
                   ),
-                  child: (filterTab.colors.contains(colors[index]) || (outfitProvider.backgroundColor == colorCodes[index] && outfitProvider.outfitIndex == 0)) ? Container(
+                  child: (filterTab.colors.contains(colors[index]) || (outfitProvider.backgroundColor == colorList[index] && outfitProvider.outfitIndex == 0)) ? Container(
                     height: 16,
                     width: 16,
                     decoration: BoxDecoration(
-                      color: colorCodes[index],
+                      color: colorList[index],
                       borderRadius: const BorderRadius.all(Radius.circular(16)),
                       border: Border.all(color: kColorsLightGrey)
                     ),

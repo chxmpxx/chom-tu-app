@@ -1,3 +1,4 @@
+import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/auth/providers/user_controller.dart';
 import 'package:chom_tu/features/auth/providers/user_provider.dart';
 import 'package:chom_tu/common_widgets/button_widget.dart';
@@ -24,6 +25,7 @@ class LoginScreen extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
+        backgroundColor: kColorsWhite,
         body: Center(
           child: ListView(
             shrinkWrap: true,

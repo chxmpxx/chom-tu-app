@@ -52,7 +52,7 @@ class WardrobeEraserScreen extends StatelessWidget {
           builder: (_, value, __) {
             return waitImage ? const CircularProgressIndicator()
             : Container(
-              color: kColorsGrey,
+              color: kColorsWhite,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width,
               child: Image.file(

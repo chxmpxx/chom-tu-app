@@ -10,11 +10,11 @@ import 'package:chom_tu/features/social/widgets/post_report_bottom_sheet_widget.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-Future<void> postBottomSheetWidget(BuildContext context, PostModel post, String route, [isMyPost = false]) {
+Future<void> postBottomSheetWidget(BuildContext context, PostModel post, String route, [isCurrentUser = false]) {
   var postProvider = Provider.of<PostProvider>(context, listen: false);
   var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
   
-  if (route == '/social_post_info') {
+  if (route == '/social_post_info' && isCurrentUser) {
     dashboardProvider.setCurrentIndex(3);
   } else {
     dashboardProvider.setCurrentIndex(2);
@@ -26,7 +26,7 @@ Future<void> postBottomSheetWidget(BuildContext context, PostModel post, String 
     ),
     context: context,
     builder: (BuildContext context) {
-      return isMyPost ? Wrap(
+      return isCurrentUser ? Wrap(
         children: [
           BottomSheetMenuWidget(
             icon: 'assets/icons/a3_edit_1.svg',

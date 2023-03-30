@@ -89,7 +89,13 @@ class WardrobeInfoScreen extends StatelessWidget {
           }
           else if(snapshot.connectionState == ConnectionState.done) {
             wardrobe = snapshot.data!;
-            final colorCode = colorCodes[colors.indexWhere((element) => element == wardrobe.color)];
+            var colorCode;
+            if (wardrobe.color != 'Multi') {
+              colorCode = colorCodes[colors.indexWhere((element) => element == wardrobe.color)];
+            } else {
+              colorCode = 'Multi';
+            }
+            
             wardrobeFavBtnProvider.isFavBtn = wardrobe.isFavorite!;
             return wardrobeInfoBody(wardrobeId, wardrobe, context, colorCode, wardrobeFavBtnProvider);
           }
@@ -103,7 +109,7 @@ class WardrobeInfoScreen extends StatelessWidget {
     );
   }
 
-  Widget wardrobeInfoBody(wardrobeId, WardrobeModel wardrobe, context, Color colorCode, WardrobeFavBtnProvider wardrobeFavBtnProvider) {
+  Widget wardrobeInfoBody(wardrobeId, WardrobeModel wardrobe, context, colorCode, WardrobeFavBtnProvider wardrobeFavBtnProvider) {
     return ListView(
       children: [
         AspectRatio(
@@ -150,7 +156,7 @@ class WardrobeInfoScreen extends StatelessWidget {
                 children: [
                   Text('Color', style: Theme.of(context).textTheme.headline2),
                   const SizedBox(width: 51),
-                  Container(
+                  colorCode.toString() != 'Multi' ? Container(
                     width: 16,
                     height: 16,
                     decoration: BoxDecoration(
@@ -158,7 +164,7 @@ class WardrobeInfoScreen extends StatelessWidget {
                       borderRadius: const BorderRadius.all(Radius.circular(16)),
                       border: Border.all(color: kColorsLightGrey)
                     ),
-                  ),
+                  ) : SvgPicture.asset('assets/icons/o9_multi_1.svg'),
                   Text('  ${wardrobe.color}', style: Theme.of(context).textTheme.headline5),
                 ],
               ),

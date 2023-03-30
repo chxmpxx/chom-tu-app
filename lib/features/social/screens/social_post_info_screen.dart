@@ -14,8 +14,9 @@ class SocialPostInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<String, dynamic> arg = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     int postId = arg["id"] as int;
+    bool isCurrentUser = arg["isCurrentUser"];
     var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
-    dashboardProvider.setCurrentIndex(3);
+    dashboardProvider.setCurrentIndex(isCurrentUser ? 3 : 4);
 
     return Scaffold(
       backgroundColor: kColorsWhite,
@@ -51,7 +52,7 @@ class SocialPostInfoScreen extends StatelessWidget {
           }
           else if(snapshot.connectionState == ConnectionState.done) {
             PostModel post = snapshot.data!;
-            return PostWidget(post: post, userId: 2, route: '/social_post_info');
+            return PostWidget(post: post, route: '/social_post_info', isCurrentUser: isCurrentUser);
           }
           else {
             return const Center(

@@ -3,6 +3,7 @@ import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/auth/models/user_model.dart';
 import 'package:chom_tu/features/auth/providers/user_controller.dart';
 import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
+import 'package:chom_tu/features/profile/provider/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,7 @@ class _SocialSearchState extends State<SocialSearch> {
   @override
   Widget build(BuildContext context) {
     var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
-    dashboardProvider.setCurrentIndex(2);
+    var profileProvider = Provider.of<ProfileProvider>(context, listen: false);
 
     return GestureDetector(
       onTap: () {
@@ -43,6 +44,7 @@ class _SocialSearchState extends State<SocialSearch> {
                       IconButton(
                         icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
                         onPressed: (){
+                          dashboardProvider.setCurrentIndex(2);
                           Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
                         },
                       ),
@@ -77,7 +79,9 @@ class _SocialSearchState extends State<SocialSearch> {
                           padding: const EdgeInsets.symmetric(vertical: 9),
                           child: InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, '/profile', arguments: user.id);
+                              dashboardProvider.setCurrentIndex(4);
+                              profileProvider.setProfile(false, user.id);
+                              Navigator.pushNamed(context, '/dashboard');
                             },
                             child: Row(
                               children: [

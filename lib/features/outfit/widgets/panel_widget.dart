@@ -1,3 +1,4 @@
+import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/outfit/providers/outfit_create_provider.dart';
 import 'package:chom_tu/features/wardrobe/models/wardrobe_model.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_controller.dart';
@@ -30,7 +31,7 @@ class PanelWidget extends StatelessWidget {
             }
             else if(snapshot.connectionState == ConnectionState.done) {
               List<WardrobeModel> wardrobeList = snapshot.data!;
-              return panelBody(outfitProvider, wardrobeList);
+              return panelBody(outfitProvider, wardrobeList, context);
             }
             else {
               return const Center(
@@ -43,37 +44,34 @@ class PanelWidget extends StatelessWidget {
     );
   }
 
-  Widget panelBody(OutfitCreateProvider outfitProvider, wardrobeList) {
-    return GridView.builder(
-      controller: controller,
-      itemCount: wardrobeList.length,
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 1
-      ),
-      itemBuilder: (BuildContext context, int index) {
-        WardrobeModel wardrobe = wardrobeList[index];
-
-        return Padding(
-          padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
-          child: InkWell(
-            onTap: (){
-              outfitProvider.selectWardrobe(wardrobe, context);
-            },
-            child: Container(
-              height: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(wardrobe.wardrobeImg!),
-                  fit: BoxFit.cover,
+  Widget panelBody(OutfitCreateProvider outfitProvider, List<WardrobeModel> wardrobeList, context) {
+    return SingleChildScrollView(
+      child: Center(
+        child: Wrap(
+          spacing: 1,
+          runSpacing: 2,
+          children: wardrobeList.map((wardrobe) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
+              child: InkWell(
+                onTap: () {
+                  outfitProvider.selectWardrobe(wardrobe, context);
+                },
+                child: Container(
+                  height: MediaQuery.of(context).size.width * 0.31,
+                  width: MediaQuery.of(context).size.width * 0.31,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(wardrobe.wardrobeImg!),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
-            )
-          ),
-        );
-      }
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
-
 }

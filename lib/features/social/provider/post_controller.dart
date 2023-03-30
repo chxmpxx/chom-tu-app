@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chom_tu/constants/api_constant.dart';
+import 'package:chom_tu/features/auth/models/user_model.dart';
 import 'package:chom_tu/features/social/models/post_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,11 +30,23 @@ class PostController {
     throw Exception('Fail');
   }
 
-  Future<List<PostModel>> getAllProfilePosts(id) async {
-    final response = await http.get(Uri.parse("$postURLAPI/all_profile_post/$id"), headers: await setHeaders());
+  Future<Map<String, dynamic>> getAllProfilePosts(bool isCurrentUser, int id) async {
+    final response = await http.get(Uri.parse("$postURLAPI/all_profile_post/$id/$isCurrentUser"), headers: await setHeaders());
 
     if (response.statusCode == 200) {
-      return postListModelFromJson(response.body);
+      Map<String, dynamic> data = jsonDecode(response.body);
+
+      List<PostModel> postList = postListModelFromJson(jsonEncode(data['posts']));
+      UserModel user = userModelFromJson(jsonEncode(data['user']));
+
+      int posts = postList.length;
+      int followers = data['followers'] as int;
+      int following = data['following'] as int;
+      Map<String, int> quantity = {'posts': posts, 'followers': followers, 'following': following};
+
+      bool isFollow = data['is_follow'] as bool;
+
+      return {'posts': postList, 'user': user, 'quantity': quantity, 'is_follow': isFollow};
     }
     throw Exception('Fail');
   }

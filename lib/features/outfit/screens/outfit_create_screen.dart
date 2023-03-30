@@ -175,7 +175,7 @@ class OutfitCreateScreen extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: Container(
           height: 75,
-          width: (MediaQuery.of(context).size.width / 5) * 6,
+          width: (MediaQuery.of(context).size.width / 5) * 6.2,
           decoration: const BoxDecoration(
             border: Border(top: BorderSide(color: kColorsLightGrey, width: kAppbarBorderWidth))
           ),

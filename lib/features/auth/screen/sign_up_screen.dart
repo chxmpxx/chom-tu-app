@@ -41,7 +41,7 @@ class SignUpScreen extends StatelessWidget {
           elevation: 0,
           toolbarHeight: 60,
           centerTitle: true,
-          title: Text('Sign Up', style: Theme.of(context).textTheme.headline1),
+          title: Text('Sign up', style: Theme.of(context).textTheme.headline1),
           iconTheme: Theme.of(context).iconTheme,
           backgroundColor: kColorsWhite,
           leading: IconButton(
@@ -70,7 +70,7 @@ class SignUpScreen extends StatelessWidget {
 
                     if(formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
+                      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => true);
                     }
                   },
                 ),

@@ -16,8 +16,8 @@ class UserController {
       userProvider.setExistingEmail(false);
       userProvider.setExistingUsername(false);
       userProvider.setPasswordNotMatch(false);
-
-      return userModelFromJson(response.body);
+      return response.body;
+      
     } else if (response.statusCode == 400) {
       Map<String, dynamic> res = json.decode(response.body);
 
@@ -90,7 +90,7 @@ class UserController {
     throw Exception('Fail');
   }
 
-  Future<UserModel> getOneUser(id) async {
+  Future<UserModel> getOneUser(bool isCurrentUser, int id) async {
     final response = await http.get(Uri.parse("$userURLAPI/$id"), headers: await setHeaders());
     if (response.statusCode == 200) {
       return userModelFromJson(response.body);

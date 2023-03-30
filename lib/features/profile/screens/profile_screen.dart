@@ -3,42 +3,43 @@ import 'package:chom_tu/common_widgets/line_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/auth/models/user_model.dart';
 import 'package:chom_tu/features/auth/providers/user_controller.dart';
+import 'package:chom_tu/features/profile/provider/follower_controller.dart';
+import 'package:chom_tu/features/profile/provider/profile_provider.dart';
 import 'package:chom_tu/features/profile/widgets/setting_bottom_sheet_widget.dart';
 import 'package:chom_tu/features/social/models/post_model.dart';
 import 'package:chom_tu/features/social/provider/post_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // todo: get current user id
-    int userId = (ModalRoute.of(context)?.settings.arguments ?? -1) as int;
-    bool isCurrentUser;
-
-    if (userId == -1) {
-      isCurrentUser = true;
-    } else {
-      isCurrentUser = true;
-    }
+    var profileProvider = Provider.of<ProfileProvider>(context, listen: false);
 
     return FutureBuilder(
-      future: UserController().getOneUser(userId),
-      builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+      future: PostController().getAllProfilePosts(profileProvider.isCurrentUser, profileProvider.userId),
+      builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
         if(snapshot.hasError) {
           return Center(
             child: Text(snapshot.error.toString()),
           );
         }
         else if(snapshot.connectionState == ConnectionState.done) {
-          UserModel user = snapshot.data!;
+          Map<String, dynamic> data = snapshot.data!;
+          List<PostModel> postList = data['posts'];
+          UserModel user = data['user'];
+          Map<String, int> quantity = data['quantity'];
+          bool isFollow = data['is_follow'];
+          profileProvider.isFollow = isFollow;
+          profileProvider.followers = quantity['followers']!;
 
           return Scaffold(
             backgroundColor: kColorsWhite,
             appBar: AppBar(
-              centerTitle: isCurrentUser ? false : true,
+              centerTitle: profileProvider.isCurrentUser ? false : true,
               shape: const Border(
                 bottom: BorderSide(
                   color: kColorsLightGrey,
@@ -47,17 +48,17 @@ class ProfileScreen extends StatelessWidget {
               ),
               elevation: 0,
               toolbarHeight: 60,
-              title: Text(user.username, style: isCurrentUser ? Theme.of(context).textTheme.headline1 : Theme.of(context).textTheme.subtitle1),
+              title: Text(user.username, style: profileProvider.isCurrentUser ? Theme.of(context).textTheme.headline1 : Theme.of(context).textTheme.subtitle1),
               iconTheme: Theme.of(context).iconTheme,
               backgroundColor: kColorsWhite,
-              automaticallyImplyLeading: isCurrentUser ? false : true,
-              leading: isCurrentUser ? null : IconButton(
+              automaticallyImplyLeading: profileProvider.isCurrentUser ? false : true,
+              leading: profileProvider.isCurrentUser ? null : IconButton(
                 icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
                 onPressed: (){
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/social_search');
                 },
               ),
-              actions: isCurrentUser ? [
+              actions: profileProvider.isCurrentUser ? [
                 IconButton(
                   onPressed: (){
                     Navigator.pushNamed(context, '/profile_edit');
@@ -80,109 +81,123 @@ class ProfileScreen extends StatelessWidget {
             ),
             body: ListView(
               children: [
-                profileBody(context, user, isCurrentUser),
+                profileBody(context, user, profileProvider, quantity, isFollow),
                 const SizedBox(height: 22),
                 lineWidget(),
-
-                FutureBuilder(
-                  future: PostController().getAllProfilePosts(userId),
-                  builder: (BuildContext context, AsyncSnapshot<List<PostModel>> snapshot) {
-                    if(snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    }
-                    else if(snapshot.connectionState == ConnectionState.done) {
-                      List<PostModel> postList = snapshot.data!;
-                      return allPostBody(postList);
-                    }
-                    else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                )
+                allPostBody(postList, profileProvider)
               ],
             ),
           );
         }
         else {
           return const Center(
-            // child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(),
           );
         }
       },
     );
   }
 
-  Widget profileBody(context, UserModel user, bool isCurrentUser) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(22),
-          child: Row(  
-            children: [
-              Container(
-                width: (MediaQuery.of(context).size.width / 2) - 44,
-                height: (MediaQuery.of(context).size.width / 2) - 44,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular((MediaQuery.of(context).size.width / 2) - 44)),
-                  image: user.userImg != null ? DecorationImage(
-                    image: NetworkImage(user.userImg!),
-                    fit: BoxFit.cover,
-                  ) 
-                  : const DecorationImage(
-                    image: AssetImage('assets/user_chomtu_profile.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 22),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(user.name, style: Theme.of(context).textTheme.headline2),
-                  const SizedBox(height: 11),
-                  Text(user.bio ?? '', style: Theme.of(context).textTheme.subtitle2),
-                  isCurrentUser ? Container() : ButtonWidget(name: 'Follow', isSmall: true, onTap: () {})
-                ],
-              )
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+  Widget profileBody(context, UserModel user, ProfileProvider profileProvider, Map<String, int> quantity, bool isFollow) {
+    return Consumer<ProfileProvider>(
+      builder: (_, value, __) {
+        return Column(
           children: [
-            // todo: get Posts, Followers and Following
-            Column(
-              children: [
-                Text('34', style: Theme.of(context).textTheme.headline2),
-                const SizedBox(height: 11),
-                const Text('Posts', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(22),
+              child: Row(  
+                children: [
+                  Container(
+                    width: (MediaQuery.of(context).size.width / 2) - 44,
+                    height: (MediaQuery.of(context).size.width / 2) - 44,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular((MediaQuery.of(context).size.width / 2) - 44)),
+                      image: user.userImg != null ? DecorationImage(
+                        image: NetworkImage(user.userImg!),
+                        fit: BoxFit.cover,
+                      ) 
+                      : const DecorationImage(
+                        image: AssetImage('assets/user_chomtu_profile.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 22),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(user.name, style: Theme.of(context).textTheme.headline2),
+                      const SizedBox(height: 11),
+                      Text(user.bio ?? '', style: Theme.of(context).textTheme.subtitle2),
+                      profileProvider.isCurrentUser ? Container()
+                      : profileProvider.isFollow ? ButtonWidget(
+                        name: 'Unfollow',
+                        isSmall: true,
+                        isLight: true,
+                        onTap: () {
+                          FollowerController().unfollow(user.id);
+                          profileProvider.setIsFollow(false);
+                          profileProvider.setFollowers(profileProvider.followers - 1);
+                        }
+                      ) : ButtonWidget(
+                        name: 'Follow',
+                        isSmall: true,
+                        onTap: () {
+                          FollowerController().addFollow(user.id);
+                          profileProvider.setIsFollow(true);
+                          profileProvider.setFollowers(profileProvider.followers + 1);
+                        }
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
-            Column(
-              children: [
-                Text('65.3K', style: Theme.of(context).textTheme.headline2),
-                const SizedBox(height: 11),
-                const Text('Followers', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 55),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                    width: 60,
+                    child: Column(
+                      children: [
+                        Text(quantity['posts'].toString(), style: Theme.of(context).textTheme.headline2),
+                        const SizedBox(height: 11),
+                        const Text('Posts', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 60,
+                    child: Column(
+                      children: [
+                        Text(profileProvider.followers.toString(), style: Theme.of(context).textTheme.headline2),
+                        const SizedBox(height: 11),
+                        const Text('Followers', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 60,
+                    child: Column(
+                      children: [
+                        Text(quantity['following'].toString(), style: Theme.of(context).textTheme.headline2),
+                        const SizedBox(height: 11),
+                        const Text('Following', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-            Column(
-              children: [
-                Text('65.3K', style: Theme.of(context).textTheme.headline2),
-                const SizedBox(height: 11),
-                const Text('Following', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsDarkGrey)),
-              ],
-            )
           ],
-        ),
-      ],
+        );
+      }
     );
   }
 
-  Widget allPostBody(List<PostModel> postList) {
+  Widget allPostBody(List<PostModel> postList, ProfileProvider profileProvider) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -198,8 +213,7 @@ class ProfileScreen extends StatelessWidget {
           padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
           child: InkWell(
             onTap: (){
-              // Navigator.pushNamed(context, '/social_post_info', arguments: post.id);
-              Navigator.pushNamed(context, '/social_post_info', arguments: {"id": post.id, "route": '/profile'});
+              Navigator.pushNamed(context, '/social_post_info', arguments: {"id": post.id, "route": '/profile', "isCurrentUser": profileProvider.isCurrentUser});
             },
             child: Container(
               height: double.infinity,
