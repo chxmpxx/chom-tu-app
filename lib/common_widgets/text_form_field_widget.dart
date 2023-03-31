@@ -27,6 +27,7 @@ class TextFormFieldWidget extends StatelessWidget {
       autocorrect: false,
       enableSuggestions: false,
       obscureText: isPassword ? !passwordVisible : false,
+      cursorColor: kColorsBlack,
 
       decoration: InputDecoration(
         hintText: hintText,
@@ -57,8 +58,8 @@ class TextFormFieldWidget extends StatelessWidget {
           return validator;
         } else if (name == 'email' && userProvider.existingEmail) {
           return 'Another account is using the same email.';
-        } else if (name == 'username' && userProvider.existingUsername) {
-          return 'This username isn\'t available. Please try another.';
+        } else if ((name == 'username' || name == 'username2') && userProvider.existingUsername) {
+          return name == 'username2' ? 'This username isn\'t available.' : 'This username isn\'t available. Please try another.';
         } else if (name == 'password' && userProvider.passwordNotMatch) {
           return 'Password not match.';
         } else if (name == 'usernameLogin' && userProvider.noAccount) {

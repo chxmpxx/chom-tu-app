@@ -81,6 +81,7 @@ class _SocialSearchState extends State<SocialSearch> {
                             onTap: () {
                               dashboardProvider.setCurrentIndex(4);
                               profileProvider.setProfile(false, user.id);
+                              profileProvider.setRoute('/social_search');
                               Navigator.pushNamed(context, '/dashboard');
                             },
                             child: Row(

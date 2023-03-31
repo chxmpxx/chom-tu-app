@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:chom_tu/constants/api_constant.dart';
 import 'package:chom_tu/features/auth/models/user_model.dart';
+import 'package:chom_tu/features/auth/providers/user_controller.dart';
 import 'package:chom_tu/features/social/models/post_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,11 +22,16 @@ class PostController {
     throw Exception('Fail');
   }
 
-  Future<List<PostModel>> getAllPosts() async {
+  Future<Map<String, dynamic>> getAllPosts() async {
     final response = await http.post(Uri.parse("$postURLAPI/all_post"), headers: await setHeaders(), body: json.encode({}));
 
     if (response.statusCode == 200) {
-      return postListModelFromJson(response.body);
+      Map<String, dynamic> data = jsonDecode(response.body);
+
+      List<PostModel> postList = postListModelFromJson(jsonEncode(data['posts']));
+      List<UserModel> userList = userListModelFromJson(jsonEncode(data['users']));
+      List<bool> isCurrentUserList = data['is_current_users'].cast<bool>().toList();
+      return {'posts': postList, 'users': userList, 'is_current_users': isCurrentUserList};
     }
     throw Exception('Fail');
   }
@@ -51,10 +57,16 @@ class PostController {
     throw Exception('Fail');
   }
 
-  Future<PostModel> getOnePost(id) async {
+  Future<dynamic> getOnePost(id, [bool getUser = false]) async {
     final response = await http.get(Uri.parse("$postURLAPI/$id"), headers: await setHeaders());
     if (response.statusCode == 200) {
-      return postModelFromJson(response.body);
+      PostModel post = postModelFromJson(response.body);
+      if (getUser) {
+        UserModel user = await UserController().getUser(post.userId);
+        return {'post': post, 'user': user};
+      } else {
+        return post;
+      }
     }
     throw Exception('Fail');
   }

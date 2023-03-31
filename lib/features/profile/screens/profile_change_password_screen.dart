@@ -1,13 +1,18 @@
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/common_widgets/text_form_field_widget.dart';
+import 'package:chom_tu/features/auth/providers/user_controller.dart';
+import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class ProfileChangePasswordScreen extends StatelessWidget {
   const ProfileChangePasswordScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+
     final formKey = GlobalKey<FormState>();
     TextEditingController currentPassword = TextEditingController();
     TextEditingController newPassword = TextEditingController();
@@ -42,8 +47,15 @@ class ProfileChangePasswordScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 22, top: 22),
               child: InkWell(
-                onTap: (){
-                  Navigator.pop(context);
+                onTap: () async {
+                  Map<String, String> data = {"current_password": currentPassword.value.text, "new_password": newPassword.value.text, "confirm_new_password": confirmNewPassword.value.text};
+                  await UserController().changePassword(data, context);
+
+                  if(formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    dashboardProvider.setCurrentIndex(3);
+                    Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
+                  }
                 },
                 child: Text('Save', style: Theme.of(context).textTheme.headline5)
               ),
@@ -57,9 +69,9 @@ class ProfileChangePasswordScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextFormFieldWidget(controller: currentPassword, hintText: "Current Password", validator: "Please enter current password", isPassword: true),
+                TextFormFieldWidget(controller: currentPassword, hintText: "Current Password", validator: "Please enter current password", isPassword: true, name: 'passwordLogin'),
                 TextFormFieldWidget(controller: newPassword, hintText: "New Password", validator: "Please enter new password", isPassword: true),
-                TextFormFieldWidget(controller: confirmNewPassword, hintText: "Confirm New Password", validator: "Please enter confirm new password", isPassword: true),
+                TextFormFieldWidget(controller: confirmNewPassword, hintText: "Confirm New Password", validator: "Please enter confirm new password", isPassword: true, name: 'password'),
               ],
             ),
           ),

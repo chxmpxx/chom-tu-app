@@ -12,6 +12,7 @@ import 'package:chom_tu/features/outfit/screens/outfit_edit_info_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_favorite_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_info_screen.dart';
 import 'package:chom_tu/features/outfit/screens/outfit_screen.dart';
+import 'package:chom_tu/features/profile/screens/profile_camera_screen.dart';
 import 'package:chom_tu/features/profile/screens/profile_change_password_screen.dart';
 import 'package:chom_tu/features/profile/screens/profile_edit_screen.dart';
 import 'package:chom_tu/features/profile/screens/profile_screen.dart';
@@ -61,6 +62,7 @@ const routeSocialSaved = '/social_saved';
 
 const routeProfile = '/profile';
 const routeProfileEdit = '/profile_edit';
+const routeProfileCamera = '/profile_camera';
 const routeProfileChangePassword = '/profile_change_password';
 
 const routeAdminUser = '/admin_user';
@@ -184,6 +186,11 @@ class Routes {
       case routeProfileEdit:
         return PageTransition(
           child: const ProfileEditScreen(), 
+          type: PageTransitionType.rightToLeft
+        );
+      case routeProfileCamera:
+        return PageTransition(
+          child: const ProfileCameraScreen(), 
           type: PageTransitionType.rightToLeft
         );
       case routeProfileChangePassword:

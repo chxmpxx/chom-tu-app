@@ -1,4 +1,7 @@
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/auth/models/user_model.dart';
+import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
+import 'package:chom_tu/features/profile/provider/profile_provider.dart';
 import 'package:chom_tu/features/social/models/post_model.dart';
 import 'package:chom_tu/features/social/provider/like_controller.dart';
 import 'package:chom_tu/features/social/provider/post_controller.dart';
@@ -10,13 +13,16 @@ import 'package:provider/provider.dart';
 
 class PostWidget extends StatelessWidget {
   PostModel post;
+  UserModel user;
   final String route;
   bool isCurrentUser;
-  PostWidget({Key? key, required this.post, required this.route, this.isCurrentUser = false}) : super(key: key);
+  PostWidget({Key? key, required this.post, required this.user, required this.route, this.isCurrentUser = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var postProvider = Provider.of<PostProvider>(context, listen: false);
+    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    var profileProvider = Provider.of<ProfileProvider>(context, listen: false);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -25,36 +31,51 @@ class PostWidget extends StatelessWidget {
           padding: const EdgeInsets.only(top: 22, bottom: 11, left: 22, right: 22),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: const BoxDecoration(
-                      color: kColorsGrey,
-                      borderRadius: BorderRadius.all(Radius.circular(32)),
+              InkWell(
+                onTap: () {
+                  profileProvider.setProfile(isCurrentUser, user.id);
+                  profileProvider.setRoute('/social');
+                  dashboardProvider.setCurrentIndex(4);
+                  Navigator.pushNamed(context, '/dashboard');
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(32)),
+                        image: user.userImg != null ? DecorationImage(
+                          image: NetworkImage(user.userImg!),
+                          fit: BoxFit.cover,
+                        ) 
+                        : const DecorationImage(
+                          image: AssetImage('assets/user_chomtu_profile.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 9),
-                  Text('Miso', style: Theme.of(context).textTheme.subtitle2),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: () async {
-                          post = await PostController().getOnePost(post.id);
-                          if (isCurrentUser) {
-                            // set for edit post
-                            postProvider.setPostImage(post.postImg);
-                            postProvider.setCaption(post.caption);
-                          }
-                          postBottomSheetWidget(context, post, route, isCurrentUser);
-                        },
-                        child: SvgPicture.asset('assets/icons/o6_more_1.svg')
+                    const SizedBox(width: 9),
+                    Text(user.username, style: Theme.of(context).textTheme.subtitle2),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          onTap: () async {
+                            post = await PostController().getOnePost(post.id);
+                            if (isCurrentUser) {
+                              // set for edit post
+                              postProvider.setPostImage(post.postImg);
+                              postProvider.setCaption(post.caption);
+                            }
+                            postBottomSheetWidget(context, post, route, isCurrentUser);
+                          },
+                          child: SvgPicture.asset('assets/icons/o6_more_1.svg')
+                        )
                       )
-                    )
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 11),
               Align(

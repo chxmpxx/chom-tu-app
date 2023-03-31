@@ -72,7 +72,7 @@ class SocialSavedScreen extends StatelessWidget {
           padding: const EdgeInsets.only(left: 1, right: 1, bottom: 2),
           child: InkWell(
             onTap: (){
-              Navigator.pushNamed(context, '/social_post_info', arguments: {"id": post.id, "route": '/social_saved'});
+              Navigator.pushNamed(context, '/social_post_info', arguments: {"id": post.id, "route": '/social_saved', "isCurrentUser": false});
             },
             child: Container(
               height: double.infinity,

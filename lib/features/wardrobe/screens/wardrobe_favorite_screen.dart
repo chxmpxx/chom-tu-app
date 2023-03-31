@@ -16,7 +16,7 @@ class WardrobeFavoriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
     var filterTab = Provider.of<WardrobeFilterTabProvider>(context, listen: true);
     var tabStatus = Provider.of<WardrobeTabStatusProvider>(context, listen: false);
     

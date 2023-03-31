@@ -1,4 +1,5 @@
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/auth/models/user_model.dart';
 import 'package:chom_tu/features/social/models/post_model.dart';
 import 'package:chom_tu/features/social/provider/post_controller.dart';
 import 'package:chom_tu/features/social/widgets/post_widget.dart';
@@ -42,19 +43,25 @@ class SocialScreen extends StatelessWidget {
       ),
       body: FutureBuilder(
         future: PostController().getAllPosts(),
-        builder: (BuildContext context, AsyncSnapshot<List<PostModel>> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
           if(snapshot.hasError) {
             return Center(
               child: Text(snapshot.error.toString()),
             );
           }
           else if(snapshot.connectionState == ConnectionState.done) {
-            List<PostModel> postList = snapshot.data!;
+            Map<String, dynamic> data = snapshot.data!;
+            List<PostModel> postList = data['posts'];
+            List<UserModel> userList = data['users'];
+            List<bool> isCurrentUserList = data['is_current_users'];
+
             return ListView.builder(
               itemCount: postList.length,
               itemBuilder: (BuildContext context, int index) {
                 PostModel post = postList[index];
-                return PostWidget(post: post, route: '/dashboard');
+                UserModel user = userList[index];
+                bool isCurrentUser = isCurrentUserList[index];
+                return PostWidget(post: post, user: user, route: '/dashboard', isCurrentUser: isCurrentUser);
               }
             );
           }

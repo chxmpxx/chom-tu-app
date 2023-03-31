@@ -1,4 +1,6 @@
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/auth/models/user_model.dart';
+import 'package:chom_tu/features/auth/providers/user_controller.dart';
 import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/social/models/post_model.dart';
 import 'package:chom_tu/features/social/provider/post_controller.dart';
@@ -43,16 +45,19 @@ class SocialPostInfoScreen extends StatelessWidget {
         ),
       ),
       body: FutureBuilder(
-        future: PostController().getOnePost(postId),
-        builder: (BuildContext context, AsyncSnapshot<PostModel> snapshot) {
+        future: PostController().getOnePost(postId, true),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if(snapshot.hasError) {
             return Center(
               child: Text(snapshot.error.toString()),
             );
           }
           else if(snapshot.connectionState == ConnectionState.done) {
-            PostModel post = snapshot.data!;
-            return PostWidget(post: post, route: '/social_post_info', isCurrentUser: isCurrentUser);
+            Map<String, dynamic> data = snapshot.data! as Map<String, dynamic>;
+            PostModel post = data['post'];
+            UserModel user = data['user'];
+
+            return PostWidget(post: post, user: user, route: '/social_post_info', isCurrentUser: isCurrentUser);
           }
           else {
             return const Center(

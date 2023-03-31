@@ -2,7 +2,7 @@ import 'package:chom_tu/common_widgets/button_widget.dart';
 import 'package:chom_tu/common_widgets/line_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/auth/models/user_model.dart';
-import 'package:chom_tu/features/auth/providers/user_controller.dart';
+import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/profile/provider/follower_controller.dart';
 import 'package:chom_tu/features/profile/provider/profile_provider.dart';
 import 'package:chom_tu/features/profile/widgets/setting_bottom_sheet_widget.dart';
@@ -18,6 +18,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var profileProvider = Provider.of<ProfileProvider>(context, listen: false);
+    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
 
     return FutureBuilder(
       future: PostController().getAllProfilePosts(profileProvider.isCurrentUser, profileProvider.userId),
@@ -55,16 +56,15 @@ class ProfileScreen extends StatelessWidget {
               leading: profileProvider.isCurrentUser ? null : IconButton(
                 icon: SvgPicture.asset('assets/icons/o3_back_1.svg', color: kColorsBlack),
                 onPressed: (){
-                  Navigator.pushNamed(context, '/social_search');
+                  if (profileProvider.route == '/social_search') {
+                    Navigator.pushNamed(context, '/social_search');
+                  } else {
+                    dashboardProvider.setCurrentIndex(2);
+                    Navigator.pushNamed(context, '/dashboard');
+                  }
                 },
               ),
               actions: profileProvider.isCurrentUser ? [
-                IconButton(
-                  onPressed: (){
-                    Navigator.pushNamed(context, '/profile_edit');
-                  },
-                  icon: SvgPicture.asset('assets/icons/a3_edit_1.svg', color: kColorsBlack)
-                ),
                 IconButton(
                   onPressed: (){
                     Navigator.pushNamed(context, '/social_saved');

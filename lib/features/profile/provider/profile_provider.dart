@@ -5,6 +5,9 @@ class ProfileProvider with ChangeNotifier {
   int userId = -1;
   bool isFollow = false;
   int followers = 0;
+  String profileImg = "";
+  bool isCamera = false;
+  String route = "";
 
   setProfile(isCurrentUser, userId) {
     this.isCurrentUser = isCurrentUser;
@@ -20,4 +23,14 @@ class ProfileProvider with ChangeNotifier {
     followers = data;
     notifyListeners();
   }
+
+  setProfileImg(img) {
+    profileImg = img;
+    notifyListeners();
+  }
+
+  setRoute(data) {
+    route = data;
+  }
+
 }
