@@ -13,7 +13,7 @@ Widget adminDrawer(context) {
 
   List<String> list = ['User', 'Report', 'History', 'Setting', 'Log Out'];
   List<String> iconList = ['b1_profile_1.svg', 'o8_report_1.svg', 'o8_history_1.svg', 'a5_setting_1.svg', 'o8_logout_1.svg'];
-  List<String> screens = ['/admin_user', '/admin_report', '/admin_history', '/admin_setting', '/admin_report'];
+  List<String> screens = ['/admin_user', '/admin_report', '/admin_history', '/admin_setting', '/login'];
 
   return Drawer(
     width: MediaQuery.of(context).size.width * 0.67,
@@ -60,7 +60,8 @@ Widget adminDrawer(context) {
                       adminUserFilterTab.removeAllFilterTab();
                       adminReportFilterTab.removeAllFilterTab();
                       adminController.setMenu(list[index]);
-                      Navigator.pushNamed(context, screens[index]);
+                      Navigator.pushReplacementNamed(context, screens[index]);
+                      // Navigator.pushNamedAndRemoveUntil(context, screens[index], (route) => false);
                     },
                   );
                 })

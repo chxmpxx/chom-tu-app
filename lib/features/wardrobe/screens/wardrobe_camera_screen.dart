@@ -141,7 +141,23 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
   void openGallery(BuildContext context, WardrobeProvider wardrobeProvider) async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if(pickedFile != null) {
-      Map<String, dynamic> data = await WardrobeController().wardrobeDetection(pickedFile.path);
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Stack(
+            children: const [
+              Opacity(
+                opacity: 0.3,
+                child: ModalBarrier(dismissible: false, color: Colors.grey),
+              ),
+              Center(child: CircularProgressIndicator()),
+            ],
+          );
+        },
+      );
+      Map<String, dynamic> data = await WardrobeController().wardrobeDetection(pickedFile.path, wardrobeProvider.isDetect);
+      
       setWardrobeData(wardrobeProvider, pickedFile.path, data);
       setState(() {
         wardrobeProvider.setPath(pickedFile.path);
@@ -159,8 +175,22 @@ class _WardrobeCameraScreenState extends State<WardrobeCameraScreen> {
     final path = join((await getTemporaryDirectory()).path, "${DateTime.now()}.png");
     XFile picture = await _cameraController!.takePicture();
     picture.saveTo(path);
-
-    Map<String, dynamic> data = await WardrobeController().wardrobeDetection(path);
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Stack(
+          children: const [
+            Opacity(
+              opacity: 0.3,
+              child: ModalBarrier(dismissible: false, color: Colors.grey),
+            ),
+            Center(child: CircularProgressIndicator()),
+          ],
+        );
+      },
+    );
+    Map<String, dynamic> data = await WardrobeController().wardrobeDetection(path, wardrobeProvider.isDetect);
     setWardrobeData(wardrobeProvider, path, data);
 
     wardrobeProvider.setPath(path);

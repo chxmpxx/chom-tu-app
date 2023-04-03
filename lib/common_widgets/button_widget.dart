@@ -29,7 +29,7 @@ class ButtonWidget extends StatelessWidget {
               style: isSmall ? 
               isLight ? 
                 Theme.of(context).textTheme.subtitle2
-                : Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.white)
+                : Theme.of(context).textTheme.subtitle2!.copyWith(color: kColorsWhite)
             : Theme.of(context).textTheme.button)
           ),
         ),

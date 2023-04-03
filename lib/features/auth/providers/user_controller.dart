@@ -42,7 +42,7 @@ class UserController {
     throw Exception('Fail');
   }
 
-  Future<void> login(data, context) async {
+  Future<String> login(data, context) async {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     Map<String, String> headers = {
       'Content-Type':'application/json',
@@ -59,6 +59,8 @@ class UserController {
       var body = json.decode(response.body);
       String token = body['accessToken'];
       await storage.write(key: 'accessToken', value: token);
+
+      return body['role'];
 
     } else if (response.statusCode == 400) {
       Map<String, dynamic> res = json.decode(response.body);
@@ -78,10 +80,12 @@ class UserController {
       } else {
         userProvider.setBanned(false);
       }
+      return response.body;
     } 
+    throw Exception('Fail');
   }
 
-  Future<List<UserModel>> getAllUsers(String username) async {
+  Future<List<UserModel>> searchUser(String username) async {
     String data = jsonEncode({"username": username});
     final response = await http.post(Uri.parse("$userURLAPI/search_user"), headers: await setHeaders(), body: data);
 
@@ -99,10 +103,38 @@ class UserController {
     throw Exception('Fail');
   }
 
+  Future<List<UserModel>> getAllUser(charges, status) async {
+    var order = [["total_charges", "DESC"]];
+    if (charges == 'Sort Highest to Lowest') {
+      order = [["total_charges", "ASC"]];
+    }
+
+    var userStatus = (status == 'Active' ? 0 : 1);
+    if (status == 'All') {
+      userStatus = -1 ;
+    }
+
+    String data = jsonEncode({ "order": order, "is_ban": userStatus});
+    final response = await http.post(Uri.parse("$userURLAPI/all_user"), headers: await setHeaders(), body: data);
+
+    if (response.statusCode == 200) {
+      return userListModelFromJson(response.body);
+    }
+    throw Exception('Fail');
+  }
+
   Future<UserModel> getUser(id) async {
     final response = await http.get(Uri.parse("$userURLAPI/get_user/$id"), headers: await setHeaders());
     if (response.statusCode == 200) {
       return userModelFromJson(response.body);
+    }
+    throw Exception('Fail');
+  }
+
+  Future<String> updateUserStatus(id, Map<String, String> data) async {
+    final response = await http.put(Uri.parse("$userURLAPI/update_status_user/$id"), headers: await setHeaders(), body: json.encode(data));
+    if (response.statusCode == 200) {
+      return response.body;
     }
     throw Exception('Fail');
   }
@@ -161,6 +193,14 @@ class UserController {
         userProvider.setPasswordNotMatch(false);
       }
       return response.toString();
+    }
+    throw Exception('Fail');
+  }
+
+  Future<String> automaticBanUser(Map<String, String> data) async {
+    final response = await http.put(Uri.parse("$userURLAPI/automatic_ban_user"), headers: await setHeaders(), body: json.encode(data));
+    if (response.statusCode == 200) {
+      return response.body;
     }
     throw Exception('Fail');
   }

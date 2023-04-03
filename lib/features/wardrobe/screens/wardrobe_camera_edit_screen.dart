@@ -136,6 +136,9 @@ class WardrobeCameraEditScreen extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
+              if (wardrobeId != '-1') {
+                wardrobeProvider.currentPath = await createFileFromUrl(wardrobeProvider.image!);
+              }
               Navigator.pushNamed(context, '/wardrobe_eraser');
             },
             child: Column(

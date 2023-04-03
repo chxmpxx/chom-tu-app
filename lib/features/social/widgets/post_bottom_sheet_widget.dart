@@ -75,12 +75,12 @@ Future<void> postBottomSheetWidget(BuildContext context, PostModel post, String 
               );
             }
           ),
-          lineSheetWidget(context),
-          BottomSheetMenuWidget(
-            icon: 'assets/icons/b1_hanger_1.svg',
-            title: 'Copy Outfit',
-            onTap: (){},
-          ),
+          // lineSheetWidget(context),
+          // BottomSheetMenuWidget(
+          //   icon: 'assets/icons/b1_hanger_1.svg',
+          //   title: 'Copy Outfit',
+          //   onTap: (){},
+          // ),
           lineSheetWidget(context),
           BottomSheetMenuWidget(
             icon: 'assets/icons/o8_report_1.svg',

@@ -6,6 +6,7 @@ import 'package:chom_tu/constants/data_constant.dart';
 import 'package:chom_tu/features/wardrobe/providers/wardrobe_provider.dart';
 import 'package:chom_tu/features/wardrobe/widgets/wardrobe_circle_btn_widget.dart';
 import 'package:chom_tu/features/wardrobe/widgets/wardrobe_drop_down_field_widget.dart';
+import 'package:chom_tu/features/wardrobe/widgets/wardrobe_toggle_btn_widget.dart';
 import 'package:chom_tu/utils/types.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -92,11 +93,18 @@ class WardrobeEditInfoScreen extends StatelessWidget {
                     ) : Container(),
                     WardrobeDropDownField(list: allColor, name: 'Color', wardrobeValue: wardrobeProvider.color),
                     WardrobeDropDownField(list: types(wardrobeProvider.category, wardrobeProvider.subCategory), name: 'Type', wardrobeValue: wardrobeProvider.type),
-                    const SizedBox(height: 10)
+                    const SizedBox(height: 10),
                   ],
                 );
               }
             )
+          ),
+          Consumer<WardrobeProvider>(
+            builder: (_, value, __) {
+              return Expanded(
+                child: WardrobeToggleBtnWidget(context),
+              );
+            }
           )
         ],
       )

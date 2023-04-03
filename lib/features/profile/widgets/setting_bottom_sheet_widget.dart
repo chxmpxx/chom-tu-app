@@ -44,7 +44,10 @@ Future<void> settingBottomSheetWidget(BuildContext context) {
           BottomSheetMenuWidget(
             icon: 'assets/icons/o8_logout_1.svg',
             title: 'Log Out',
-            onTap: (){},
+            onTap: (){
+              // Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+              Navigator.pushReplacementNamed(context, '/login');
+            },
           ),
         ],
       );

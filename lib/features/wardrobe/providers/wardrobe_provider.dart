@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class WardrobeProvider with ChangeNotifier {
 
+  bool isDetect = false;
+
   // image
   bool isGallery = false;
   String? currentPath;
@@ -15,6 +17,11 @@ class WardrobeProvider with ChangeNotifier {
   String color = 'Red';
   String type = 'Vest';
   String? image;
+
+  setIsDetect() {
+    isDetect = !isDetect;
+    notifyListeners();
+  }
 
   setPath(String path) {
     if(currentPath == null) {

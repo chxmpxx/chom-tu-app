@@ -15,6 +15,23 @@ Widget userStatusFilterTab(context) {
         children: [
           InkWell(
             onTap: (){
+              filterTab.selectStatus('All');
+              tabStatus.tab(tabStatus.indexTab);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(18),
+              child: Text('All', style: filterTab.status == 'All' ? Theme.of(context).textTheme.headline5 : Theme.of(context).textTheme.headline6)
+            ),
+          ),
+          Center(
+            child: Container(
+              height: 1,
+              width: MediaQuery.of(context).size.width - 36,
+              color: kColorsLightGrey
+            ),
+          ),
+          InkWell(
+            onTap: (){
               filterTab.selectStatus('Active');
               tabStatus.tab(tabStatus.indexTab);
             },

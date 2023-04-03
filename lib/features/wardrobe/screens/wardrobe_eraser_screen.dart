@@ -19,6 +19,7 @@ class WardrobeEraserScreen extends StatelessWidget {
 
     Future<void> init() async {
       imagePath = await ApiClient().removeBgApi(wardrobeProvider.currentPath!);
+      wardrobeProvider.isEditImage = true;
       wardrobeProvider.setPath(imagePath);
       waitImage = false;
     }

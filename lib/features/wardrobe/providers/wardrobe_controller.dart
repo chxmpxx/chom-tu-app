@@ -105,9 +105,12 @@ class WardrobeController {
     throw Exception('Fail');
   }
 
-  Future<Map<String, dynamic>> wardrobeDetection(path) async {
+  Future<Map<String, dynamic>> wardrobeDetection(path, bool isDetect) async {
     var request = http.MultipartRequest('POST', Uri.parse("$wardrobeURLAPI/detect_wardrobe"));
+    Map<String, String> data = {"is_detect": isDetect.toString()};
+
     request.headers.addAll(await setHeaders());
+    request.fields.addAll(data);
     request.files.add(await http.MultipartFile.fromPath('file', path));
 
     http.StreamedResponse response = await request.send();

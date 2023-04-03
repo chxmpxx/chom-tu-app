@@ -1,11 +1,14 @@
 import 'package:chom_tu/common_widgets/filter_bar_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/admin/providers/admin_provider.dart';
 import 'package:chom_tu/features/admin/providers/admin_tab_status_provider.dart';
 import 'package:chom_tu/features/admin/providers/admin_user_filter_tab_provider.dart';
 import 'package:chom_tu/features/admin/widgets/admin_drawer_widget.dart';
 import 'package:chom_tu/features/admin/widgets/user_charges_filter_tab_widget.dart';
 import 'package:chom_tu/features/admin/widgets/user_sort_filter_tab_widget.dart';
 import 'package:chom_tu/features/admin/widgets/user_status_filter_tab_widget.dart';
+import 'package:chom_tu/features/auth/models/user_model.dart';
+import 'package:chom_tu/features/auth/providers/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +18,7 @@ class AdminUserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var adminProvider = Provider.of<AdminProvider>(context, listen: false);
     var filterTab = Provider.of<AdminUserFilterTabProvider>(context, listen: true);
     var tabStatus = Provider.of<AdminTabStatusProvider>(context, listen: false);
 
@@ -23,7 +27,6 @@ class AdminUserScreen extends StatelessWidget {
     }
     
     List<Widget> filterTabContent = [
-      userSortFilterTab(context),
       userChargesFilterTab(context),
       userStatusFilterTab(context)
     ];
@@ -90,41 +93,24 @@ class AdminUserScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 22),
                 Expanded(
-                  child: ListView(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            width: 61,
-                            child: Text('Chxm.xoxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', style: Theme.of(context).textTheme.bodyText1, overflow: TextOverflow.ellipsis)
-                          ),
-                          //todo: if status == banned -> red
-                          Container(
-                            alignment: Alignment.center,
-                            width: 60,
-                            child: Text('Active', style: Theme.of(context).textTheme.bodyText1)
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            width: 60,
-                            child: Text('3', style: Theme.of(context).textTheme.bodyText1)
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            height: 24,
-                            width: 60,
-                            decoration: const BoxDecoration(
-                              color: kColorsBlack,
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                            ),
-                            child: const Text('Unban', style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600, color: kColorsWhite)),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 11),
-                    ],
+                  child: FutureBuilder(
+                    future: UserController().getAllUser(filterTab.charges, filterTab.status),
+                    builder: (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
+                      if(snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      }
+                      else if(snapshot.connectionState == ConnectionState.done) {
+                        List<UserModel> userList = snapshot.data!;
+                        return userBody(userList, adminProvider);
+                      }
+                      else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
                   ),
                 )
               ],
@@ -140,7 +126,7 @@ class AdminUserScreen extends StatelessWidget {
                     children: [
                       // Create Filter Area
                       Container(
-                        height: MediaQuery.of(context).size.width * 0.29,
+                        height: tabStatus.indexTab == 0 ? MediaQuery.of(context).size.width * 0.29 : MediaQuery.of(context).size.width * 0.44,
                         color: kColorsWhite,
                         child: filterTabContent[tabStatus.indexTab],
                       ),
@@ -182,25 +168,80 @@ class AdminUserScreen extends StatelessWidget {
                   onTap: () {
                     tabStatus.tab(0);
                   },
-                  child: tabStatus.indexTab == 0 && tabStatus.status == true ? const FilterBarWidget(title: 'Sort', status: true) : const FilterBarWidget(title: 'Sort', status: false)
+                  child: tabStatus.indexTab == 0 && tabStatus.status == true ? const FilterBarWidget(title: 'Charges', status: true) : const FilterBarWidget(title: 'Charges', status: false)
                 ),
                 InkWell(
                   onTap: () {
                     tabStatus.tab(1);
                   },
-                  child: tabStatus.indexTab == 1 && tabStatus.status == true ? const FilterBarWidget(title: 'Charges', status: true) : const FilterBarWidget(title: 'Charges', status: false)
-                ),
-                InkWell(
-                  onTap: () {
-                    tabStatus.tab(2);
-                  },
-                  child: tabStatus.indexTab == 2 && tabStatus.status == true ? const FilterBarWidget(title: 'Status', status: true) : const FilterBarWidget(title: 'Status', status: false)
+                  child: tabStatus.indexTab == 1 && tabStatus.status == true ? const FilterBarWidget(title: 'Status', status: true) : const FilterBarWidget(title: 'Status', status: false)
                 )
               ],
             );
           }
         )
       ),
+    );
+  }
+
+  Widget userBody(List<UserModel> userList, AdminProvider adminProvider) {
+    return ListView.builder(
+      itemCount: userList.length,
+      itemBuilder: (BuildContext context, int index) {
+        UserModel user = userList[index];
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 11),
+          child: Consumer<AdminProvider>(
+          builder: (_, value, __) {
+            return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    width: 61,
+                    child: Text(user.name, style: Theme.of(context).textTheme.bodyText1, overflow: TextOverflow.ellipsis)
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    width: 60,
+                    child: user.isBan! ? Text('Ban', style: Theme.of(context).textTheme.bodyText1!.copyWith(color: kColorsRed))
+                      : Text('Active', style: Theme.of(context).textTheme.bodyText1)
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    width: 60,
+                    child: Text(user.totalCharges.toString(), style: Theme.of(context).textTheme.bodyText1)
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      Map<String, String> data = { 'is_ban': (user.isBan! ? 0:1).toString() };
+                      await UserController().updateUserStatus(user.id, data);
+                      userList[index] = await UserController().getUser(user.id!);
+                      user = userList[index];
+                      adminProvider.update();
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 24,
+                      width: 60,
+                      decoration: BoxDecoration(
+                        color: user.isBan! ? kColorsLightGrey : kColorsBlack,
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Text(
+                        user.isBan! ? 'Unban':'Ban',
+                        style: user.isBan! ? Theme.of(context).textTheme.subtitle2
+                          : Theme.of(context).textTheme.subtitle2!.copyWith(color: kColorsWhite)
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+          )
+        );
+      }
     );
   }
 }

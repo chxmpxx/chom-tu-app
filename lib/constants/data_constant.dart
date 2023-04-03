@@ -1,8 +1,8 @@
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:flutter/material.dart';
 
-List<String> allColor = ['Brown', 'Yellow', 'Purple', 'Orange', 'Green', 'Pink', 'Blue', 'Red', 'White', 'Beige', 'Black', 'Gray', 'Multi'];
-List<String> colors = ['Brown', 'Yellow', 'Purple', 'Orange', 'Green', 'Pink', 'Blue', 'Red', 'White', 'Beige', 'Black', 'Gray'];
+List<String> allColor = ['Brown', 'Yellow', 'Purple', 'Orange', 'Green', 'Pink', 'Blue', 'Red', 'White', 'Beige', 'Black', 'Grey', 'Multi'];
+List<String> colors = ['Brown', 'Yellow', 'Purple', 'Orange', 'Green', 'Pink', 'Blue', 'Red', 'White', 'Beige', 'Black', 'Grey'];
 List<Color> colorCodes = [kColorsBrown, kColorsYellow, kColorsPurple, kColorsOrange, kColorsGreen, kColorsPink, kColorsBlue, kColorsRed, kColorsWhite, kColorsBeige, kColorsBlack, kColorsDarkGrey];
 List<Color> colorBgCodes = [bgColorsBrown, bgColorsYellow, bgColorsPurple, bgColorsOrange, bgColorsGreen, bgColorsPink, bgColorsBlue, bgColorsRed, bgColorsWhite, bgColorsBeige, bgColorsBlack, bgColorsDarkGrey];
 

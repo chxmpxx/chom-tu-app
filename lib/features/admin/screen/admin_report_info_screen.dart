@@ -1,16 +1,21 @@
 import 'package:chom_tu/common_widgets/show_dialog_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/features/admin/models/report_model.dart';
+import 'package:chom_tu/features/admin/providers/admin_provider.dart';
 import 'package:chom_tu/features/admin/providers/report_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class AdminReportInfoScreen extends StatelessWidget {
   const AdminReportInfoScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var reportId = ModalRoute.of(context)?.settings.arguments;
+    var adminController = Provider.of<AdminProvider>(context, listen: false);
+    var arg = (ModalRoute.of(context)?.settings.arguments ?? {"reportId" : -1, "postId": -1}) as Map<String, int>;
+    var reportId = arg['reportId'];
+    var postId = arg['postId'];
 
     return Scaffold(
       backgroundColor: kColorsWhite,
@@ -35,18 +40,26 @@ class AdminReportInfoScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: (){
+              Map<String, String> data = { "status": 'Delete Post', "post_id": postId.toString(), "charges": adminController.charges };
               showDialogWidget(
                 context, 'Delete Post', 'This post\'s report will be deleted.', 'Delete',
-                (){}
+                () async {
+                  await ReportController().updateReport(reportId, data);
+                  Navigator.pushNamedAndRemoveUntil(context, '/admin_report', (route) => true);
+                }
               );
             },
             icon: SvgPicture.asset('assets/icons/o9_bin_2.svg', color: kColorsBlack)
           ),
           IconButton(
             onPressed: (){
+              Map<String, String> data = { "status": 'Discard Report', "charges": adminController.charges };
               showDialogWidget(
                 context, 'Discard Report', 'This post\'s report will be discarded.', 'Discard',
-                (){}
+                () async {
+                  await ReportController().updateReport(reportId, data);
+                  Navigator.pushNamedAndRemoveUntil(context, '/admin_report', (route) => true);
+                }
               );
             },
             icon: SvgPicture.asset('assets/icons/o8_report_1.svg')

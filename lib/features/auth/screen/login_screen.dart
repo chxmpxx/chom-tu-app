@@ -1,4 +1,5 @@
 import 'package:chom_tu/constants/themes/colors.dart';
+import 'package:chom_tu/features/admin/providers/admin_provider.dart';
 import 'package:chom_tu/features/auth/providers/user_controller.dart';
 import 'package:chom_tu/features/auth/providers/user_provider.dart';
 import 'package:chom_tu/common_widgets/button_widget.dart';
@@ -14,7 +15,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
-    dashboardProvider.setCurrentIndex(0);
+    var adminProvider = Provider.of<AdminProvider>(context, listen: false);
 
     final formKey = GlobalKey<FormState>();
     TextEditingController username = TextEditingController();
@@ -43,19 +44,23 @@ class LoginScreen extends StatelessWidget {
                       TextFormFieldWidget(controller: username, hintText: "Username", validator: "Please enter username", name: 'usernameLogin'),
                       TextFormFieldWidget(controller: password, hintText: "Password", validator: "Please enter password", isPassword: true, name: 'passwordLogin'),
                       const SizedBox(height: 11),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Text('Forgot your password?', style: Theme.of(context).textTheme.caption)
-                      ),
+                      // Align(
+                      //   alignment: Alignment.topRight,
+                      //   child: Text('Forgot your password?', style: Theme.of(context).textTheme.caption)
+                      // ),
                       ButtonWidget(
                         name: 'Login',
                         onTap: () async {
                           var data = {"username": username.value.text, "password": password.value.text};
-                          await UserController().login(data, context);
+                          String role = await UserController().login(data, context);
 
                           if(formKey.currentState!.validate()) {
                             formKey.currentState!.save();
-                            Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
+                            dashboardProvider.setCurrentIndex(0);
+                            adminProvider.setMenu('User');
+
+                            role == 'Admin' ? Navigator.pushNamedAndRemoveUntil(context, '/admin_user', (route) => true)
+                            : Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => true);
                           }
                         },
                       ),

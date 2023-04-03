@@ -7,7 +7,6 @@ import 'package:chom_tu/features/auth/providers/user_controller.dart';
 import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:chom_tu/features/profile/provider/profile_provider.dart';
 import 'package:chom_tu/features/profile/widgets/profile_camera_bottom_sheet_widget.dart';
-import 'package:chom_tu/features/social/provider/post_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';

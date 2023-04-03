@@ -127,7 +127,7 @@ class _SocialSearchState extends State<SocialSearch> {
         child: TextFormField(
           onChanged: (value) async {
             if (value.isNotEmpty) {
-              widget.users = await UserController().getAllUsers(value);
+              widget.users = await UserController().searchUser(value);
             } else {
               widget.users = [];
             }

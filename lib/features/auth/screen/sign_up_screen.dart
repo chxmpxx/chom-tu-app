@@ -1,23 +1,16 @@
 import 'package:chom_tu/features/auth/models/user_model.dart';
 import 'package:chom_tu/features/auth/providers/user_controller.dart';
-import 'package:chom_tu/features/auth/providers/user_provider.dart';
 import 'package:chom_tu/common_widgets/button_widget.dart';
 import 'package:chom_tu/constants/themes/colors.dart';
 import 'package:chom_tu/common_widgets/text_form_field_widget.dart';
-import 'package:chom_tu/features/dashboard/dashboard_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var userProvider = Provider.of<UserProvider>(context, listen: false);
-    var dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
-    dashboardProvider.setCurrentIndex(0);
-
     final formKey = GlobalKey<FormState>();
     TextEditingController name = TextEditingController();
     TextEditingController email = TextEditingController();

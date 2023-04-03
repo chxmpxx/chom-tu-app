@@ -103,17 +103,17 @@ class OutfitCreateProvider with ChangeNotifier {
         }
 
         // Delete Item
-        // if(offset.dy > MediaQuery.of(context).size.width - 33 && 
-        //   offset.dx > (MediaQuery.of(context).size.width/2) - 18 && offset.dx < (MediaQuery.of(context).size.width/2) + 18) {
-        //   confirmList.remove(getValueFromKeyType(key));
-        //   items.removeWhere((widget) => widget.key == key);
+        if(offset.dy > MediaQuery.of(context).size.width - 33 && 
+          offset.dx > (MediaQuery.of(context).size.width/2) - 18 && offset.dx < (MediaQuery.of(context).size.width/2) + 18) {
+          confirmList.remove(getValueFromKeyType(key));
+          items.removeWhere((widget) => widget.key == key);
 
-        //   if(notConfirmList.contains(getValueFromKeyType(key))) {
-        //     notConfirmList.remove(getValueFromKeyType(key));
-        //   }
-        //   providerDeleteItem.setDeleteItem();
-        //   notifyListeners();
-        // }
+          if(notConfirmList.contains(getValueFromKeyType(key))) {
+            notConfirmList.remove(getValueFromKeyType(key));
+          }
+          providerDeleteItem.setDeleteItem();
+          notifyListeners();
+        }
       },
       onDragUpdate: (offset, key, context){
         if(offset.dy > MediaQuery.of(context).size.width - 33 && 
